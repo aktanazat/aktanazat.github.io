@@ -1,10 +1,10 @@
 ---
-title: "Coursework"
+title: "University of California, Davis"
 collection: coursework
 type: "Undergraduate Institution"
-permalink: /coursework/
+permalink: /coursework/davis
 venue: "University of California, Davis"
-date: 2014-01-01
+date: 2022-10-22
 location: "Davis, CA"
 ---
 
