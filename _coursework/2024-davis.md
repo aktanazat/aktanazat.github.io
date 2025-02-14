@@ -4,7 +4,7 @@ collection: coursework
 type: "Undergraduate Institution"
 permalink: /coursework/davis
 venue: "University of California, Davis"
-date: 2022-10-22
+date: 2024-10-22
 location: "Davis, CA"
 ---
 
