@@ -2,7 +2,7 @@
 title: "Coursework"
 collection: coursework
 type: "Undergraduate Institution"
-permalink: /coursework/ucdavis
+permalink: /coursework/
 venue: "University of California, Davis"
 date: 2014-01-01
 location: "Davis, CA"
