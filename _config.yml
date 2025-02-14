@@ -13,7 +13,7 @@ title                    : "Aktan Azat"
 title_separator          : "-"
 name                     : &name "Aktan Azat"
 description              : &description "personal description"
-url                      : https://academicpages.github.io # the base hostname & protocol for your site e.g. "https://[your GitHub username].github.io"
+url                      : https://aktanazat.github.io # the base hostname & protocol for your site e.g. "https://[your GitHub username].github.io"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
 repository               : "academicpages/academicpages.github.io"
 
@@ -24,7 +24,7 @@ author:
   # Biographic information
   avatar           : "profile.png"
   name             : "Aktan Azat"
-  bio              : "Short biography for the left-hand sidebar"
+  bio              : "Third Year B.S. Computer Science & Engineering Student at UC Davis"
   location         : "Davis, CA"
   employer         : "University of California, Davis"
   uri              : # URL
