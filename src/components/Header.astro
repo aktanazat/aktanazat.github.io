@@ -10,7 +10,7 @@ import { NAV_ITEMS, BLOG_CONFIG } from "../consts";
 <header>
   <div class="header-content">
     <a class="title" href={generateURL("/", Astro.url)}>
-      <h1>{SITE_TITLE}</h1>
+      <h2>{SITE_TITLE}</h2>
     </a>
     <hr />
     <nav>
@@ -41,9 +41,10 @@ import { NAV_ITEMS, BLOG_CONFIG } from "../consts";
     margin-bottom: 2rem;
   }
 
-  .title h1 {
+  .title h2 {
     margin: 0;
-    font-size: 2.5rem;
+    font-size: 2rem;
+    line-height: 1.2;
   }
 
   hr {
@@ -73,8 +74,8 @@ import { NAV_ITEMS, BLOG_CONFIG } from "../consts";
   }
 
   @media (max-width: 768px) {
-    .title h1 {
-      font-size: 2rem;
+    .title h2 {
+      font-size: 1.75rem;
     }
 
     nav {
