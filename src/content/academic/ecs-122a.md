@@ -8,12 +8,12 @@ This course provides an in-depth exploration of algorithm design and analysis, f
 
 - Complexity of Algorithms: Understanding the theoretical limits of algorithm performance and the bounds on complexity.
 
-- Searching and Sorting: Techniques for efficiently organizing and retrieving data.
+- Searching and Sorting: Techniques for efficiently organizing and retrieving data: merge sort, bubble sort, binary search.
 
 - Pattern Matching: Algorithms for finding patterns within data sets.
 
-- Graph Algorithms: Methods for solving problems related to graphs, such as shortest path and network flow.
+- Graph Algorithms: Methods for solving problems related to graphs, such as shortest path and network flow: Dijkstra's, Kruskal's, Prim's, Bellman-Ford, DFS, BFS.
 
 - Algorithm Design Techniques: Including divide-and-conquer, greedy algorithms, dynamic programming, and approximation methods.
 
-- NP-Complete Problems: An introduction to computationally hard problems and strategies for dealing with them. The course includes lectures and discussions, with a strong emphasis on problem-solving and critical thinking.
+- NP-Complete Problems: An introduction to computationally hard problems and strategies for dealing with them. 
