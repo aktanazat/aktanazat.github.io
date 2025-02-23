@@ -1,0 +1,49 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import { render } from "astro:content";
+import { generateURL } from "../../utils";
+import IconLink from "../../components/IconLink.astro";
+
+export async function getStaticPaths() {
+  const sections = await getCollection("academic", section => !section.data.hide);
+  return sections.map(section => {
+    const segments = section.id.split("/");
+    return {
+      params: { slug: segments.length === 1 ? segments[0] : segments },
+      props: section,
+    };
+  });
+}
+
+type Props = CollectionEntry<"academic">;
+const section = Astro.props;
+const { Content } = await render(section);
+const subsections = (await getCollection("academic", subsection => subsection.data.parent === section.id)).sort(
+  (a, b) => a.data.order - b.data.order
+);
+---
+<Layout>
+    <div class="prose">
+      <span class="back-link">
+        <IconLink
+          name="Back"
+          href={generateURL("/academic-history")}
+          label="Back"
+          extra="Go Back"
+          back
+        />
+      </span>
+      <h1>{section.data.title}</h1>
+      <Content />
+      {subsections.length > 0 && (
+        <ul>
+          {subsections.map(subsection => (
+            <li>
+              <a href={generateURL(`/academic-history/${subsection.id}/`)}>{subsection.data.title}</a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </Layout>

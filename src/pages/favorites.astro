@@ -1,0 +1,78 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const favoriteBooks = [
+  { title: "Faust", author: "Goethe" },
+];
+
+const favoriteSongs = [
+  { link: "https://open.spotify.com/embed/track/1KZG1H1OCugGqIRmk1wF9m?utm_source=generator" },
+  { link: "https://open.spotify.com/embed/track/0fCwTrRNfoNk962ati8n2K?utm_source=generator" },
+  { link: "https://open.spotify.com/embed/track/7gDNQLV9cr8449LFrQbk5J?utm_source=generator" },
+  { link: "https://open.spotify.com/embed/track/4CoSCPlKNrWli7E5kFtbcl?utm_source=generator"},
+  { link: "https://open.spotify.com/embed/track/15jhnquhNS1IZMlM493UBW?utm_source=generator"}
+];
+
+const favoriteMovies = [
+  { title: "Interstellar"},
+  { title: "Oppenheimer"},
+  { title: "Trolls 3"},
+  { title: "Spirited Away"},
+  { title: "Princess Mononoke"}
+];
+---
+
+
+
+<Layout>
+    <center><h1>Favorites</h1></center>
+  
+    <hr style="height:1px;border:none;color:#333;background-color:#333;">
+
+  <section>
+    <h2>Books</h2>
+    <ul>
+      {favoriteBooks.map(book => (
+        <li>
+          <strong>{book.title}</strong> by {book.author}
+          <ul>
+            <li>
+                "As soon as you trust yourself, you will know how to live."
+            </li>
+          </ul>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section>
+    <h2>Songs</h2>
+    <ul>
+      {favoriteSongs.map(song => (
+          <iframe
+            style="border-radius:12px"
+            src={song.link}
+            width="60%"
+            height="100"
+            frameBorder="0"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"
+          ></iframe>
+      ))}
+    </ul>
+  </section>
+
+  <section>
+    <h2>Movies</h2>
+    <p>
+        Below is a list to my favorite movies, and <a href="https://letterboxd.com/derpcube/films/">here</a> is a list of all movies I've watched.
+    </p>
+    <ul>
+      {favoriteMovies.map(movie => (
+        <li>
+          <strong>{movie.title}</strong> 
+        </li>
+      ))}
+    </ul>
+  </section>
+</Layout>

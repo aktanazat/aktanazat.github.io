@@ -1,0 +1,24 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import { generateURL } from "../../utils";
+
+// Only get top-level institutions (like UC Davis)
+const institutions = (await getCollection("academic", section => 
+  !section.data.hide && section.data.type === "institution"
+)).sort((a, b) => a.data.order - b.data.order);
+---
+
+<Layout>
+  <div class="prose">
+    <h1>Academic History</h1>
+    <ul>
+      {institutions.map(institution => (
+        <li>
+          <a href={generateURL(`/academic-history/${institution.slug}/`)}>{institution.data.title}</a>
+          <p>{institution.data.description}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Layout>

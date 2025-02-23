@@ -1,0 +1,22 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import { generateURL } from "../utils";
+
+const sections = (await getCollection("academic", section =>
+  !section.data.hide && section.data.type === "institution"
+)).sort((a, b) => a.data.order - b.data.order);
+---
+
+<Layout>
+  <div class="prose">
+    <h1>Academic History</h1>
+    <ul>
+      {sections.map(section => (
+        <li>
+          <a href={generateURL(`/academic-history/${section.id}/`)}>{section.data.title}</a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Layout>
