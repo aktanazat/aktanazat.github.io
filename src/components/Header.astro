@@ -8,40 +8,89 @@ import { NAV_ITEMS, BLOG_CONFIG } from "../consts";
 ---
 
 <header>
-  <a class="title" href={generateURL("/", Astro.url)}>
-    <h1>{SITE_TITLE}</h1>
-  </a>
-  <hr style="height:1px;border:none;color:#333;background-color:#333;">
-  <nav>
-    <p>
-      {
-        NAV_ITEMS.map(item => (
-          <HeaderLink href={generateURL(item.link)} aria-label={item.text}>
-            {item.text}
-          </HeaderLink>
-        ))
-      }
-    </p>
-    <div>
-      <IconLink name="RSS" href={generateURL("/rss.xml")} label="RSS" />
-      {
-        BLOG_CONFIG["email"] && (
-          <IconLink name="Email" href={BLOG_CONFIG["email"]} label="Email" />
-        )
-      }
-      <ThemeToggle />
-    </div>
-  </nav>
+  <div class="header-content">
+    <a class="title" href={generateURL("/", Astro.url)}>
+      <h1>{SITE_TITLE}</h1>
+    </a>
+    <hr />
+    <nav>
+      <div class="nav-links">
+        {
+          NAV_ITEMS.map(item => (
+            <HeaderLink href={generateURL(item.link)} aria-label={item.text}>
+              {item.text}
+            </HeaderLink>
+          ))
+        }
+      </div>
+      <div class="nav-controls">
+        <IconLink name="RSS" href={generateURL("/rss.xml")} label="RSS" />
+        {
+          BLOG_CONFIG["email"] && (
+            <IconLink name="Email" href={BLOG_CONFIG["email"]} label="Email" />
+          )
+        }
+        <ThemeToggle />
+      </div>
+    </nav>
+  </div>
 </header>
 
 <style>
-  nav {
-    position: relative;
+  header {
+    margin-bottom: 2rem;
   }
-  nav div {
-    position: absolute;
+
+  .title h1 {
+    margin: 0;
+    font-size: 2.5rem;
+  }
+
+  hr {
+    margin: 0.5rem 0;
+    height: 1px;
+    border: none;
+    background-color: #333;
+  }
+
+  nav {
     display: flex;
-    right: 0;
-    top: 0;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .nav-controls {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  @media (max-width: 768px) {
+    .title h1 {
+      font-size: 2rem;
+    }
+
+    nav {
+      flex-direction: column;
+    }
+
+    .nav-links {
+      order: 2;
+      border-top: 1px solid #ddd;
+      padding-top: 1rem;
+      justify-content: center;
+    }
+
+    .nav-controls {
+      order: 1;
+      justify-content: flex-end;
+    }
   }
 </style>
