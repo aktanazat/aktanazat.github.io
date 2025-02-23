@@ -12,7 +12,7 @@ import { NAV_ITEMS, BLOG_CONFIG } from "../consts";
     <h1>{SITE_TITLE}</h1>
   </a>
   <nav>
-    <div class="nav-menu">
+    <p>
       {
         NAV_ITEMS.map(item => (
           <HeaderLink href={generateURL(item.link)} aria-label={item.text}>
@@ -20,8 +20,8 @@ import { NAV_ITEMS, BLOG_CONFIG } from "../consts";
           </HeaderLink>
         ))
       }
-    </div>
-    <div class="nav-icons">
+    </p>
+    <div>
       <IconLink name="RSS" href={generateURL("/rss.xml")} label="RSS" />
       {
         BLOG_CONFIG["email"] && (
@@ -34,57 +34,13 @@ import { NAV_ITEMS, BLOG_CONFIG } from "../consts";
 </header>
 
 <style>
-  header {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem 0;
-  }
-
-  .title {
-    text-align: center;
-  }
-
   nav {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    align-items: center;
+    position: relative;
   }
-
-  .nav-menu {
+  nav div {
+    position: absolute;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1rem;
-  }
-
-  .nav-icons {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-  }
-
-  @media (min-width: 768px) {
-    header {
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 0;
-    }
-
-    .title {
-      text-align: left;
-    }
-
-    nav {
-      flex-direction: row;
-      justify-content: flex-end;
-      gap: 2rem;
-    }
-
-    .nav-menu {
-      justify-content: flex-end;
-    }
+    right: 0;
+    top: 0;
   }
 </style>
