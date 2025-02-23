@@ -12,7 +12,7 @@ import { NAV_ITEMS, BLOG_CONFIG } from "../consts";
     <h1>{SITE_TITLE}</h1>
   </a>
   <nav>
-    <div class="nav-links">
+    <div class="nav-menu">
       {
         NAV_ITEMS.map(item => (
           <HeaderLink href={generateURL(item.link)} aria-label={item.text}>
@@ -37,44 +37,54 @@ import { NAV_ITEMS, BLOG_CONFIG } from "../consts";
   header {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 20px;
+    gap: 1rem;
+    padding: 1rem 0;
   }
+
+  .title {
+    text-align: center;
+  }
+
   nav {
     display: flex;
     flex-direction: column;
+    gap: 1rem;
     align-items: center;
-    width: 100%;
   }
-  .nav-links {
+
+  .nav-menu {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    margin: 10px 0;
+    gap: 1rem;
   }
+
   .nav-icons {
     display: flex;
-    justify-content: center;
-    margin-top: 10px;
+    gap: 0.5rem;
+    align-items: center;
   }
-  @media (min-width: 600px) {
+
+  @media (min-width: 768px) {
     header {
       flex-direction: row;
       justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+    }
+
+    .title {
       text-align: left;
     }
+
     nav {
       flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
+      justify-content: flex-end;
+      gap: 2rem;
     }
-    .nav-links {
-      justify-content: flex-start;
-      margin: 0;
-    }
-    .nav-icons {
-      margin-top: 0;
+
+    .nav-menu {
+      justify-content: flex-end;
     }
   }
 </style>
