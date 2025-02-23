@@ -1,5 +1,5 @@
 ---
-title: "Learning Materials for Quants"
+title: "Helpful Resources for Financial Engineering"
 description: "some useful information..."
 pubDate: "Feb 20 2025"
 updatedDate: "Feb 23 2025"
@@ -7,9 +7,6 @@ hide: false
 tags:
   - learning
 ---
-
-# Quant-Finance-Resources
-**Courses, Articles and many more which can help beginners or professionals.**
 
 ### Mathematics
  * **Numerical Linear Algebra for Coders** by [fast.ai](https://www.fast.ai) 
@@ -50,7 +47,6 @@ tags:
     - You will first need to have sound understanding of Financial Markets (Not expertise, but understanding is necessary.)
   * **Advances in Financial Machine Learning** by *Marcos Lopez de Prado*
   * **Financial Calculus: An Introduction to Derivative Pricing** by Martin Baxter (He ran Quant for Lehman and Nomura)
-  * 
 
 ## Articles
 * **The Gambler Who Cracked the Horse-Racing Code** in Bloomberg Businessweek [here](https://www.bloomberg.com/news/features/2018-05-03/the-gambler-who-cracked-the-horse-racing-code)
