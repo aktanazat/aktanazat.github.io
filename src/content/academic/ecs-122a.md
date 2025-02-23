@@ -17,3 +17,14 @@ This course provides an in-depth exploration of algorithm design and analysis, f
 - Algorithm Design Techniques: Including divide-and-conquer, greedy algorithms, dynamic programming, and approximation methods.
 
 - NP-Complete Problems: An introduction to computationally hard problems and strategies for dealing with them. 
+
+### Personal Notes
+
+The class was taught by Professor Yelena Frid. 
+Lectures were held fairly late (7:40 PM); everything hand-written, rarely any presentations.
+
+I would say it was an informative class, as she prioritized *understanding* over memorization. However, towards the end, when we started on Graph Algorithms, the tempo slowed down.
+
+Quizzes and homework every week. Midterm and Final were not as difficult as anticipated: generous partial credit. 
+
+Notes are available [here](https://ucdavis365-my.sharepoint.com/:o:/g/personal/aazat_ucdavis_edu/EsYSmjZEqTxNvDqVOFr058oBCLgyeQ7Te7g7BSvq3bwUkw?e=bnqSgD)
