@@ -10,11 +10,10 @@ const sections = (await getCollection("academic", section =>
 
 <Layout>
   <div class="prose">
-    <h1>Academic History</h1>
     <ul>
       {sections.map(section => (
         <li>
-          <a href={generateURL(`/academic-history/${section.id}/`)}>{section.data.title}</a>
+          <h1><span style = "font-weight:normal"><a href={generateURL(`/academic-history/${section.id}/`)}>{section.data.title}</a></span></h1>
         </li>
       ))}
     </ul>
