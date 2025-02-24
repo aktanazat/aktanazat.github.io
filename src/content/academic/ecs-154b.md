@@ -18,6 +18,6 @@ This course focuses on hardwired and microprogrammed CPU design, memory hierarch
 
 ### Personal Notes
 
-Taught by Jason Lowe-Power. Pretty cool professor, I must say. Everything is relaxed. Half of the course is review from [ECS 154A](src/content/academic/ecs-154a.md)
+Taught by Jason Lowe-Power. Pretty cool professor, I must say. Everything is relaxed. Half of the course is review from [ECS 154A](../src/content/academic/ecs-154a.md)
 
 Notes are available [here](https://ucdavis365-my.sharepoint.com/:o:/g/personal/aazat_ucdavis_edu/EvB7z1Ysf0BEgWkwc7_NC08Bz_UhoZzJMGyo_st9yWwY8g?e=A8BC44)
