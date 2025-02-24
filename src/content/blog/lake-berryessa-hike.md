@@ -20,12 +20,12 @@ At the trail head, we followed the trail which arrives to Annie's Junction from 
 
 At the peak, the views were breathtaking, to say the least.
 
-![Berryessa view 1](/berryessa_1.png)
-![Berryessa view 2](/berryessa_2.png)
+![Berryessa view 1](/berryessa_1.jpeg)
+![Berryessa view 2](/berryessa_2.jpeg)
 
 On the way back, we stopped to take a look at the [Monticello Dam](https://en.wikipedia.org/wiki/Monticello_Dam). I saw the infamous glory hole, which was absurdly big.
 
-![Glory Hole](/glory_hole.png)
+![Glory Hole](/glory_hole.jpeg)
 
 If you look in the picture, it is at the bottom.
 
