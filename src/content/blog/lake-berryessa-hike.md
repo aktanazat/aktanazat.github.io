@@ -12,7 +12,7 @@ On February 17, I, alongside three other friends, headed out to a hike near Lake
 
 We started around 9:40 PM near [Stebbins Cold Canyon](https://naturalreserves.ucdavis.edu/stebbins-cold-canyon), maintained by UC Davis. 
 
-![The hiking trail.](/screenshots/stebbins-cold-canyon-reserve.png)
+![The hiking trail.](/public/stebbins-cold-canyon-reserve.png)
 
 Upon arrival, we had to cross a creek (otherwise we couldn't continue the trail), and then walk upwards a steep incline. It sort-of reminded me of Mission Peak down in Fremont. 
 
@@ -20,12 +20,12 @@ At the trail head, we followed the trail which arrives to Annie's Junction from 
 
 At the peak, the views were breathtaking, to say the least.
 
-![Berryessa view 1](/screenshots/berryessa_1.png)
-![Berryessa view 2](/screenshots/berryessa_2.png)
+![Berryessa view 1](/public/berryessa_1.png)
+![Berryessa view 2](/public/berryessa_2.png)
 
 On the way back, we stopped to take a look at the [Monticello Dam](https://en.wikipedia.org/wiki/Monticello_Dam). I saw the infamous glory hole, which was absurdly big.
 
-![Glory Hole](/screenshots/glory_hole.png)
+![Glory Hole](/public/glory_hole.png)
 
 If you look in the picture, it is at the bottom.
 
