@@ -13,7 +13,7 @@ const sections = (await getCollection("academic", section =>
     <ul class="custom-list">
       {sections.map(section => (
         <li>
-          <h2><span style="font-weight: normal"><a href={generateURL(`/academic-history/${section.id}/`)}>{section.data.title}</a></span></h2>
+          <h1><span style="font-weight: normal"><a href={generateURL(`/academic-history/${section.id}/`)}>{section.data.title}</a></span></h1>
         </li>
       ))}
     </ul>
