@@ -1,11 +1,13 @@
 ---
-title: "The SacHacks experience"
+title: "The SacHacks Experience"
 description: "interesting indeed"
 pubDate: "Mar 2 2025"
 updatedDate: "Mar 2 2025"
 hide: false
 tags:
-  - club
+  - hackathon
+  - fun
+  - uc davis
 ---
 
 <div style="text-align: center; max-width: 80%; margin: auto;">

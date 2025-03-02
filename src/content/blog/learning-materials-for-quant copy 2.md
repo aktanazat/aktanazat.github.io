@@ -6,6 +6,7 @@ updatedDate: "Feb 23 2025"
 hide: false
 tags:
   - learning
+  - finance
 ---
 
 ### Mathematics

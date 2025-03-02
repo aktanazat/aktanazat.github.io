@@ -6,6 +6,8 @@ updatedDate: "Feb 25 2025"
 hide: false
 tags:
   - club
+  - uc davis
+  
 ---
 
 <div style="text-align: center; max-width: 80%; margin: auto;">
