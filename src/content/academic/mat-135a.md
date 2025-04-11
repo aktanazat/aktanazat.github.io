@@ -1,5 +1,5 @@
 ---
-title: "ECS 120"
+title: "MAT 135A"
 parent: "spring-quarter-2025"
 order: 3
 ---
