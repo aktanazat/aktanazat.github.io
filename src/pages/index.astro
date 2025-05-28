@@ -3,11 +3,11 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout>
-  <div class="prose">
+  <div class="prose home-prose">
     <p>
-      Hi there! I am Aktan, a third year undergraduate <a href = "https://www.ucdavis.edu/majors/computer-science-and-engineering">Computer Science & Engineering</a> student at the University of California, Davis. 
-      I am upcoming Summer 2025 Software Engineering Intern at <a href = "https://www.rigetti.com">Rigetti</a>.
-      In addition, I am a researcher at <a href = "https://health.ucdavis.edu/welcome/">UC Davis Health </a> under David Liem and Clodomir Santana Jr in the Complex Care Laboratory, Division of Cardiovascular Medicine.
+      Hi there! I am Aktan, a third year undergraduate <a href="https://www.ucdavis.edu/majors/computer-science-and-engineering">Computer Science & Engineering</a> student at the University of California, Davis. 
+      I am an upcoming Summer 2025 Software Engineering Intern at <a href="https://www.rigetti.com">Rigetti Computing</a>.
+      In addition, I am a researcher at <a href="https://health.ucdavis.edu/welcome/">UC Davis Health</a> under David Liem and Clodomir Santana Jr in the Complex Care Laboratory, Division of Cardiovascular Medicine.
     </p>
     <p>
       At the moment, my academic interests lie in machine learning (RAG and GNNs), computer vision (3D reconstruction), and mathematical finance (options pricing and risk management).
@@ -31,9 +31,41 @@ import Layout from "../layouts/Layout.astro";
       To find out about my favorite media, head over to my <a href = "/favorites">favorites</a> page.
     </p>
     <p>
-      Here is a picture of me in Chicago. 
-      &nbsp;
-      <img src="/personal-picture.png" alt="Chicago Flick" />
+      Here is a picture of me in Chicago.
     </p>
+    <div class="home-image-container">
+      <img src="/personal-picture.png" alt="Aktan in Chicago" loading="lazy" />
+    </div>
   </div>
 </Layout>
+
+<style>
+  .home-prose p {
+    margin-bottom: 1em; /* Ensure consistent paragraph spacing */
+    font-size: 1.05em; /* Slightly larger text for homepage readability */
+    line-height: 1.7; /* More generous line height */
+  }
+
+  .home-prose a {
+    /* Styles for links within .home-prose if different from global .prose a */
+    /* For now, it will inherit from global.css */
+  }
+
+  .home-image-container {
+    margin-top: 1.5rem;
+    text-align: center; /* Center the image if it's narrower than the container */
+  }
+
+  .home-image-container img {
+    max-width: 80%; /* Control image size, prevent it from being too large */
+    height: auto;
+    border-radius: 8px; /* Consistent with other images like hero images */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* Add a subtle shadow for depth */
+  }
+
+  @media (max-width: 600px) {
+    .home-image-container img {
+      max-width: 100%; /* Allow image to be full width on smaller screens */
+    }
+  }
+</style>

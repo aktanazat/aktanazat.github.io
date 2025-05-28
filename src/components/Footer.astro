@@ -40,14 +40,24 @@ import icons, { getSizedIcon } from "../assets/icons";
 </footer>
 
 <style>
+  footer { /* Added to ensure footer styles are scoped if not already */
+    /* Footer styles from global.css are already applied, so specific overrides or additions go here if needed */
+  }
   .social-links {
-    margin-top: 6px;
+    margin-top: 0.5rem; /* Adjusted margin */
+    display: flex; /* Enable flex for alignment */
+    justify-content: center; /* Center icons */
+    gap: 1rem; /* Space out icons */
+
     a {
-      color: var(--text-color);
+      color: var(--text-color); /* Use text-color for default icon color */
       text-decoration: none;
+      display: inline-block; /* Helps with hover effect */
+      transition: color 0.2s ease-in-out, transform 0.2s ease-in-out; /* Smooth transitions */
     }
     a:hover {
       color: var(--link-color);
+      transform: translateY(-2px); /* Subtle lift on hover */
     }
   }
 </style>

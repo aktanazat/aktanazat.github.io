@@ -25,54 +25,123 @@ const favoriteMovies = [
 
 
 <Layout>
-    <center><h1>Favorites</h1></center>
+  <div class="prose favorites-prose">
+    <header class="page-header">
+      <h1>Favorites</h1>
+      <p>A collection of books, songs, and movies I enjoy.</p>
+    </header>
   
-    <hr style="height:1px;border:none;color:#333;background-color:#333;">
+    <section class="favorites-section">
+      <h2>Books</h2>
+      <ul class="favorites-list book-list">
+        {favoriteBooks.map(book => (
+          <li class="favorite-item book-item">
+            <strong class="item-title">{book.title}</strong> by {book.author}
+            <blockquote class="item-quote">
+              "As soon as you trust yourself, you will know how to live."
+            </blockquote>
+          </li>
+        ))}
+      </ul>
+    </section>
 
-  <section>
-    <h2>Books</h2>
-    <ul>
-      {favoriteBooks.map(book => (
-        <li>
-          <strong>{book.title}</strong> by {book.author}
-          <ul>
-            <li>
-                "As soon as you trust yourself, you will know how to live."
-            </li>
-          </ul>
-        </li>
-      ))}
-    </ul>
-  </section>
+    <section class="favorites-section">
+      <h2>Songs</h2>
+      <div class="song-list">
+        {favoriteSongs.map(song => (
+            <iframe
+              class="spotify-embed"
+              style="border-radius:12px"
+              src={song.link}
+              width="100%" /* Make responsive */
+              height="152" /* Standard compact height */
+              frameBorder="0"
+              allowFullScreen={true} /* Corrected attribute casing */
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              loading="lazy"
+            ></iframe>
+        ))}
+      </div>
+    </section>
 
-  <section>
-    <h2>Songs</h2>
-    <ul>
-      {favoriteSongs.map(song => (
-          <iframe
-            style="border-radius:12px"
-            src={song.link}
-            width="80%"
-            height="100"
-            frameBorder="0"
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-            loading="lazy"
-          ></iframe>
-      ))}
-    </ul>
-  </section>
-
-  <section>
-    <h2>Movies</h2>
-    <p>
-        Below is a list to my favorite movies, and <a href="https://letterboxd.com/derpcube/films/">here</a> is a list of all movies I've watched.
-    </p>
-    <ul>
-      {favoriteMovies.map(movie => (
-        <li>
-          <strong>{movie.title}</strong> 
-        </li>
-      ))}
-    </ul>
-  </section>
+    <section class="favorites-section">
+      <h2>Movies</h2>
+      <p class="letterboxd-link">
+          Below is a list of some of my favorite movies. You can see more on my <a href="https://letterboxd.com/derpcube/films/" target="_blank" rel="noopener noreferrer">Letterboxd profile</a>.
+      </p>
+      <ul class="favorites-list movie-list">
+        {favoriteMovies.map(movie => (
+          <li class="favorite-item movie-item">
+            <strong class="item-title">{movie.title}</strong> 
+          </li>
+        ))}
+      </ul>
+    </section>
+  </div>
 </Layout>
+<style>
+  /* Page Header (reusing from blog/tags if desired, or define locally) */
+  .page-header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+  .page-header h1 {
+    font-size: 2.5em;
+    margin-top: 0;
+    margin-bottom: 0.25em;
+  }
+  .page-header p {
+    font-size: 1.1em;
+    color: var(--text-color);
+    opacity: 0.9;
+    margin-top: 0;
+  }
+
+  .favorites-section {
+    margin-bottom: 2.5rem;
+  }
+  .favorites-section h2 {
+    font-size: 1.8em;
+    margin-bottom: 1rem;
+    padding-bottom: 0.25rem;
+    border-bottom: 1px dashed var(--border-color);
+  }
+
+  .favorites-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  .favorite-item {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+  .item-title {
+    font-weight: 600;
+    color: var(--heading-color);
+  }
+  .book-item .item-quote {
+    margin-top: 0.5em;
+    margin-left: 1em; /* Indent quote slightly */
+    padding: 0.5em 1em;
+    font-size: 0.95em;
+    /* blockquote styles from global.css will apply for border/color */
+  }
+
+  .song-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+    gap: 1.5rem;
+  }
+  .spotify-embed {
+    max-width: 400px; /* Max width for embeds if needed */
+    margin: 0 auto; /* Center if it doesn't fill the grid cell */
+  }
+
+  .letterboxd-link {
+    margin-bottom: 1rem;
+  }
+
+  /* Remove the old hr style as we now use page-header */
+  /* hr { display: none; } */ 
+</style>

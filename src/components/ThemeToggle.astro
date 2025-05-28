@@ -32,3 +32,30 @@
       d="m19.07 4.93-1.41 1.41"></path></svg
   >
 </span>
+<style>
+  /* Styles for the span container (#theme-btn) are in global.css */
+  /* These styles ensure the SVGs themselves are well-behaved if needed, */
+  /* but most styling is handled by #theme-btn and .theme-icon in global.css */
+
+  #theme-btn {
+    display: inline-flex; /* Ensures the span behaves like a button and centers the SVG */
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem; /* Small padding to make click area slightly larger */
+    border-radius: 50%; /* Make it circular if desired, or use global button styles */
+    /* The color and hover color for the icon itself is handled by global.css */
+    /* via --moon-color, --sun-color and --link-color on .theme-icon:hover */
+  }
+
+  .theme-icon {
+    width: 22px; /* Slightly smaller than original 24px for a tighter look */
+    height: 22px;
+    /* transition and hover effects are in global.css */
+  }
+
+  /* Accessibility: Ensure focus is visible on the button */
+  #theme-btn:focus-visible {
+    outline: 2px solid var(--link-color);
+    outline-offset: 2px;
+  }
+</style>

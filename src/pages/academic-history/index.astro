@@ -10,15 +10,80 @@ const institutions = (await getCollection("academic", section =>
 ---
 
 <Layout>
-  <div class="prose">
-    <h1><span style = "font-weight: normal">Academic History</span></h1>
-    <ul>
+  <div class="prose academic-prose">
+    <h1><span style="font-weight: normal">Academic History</span></h1>
+    <ul class="institution-list">
       {institutions.map(institution => (
-        <li>
-          <a href={generateURL(`/academic-history/${institution.slug}/`)}>{institution.data.title}</a>
-          <p>{institution.data.description}</p>
+        <li class="institution-item">
+          <a href={generateURL(`/academic-history/${institution.slug}/`)} class="institution-title">{institution.data.title}</a>
+          {institution.data.description && <p class="institution-description">{institution.data.description}</p>}
         </li>
       ))}
     </ul>
   </div>
 </Layout>
+
+<style>
+  .academic-prose h1 {
+    margin-bottom: 1.5rem; /* More space after main title */
+    font-size: 2.5em;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+  }
+
+  .institution-list {
+    list-style-type: none;
+    padding: 0;
+    display: grid; /* Use grid for better layout options */
+    gap: 1.5rem; /* Space between cards */
+  }
+
+  .institution-item {
+    /* margin-bottom: 2rem; Remove, handled by grid gap */
+    /* padding-bottom: 1.5rem; Remove, handled by card padding */
+    /* border-bottom: 1px dashed var(--border-color); Remove, card will have its own border */
+    border: 1px solid var(--border-color);
+    border-radius: 8px; /* Rounded corners for card */
+    padding: 1.5rem; /* Padding inside the card */
+    transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+  }
+
+  .institution-item:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* Add shadow on hover */
+    transform: translateY(-3px); /* Slight lift on hover */
+  }
+
+  .institution-item:last-child {
+    border-bottom: 1px solid var(--border-color); /* Ensure last item also has a border if it's the only one or grid changes flow */
+     margin-bottom: 0; /* Reset if needed, though grid gap should handle it */
+     padding-bottom: 1.5rem; /* Reset if needed */
+  }
+  
+  @media (min-width: 768px) {
+    .institution-list {
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid columns */
+    }
+  }
+
+
+  .institution-title {
+    font-size: 1.5em;
+    font-weight: 600;
+    color: var(--heading-color);
+    text-decoration: none;
+    display: block; /* Make it block for margin */
+    margin-bottom: 0.35rem;
+  }
+
+  .institution-title:hover {
+    color: var(--link-color);
+    text-decoration: underline;
+  }
+
+  .institution-description {
+    font-size: 1em;
+    color: var(--text-color);
+    margin-top: 0;
+    line-height: 1.6;
+  }
+</style>

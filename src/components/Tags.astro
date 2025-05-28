@@ -10,7 +10,7 @@ type Props = {
   {
     tags.map(tag => (
       <li>
-        <a href={generateURL(`/tags/${tag}/`)} transition:name={`tag-${tag}`}>
+        <a href={generateURL(`/tags/${tag}/`)}>
           #{decodeTag(tag)}
         </a>
       </li>
@@ -21,27 +21,33 @@ type Props = {
 <style>
   ul.blog-tags {
     list-style-type: none;
-    padding: unset;
+    padding: 0;
+    margin-top: 2rem; /* Add some space above the tags */
   }
   ul.blog-tags li {
     display: inline-block;
-    margin-right: 12px;
-    margin-bottom: 12px;
+    margin-right: 0.5rem; /* Use rem for spacing */
+    margin-bottom: 0.5rem; /* Use rem for spacing */
   }
-  ul.blog-tags li a:visited {
-    color: var(--visited-color);
+  ul.blog-tags li a {
+    /* Removed visited color - rely on default link styling or browser default */
+    /* color: var(--visited-color); */ 
+    display: inline-block; /* For padding and better click area */
+    padding: 0.25em 0.6em;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 0.9em;
+    text-decoration: none; /* Remove underline by default */
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
   }
-  a {
-    color: var(--link-color);
-    cursor: pointer;
-    text-decoration: none;
-  }
-  a {
-    text-decoration: underline;
-    text-decoration-style: dashed;
-    text-underline-offset: 4px;
-  }
-  a:hover {
-    text-decoration: underline;
+  /* Removed the general 'a' styles as they were too broad for this component */
+  /* and could conflict with global styles or other link types. */
+  /* Specificity is handled by ul.blog-tags li a */
+
+  ul.blog-tags li a:hover {
+    background-color: var(--link-color);
+    color: var(--background-color); /* For better contrast on hover */
+    border-color: var(--link-color);
+    text-decoration: none; /* Ensure no underline on hover if not desired */
   }
 </style>

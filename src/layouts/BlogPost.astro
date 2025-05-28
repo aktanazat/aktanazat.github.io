@@ -52,11 +52,11 @@ const structuredData = {
   }
   <article>
     <div class="hero-image">
-      {heroImage && <img width={1020} height={510} src={heroImage} alt="" />}
+      {heroImage && <img width={1020} height={510} src={heroImage} alt="" loading="lazy" />}
     </div>
     <div class="prose">
-      <div class="title">
-        <div class="date">
+      <div class="title-section">
+        <div class="meta-info">
           <FormattedDate date={pubDate} />
           {
             updatedDate && (
@@ -80,8 +80,56 @@ const structuredData = {
 <style>
   .back-link {
     display: inline-block;
-    margin: 12px 0 8px -6px;
+    margin: 1rem 0 1rem -0.5rem;
   }
+
+  .hero-image {
+    margin-bottom: 2rem;
+  }
+
+  .hero-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  .prose .title-section {
+    margin-bottom: 2rem;
+  }
+
+  .prose .title-section h1 {
+    font-size: 2.5em;
+    margin-top: 0.5em;
+    margin-bottom: 0.25em;
+    line-height: 1.2;
+  }
+
+  .prose .title-section hr {
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    border-top: 1px solid var(--border-color);
+  }
+  
+  .meta-info {
+    font-size: 0.9em;
+    color: var(--text-color);
+    opacity: 0.9;
+    margin-bottom: 0.5rem;
+  }
+
+  .last-updated-on {
+    margin-top: 0.25rem;
+    font-size: 0.9em;
+  }
+
+  .prose > :global(p):last-of-type,
+  .prose > :global(ul):last-of-type,
+  .prose > :global(ol):last-of-type,
+  .prose > :global(blockquote):last-of-type,
+  .prose > :global(pre):last-of-type {
+    margin-bottom: 2rem;
+  }
+
 </style>
 
 <script>

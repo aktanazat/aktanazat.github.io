@@ -31,13 +31,23 @@ const onclick = back
 <style>
   a {
     color: var(--text-color);
-    display: flex;
+    display: inline-flex; /* Changed to inline-flex for better alignment with text */
+    align-items: center; /* Vertically align icon and text */
+    gap: 0.35rem; /* Space between icon and extra text */
+    text-decoration: none; /* Ensure no underline by default */
+    transition: color 0.2s ease-in-out;
   }
   a:hover {
     color: var(--link-color);
   }
   a > span {
-    height: 24px;
-    line-height: 24px;
+    /* Removed fixed height and line-height, rely on flex alignment */
+    font-size: 0.9em; /* Slightly smaller for 'Go Back' or 'RSS' text */
+  }
+  /* Ensure SVG inside takes the color */
+  a :global(svg) {
+    width: 1.2em; /* Control icon size relative to font */
+    height: 1.2em;
+    fill: currentColor; /* Make SVG color inherit from 'a' tag */
   }
 </style>

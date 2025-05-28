@@ -24,7 +24,6 @@ import { NAV_ITEMS, BLOG_CONFIG } from "../consts";
         }
       </div>
       <div class="nav-controls">
-        <IconLink name="RSS" href={generateURL("/rss.xml")} label="RSS" />
         {
           BLOG_CONFIG["email"] && (
             <IconLink name="Email" href={BLOG_CONFIG["email"]} label="Email" />
@@ -43,16 +42,17 @@ import { NAV_ITEMS, BLOG_CONFIG } from "../consts";
 
   .title h2 {
     margin: 0;
-    font-size: 2rem;
+    font-size: 1.8em; /* Adjusted for better proportion with body text */
     line-height: 1.2;
-    font-weight: normal;
+    font-weight: 700; /* Bolder for site title */
+    color: var(--heading-color);
   }
 
   hr {
-    margin: 0.5rem 0;
+    margin: 0.75rem 0; /* Adjusted margin */
     height: 1px;
     border: none;
-    background-color: #333;
+    background-color: var(--border-color); /* Use CSS variable */
   }
 
   nav {
@@ -64,7 +64,7 @@ import { NAV_ITEMS, BLOG_CONFIG } from "../consts";
 
   .nav-links {
     display: flex;
-    gap: 1rem;
+    gap: 1rem; /* Consistent gap */
     flex-wrap: wrap;
   }
 
@@ -86,7 +86,7 @@ import { NAV_ITEMS, BLOG_CONFIG } from "../consts";
 
     .nav-links {
       order: 2;
-      border-top: 1px solid #ddd;
+      border-top: 1px solid var(--border-color); /* Use CSS variable */
       padding-top: 1rem;
       justify-content: center;
     }
