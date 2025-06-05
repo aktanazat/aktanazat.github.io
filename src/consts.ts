@@ -28,6 +28,7 @@ export const NAV_ITEMS = [
   { text: "Blog", link: "/blog" },
   { text: "Favorites", link: "/favorites" },
   { text: "Resume", link: "/resume" },
+  { text: "Apps", link: "/apps" },
 ];
 
 export const BLOG_CONFIG = {
