@@ -5,34 +5,25 @@ import Layout from "../layouts/Layout.astro";
 <Layout>
   <div class="prose home-prose">
     <p>
-      Hi there! I am Aktan, a third year undergraduate <a href="https://www.ucdavis.edu/majors/computer-science-and-engineering">Computer Science & Engineering</a> student at the University of California, Davis. 
-      I am an upcoming Summer 2025 Software Engineering Intern at <a href="https://www.rigetti.com">Rigetti Computing</a>.
-      In addition, I am a researcher at <a href="https://health.ucdavis.edu/welcome/">UC Davis Health</a> under David Liem and Clodomir Santana Jr in the Complex Care Laboratory, Division of Cardiovascular Medicine.
+      Hi, I'm Aktan. I'm a CSE student at UC Davis working on machine learning problems in healthcare and spending my summer at <a href="https://www.rigetti.com">Rigetti Computing</a> building quantum software.
     </p>
+    
     <p>
-      At the moment, my academic interests lie in machine learning (RAG and GNNs), computer vision (3D reconstruction), and mathematical finance (options pricing and risk management).
+      I'm interested in computer vision, quantitative finance, and how we can use ML to solve real problems. When I'm not coding, I'm probably hiking, playing Catan, or trying out new food.
     </p>
+
     <p>
-      To check out the courses I have taken so far, head over to my <a href = "/academic-history">academic history</a> page. (it is being updated)
+      <a href="https://habit-monitor.vercel.app" target="_blank" rel="noopener noreferrer">Habit Monitor</a> — Something I built to help me stick to my habits.
     </p>
-    <p>
-      Outside of academics, I enjoy hiking, collecting water bottles, playing Catan, and Durak. If you want to see more about any of these topics, head over to my <a href = "/blog">blog</a> page. 
-    </p>
-    <p>
-      I also like White Monsters.
-    </p>
-    <p>
-      To see my resume, click <a href = "/resume">here</a>.
-    </p>
-    <p>
-      To contact me, click the email logo on the top right corner. 
-    </p>
-    <p>
-      To find out about my favorite media, head over to my <a href = "/favorites">favorites</a> page.
-    </p>
-    <p>
-      Here is a picture of me in Chicago.
-    </p>
+
+    <div class="contact-section">
+      <a href="mailto:aazat@ucdavis.edu" class="contact-link email-link">aazat@ucdavis.edu</a>
+      <span class="contact-divider">•</span>
+      <a href="https://github.com/derpcube" target="_blank" rel="noopener noreferrer" class="contact-link">GitHub</a>
+      <span class="contact-divider">•</span>
+      <a href="/Azat_Aktan_Resume.pdf" target="_blank" rel="noopener noreferrer" class="contact-link">Resume</a>
+    </div>
+
     <div class="home-image-container">
       <img src="/personal-picture.png" alt="Aktan in Chicago" loading="lazy" />
     </div>
@@ -41,31 +32,99 @@ import Layout from "../layouts/Layout.astro";
 
 <style>
   .home-prose p {
-    margin-bottom: 1em; /* Ensure consistent paragraph spacing */
-    font-size: 1.05em; /* Slightly larger text for homepage readability */
-    line-height: 1.7; /* More generous line height */
+    margin-bottom: 1.25em;
+    font-size: 1.1em;
+    line-height: 1.6;
+    color: var(--text-color);
+  }
+
+  .home-prose p:first-of-type {
+    font-size: 1.15em;
+    font-weight: 500;
   }
 
   .home-prose a {
-    /* Styles for links within .home-prose if different from global .prose a */
-    /* For now, it will inherit from global.css */
+    color: var(--link-color);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .home-prose a:hover {
+    text-decoration: underline;
+  }
+
+  .contact-section {
+    margin: 2rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+  }
+
+  .contact-link {
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 400;
+    font-size: 0.95em;
+    letter-spacing: 0.025em;
+    transition: all 0.2s ease;
+    padding: 0.25rem 0;
+  }
+
+  .email-link {
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+    font-size: 0.9em;
+    color: var(--link-color);
+    font-weight: 500;
+  }
+
+  .contact-link:hover {
+    color: var(--link-color);
+    text-decoration: none;
+    transform: translateY(-1px);
+  }
+
+  .contact-divider {
+    color: var(--text-color);
+    opacity: 0.5;
+    font-weight: 300;
+    user-select: none;
   }
 
   .home-image-container {
-    margin-top: 1.5rem;
-    text-align: center; /* Center the image if it's narrower than the container */
+    margin-top: 3rem;
+    text-align: center;
   }
 
   .home-image-container img {
-    max-width: 80%; /* Control image size, prevent it from being too large */
+    max-width: 300px;
+    width: 100%;
     height: auto;
-    border-radius: 8px; /* Consistent with other images like hero images */
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* Add a subtle shadow for depth */
+    border-radius: 12px;
   }
 
   @media (max-width: 600px) {
+    .home-prose p {
+      font-size: 1rem;
+    }
+    
+    .home-prose p:first-of-type {
+      font-size: 1.1em;
+    }
+    
+    .contact-section {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .contact-divider {
+      display: none;
+    }
+    
     .home-image-container img {
-      max-width: 100%; /* Allow image to be full width on smaller screens */
+      max-width: 250px;
     }
   }
 </style>

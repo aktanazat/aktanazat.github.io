@@ -3,7 +3,7 @@
 
 // 网站配置
 export const SITE_TITLE = "Aktan Azat";
-export const SITE_DESCRIPTION = "Welcome (. ❛ ᴗ ❛.)";
+export const SITE_DESCRIPTION = "CS & Engineering student at UC Davis. Interested in ML, computer vision, and quantitative finance.";
 export const COPYRIGHT = "© 2025 AKTAN AZAT. All rights reserved.";
 export const ICP_NUMBER = "";
 
@@ -22,14 +22,7 @@ export const SEO_CONFIG = {
   keywords: "blog, tech, programming", 
 };
 
-export const NAV_ITEMS = [
-  { text: "Home", link: "/" },
-  { text: "Academic History", link: "/academic-history" },
-  { text: "Blog", link: "/blog" },
-  { text: "Favorites", link: "/favorites" },
-  { text: "Resume", link: "/resume" },
-  { text: "Apps", link: "/apps" },
-];
+export const NAV_ITEMS = [];
 
 export const BLOG_CONFIG = {
   locale: "en-us", // 日期格式化语言

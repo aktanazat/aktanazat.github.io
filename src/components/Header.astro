@@ -9,9 +9,12 @@ import { NAV_ITEMS, BLOG_CONFIG } from "../consts";
 
 <header>
   <div class="header-content">
-    <a class="title" href={generateURL("/", Astro.url)}>
-      <h2>{SITE_TITLE}</h2>
-    </a>
+    <div class="title-row">
+      <a class="title" href={generateURL("/", Astro.url)}>
+        <h2>{SITE_TITLE}</h2>
+      </a>
+      <ThemeToggle />
+    </div>
     <hr />
     <nav>
       <div class="nav-links">
@@ -23,14 +26,6 @@ import { NAV_ITEMS, BLOG_CONFIG } from "../consts";
           ))
         }
       </div>
-      <div class="nav-controls">
-        {
-          BLOG_CONFIG["email"] && (
-            <IconLink name="Email" href={BLOG_CONFIG["email"]} label="Email" />
-          )
-        }
-        <ThemeToggle />
-      </div>
     </nav>
   </div>
 </header>
@@ -38,6 +33,12 @@ import { NAV_ITEMS, BLOG_CONFIG } from "../consts";
 <style>
   header {
     margin-bottom: 2rem;
+  }
+
+  .title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   .title h2 {
@@ -57,7 +58,7 @@ import { NAV_ITEMS, BLOG_CONFIG } from "../consts";
 
   nav {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     flex-wrap: wrap;
     gap: 1rem;
   }
@@ -68,32 +69,21 @@ import { NAV_ITEMS, BLOG_CONFIG } from "../consts";
     flex-wrap: wrap;
   }
 
-  .nav-controls {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-  }
-
   @media (max-width: 768px) {
     .title h2 {
       font-size: 1.75rem;
-      text-align: center;
+    }
+
+    .title-row {
+      justify-content: space-between;
     }
 
     nav {
-      flex-direction: column;
-    }
-
-    .nav-links {
-      order: 2;
-      border-top: 1px solid var(--border-color); /* Use CSS variable */
-      padding-top: 1rem;
       justify-content: center;
     }
 
-    .nav-controls {
-      order: 1;
-      justify-content: flex-end;
+    .nav-links {
+      justify-content: center;
     }
   }
 </style>
