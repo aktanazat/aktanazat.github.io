@@ -30,9 +30,10 @@ jobs:
           cache-dependency-path: pnpm-lock.yaml
 
       - name: Setup pnpm
-        run: |
-          corepack enable
-          corepack prepare pnpm@9.12.2 --activate
+        uses: pnpm/action-setup@v4
+        with:
+          version: "9.12.2"
+          run_install: false
 
       - name: Setup Pages
         id: pages
