@@ -32,7 +32,7 @@ jobs:
       - name: Setup pnpm
         run: |
           corepack enable
-          corepack prepare pnpm@9 --activate
+          corepack prepare pnpm@9.12.2 --activate
 
       - name: Setup Pages
         id: pages
