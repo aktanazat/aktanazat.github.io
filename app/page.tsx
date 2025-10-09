@@ -43,8 +43,8 @@ export default function Home() {
           <div className="my-6 border-t border-stone-300" aria-hidden="true" />
 
           <div className="space-y-4 text-sm leading-relaxed text-stone-800 sm:text-base">
-            <p>Currently at Rigetti Computing.</p>
-            <p>Among my interests are LLM's, Pool (virtual and in person), and Languages.</p>
+            <p>Currently at UC Davis.</p>
+            <p>Among my interests are LLM's, Pool (virtual and in person), and Languages (human).</p>
             <p>Feel free to reach out.</p>
           </div>
         </header>
