@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { BookOpen, ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { motion, AnimatePresence } from 'framer-motion'
 
 const PAGES = [
   {
@@ -168,6 +169,21 @@ export function OperatorManual() {
     }
   }
 
+  const variants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 50 : -50,
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: (direction: number) => ({
+      x: direction < 0 ? 50 : -50,
+      opacity: 0,
+    }),
+  }
+
   return (
     <div className="relative w-full h-full bg-[#f4f4e8] text-zinc-900 rounded-sm overflow-hidden flex flex-col shadow-xl border-l-[12px] border-[#2a2a2a]">
        {/* Vintage Paper Texture Overlay */}
@@ -183,7 +199,7 @@ export function OperatorManual() {
        </div>
 
        {/* Top Bar */}
-       <div className="relative z-30 flex justify-between items-center px-6 py-4 pl-14 bg-[#eaeadd] border-b border-[#d0d0c0] shadow-sm">
+       <div className="relative z-30 flex justify-between items-center px-6 py-4 pl-14 bg-[#eaeadd] border-b border-[#d0d0c0] shadow-sm flex-shrink-0">
           <div className="font-mono text-xs uppercase tracking-widest text-zinc-600 font-bold">
              DOC: SOP-8088-A // REV 3.1
           </div>
@@ -192,28 +208,39 @@ export function OperatorManual() {
           </div>
        </div>
 
-       {/* Page Content */}
-       <div className="flex-1 relative z-20 pl-14 p-8 overflow-hidden bg-[#fdfcf5]">
-          <div key={page} className="h-full flex flex-col animate-in fade-in slide-in-from-right-8 duration-500">
-             <div className="mb-8 border-b-2 border-zinc-200 pb-4">
-                <h2 className="text-3xl font-serif font-black text-zinc-900 tracking-tight mb-1">
-                   {PAGES[page].title}
-                </h2>
-                <p className="font-mono text-xs text-zinc-500 uppercase tracking-widest font-bold">
-                   {PAGES[page].subtitle}
-                </p>
-             </div>
-             
-             <ScrollArea className="flex-1 pr-6 -mr-2 h-full">
-                <div className="text-zinc-900 font-serif leading-relaxed pb-8">
-                   {PAGES[page].content}
+       {/* Page Content - Using flex-1 and overflow-hidden to contain ScrollArea */}
+       <div className="flex-1 relative z-20 pl-14 overflow-hidden bg-[#fdfcf5] flex flex-col min-h-0">
+          <AnimatePresence custom={direction} mode="wait">
+            <motion.div 
+                key={page} 
+                custom={direction}
+                variants={variants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                className="h-full flex flex-col p-8"
+            >
+                <div className="mb-8 border-b-2 border-zinc-200 pb-4 flex-shrink-0">
+                    <h2 className="text-3xl font-serif font-black text-zinc-900 tracking-tight mb-1">
+                    {PAGES[page].title}
+                    </h2>
+                    <p className="font-mono text-xs text-zinc-500 uppercase tracking-widest font-bold">
+                    {PAGES[page].subtitle}
+                    </p>
                 </div>
-             </ScrollArea>
-          </div>
+                
+                <ScrollArea className="flex-1 pr-6 -mr-2">
+                    <div className="text-zinc-900 font-serif leading-relaxed pb-12">
+                        {PAGES[page].content}
+                    </div>
+                </ScrollArea>
+            </motion.div>
+          </AnimatePresence>
        </div>
 
        {/* Footer Controls */}
-       <div className="relative z-30 pl-14 p-4 bg-[#eaeadd] border-t border-[#d0d0c0] flex justify-between items-center shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+       <div className="relative z-30 pl-14 p-4 bg-[#eaeadd] border-t border-[#d0d0c0] flex justify-between items-center shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] flex-shrink-0">
           <Button 
              variant="ghost" 
              size="sm" 
