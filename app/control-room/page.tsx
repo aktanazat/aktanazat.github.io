@@ -3,6 +3,8 @@
 import React from 'react'
 import { useReactorSimulation } from '@/lib/simulation/reactor-engine'
 import { ReactorMap } from '@/components/control-room/reactor-map'
+import { PlantOverview } from '@/components/control-room/plant-overview'
+import { CoreView } from '@/components/control-room/core-view'
 import { Button } from '@/components/ui/button'
 import { Slider } from '@/components/ui/slider'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -11,7 +13,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
-import { AlertTriangle, Zap, Thermometer, Activity, Wind, Power, BookOpen } from 'lucide-react'
+import { AlertTriangle, Zap, Thermometer, Activity, Wind, Power, BookOpen, Droplets } from 'lucide-react'
 
 export default function ControlRoomPage() {
   const { state, actions } = useReactorSimulation()
@@ -102,6 +104,20 @@ export default function ControlRoomPage() {
                   onValueChange={(v) => actions.setPumpSpeed(v[0])}
                 />
               </div>
+
+              {/* New: Feedwater Control */}
+              <div className="space-y-2">
+                <div className="flex justify-between text-xs">
+                  <span>FEEDWATER FLOW</span>
+                  <span className="text-cyan-400">{state.feedwaterFlow.toFixed(1)}%</span>
+                </div>
+                <Slider 
+                  value={[state.feedwaterFlow]} 
+                  max={100} 
+                  step={1}
+                  onValueChange={(v) => actions.setFeedwaterFlow(v[0])}
+                />
+              </div>
             </CardContent>
           </Card>
 
@@ -127,32 +143,72 @@ export default function ControlRoomPage() {
 
         {/* CENTER COLUMN - VISUALIZATION */}
         <div className="lg:col-span-6 space-y-6">
-           <ReactorMap 
-              coolantFlow={state.coolantPumpSpeed}
-              controlRodLevel={state.controlRodPosition}
-              coreTemp={state.fuelTemp}
-              turbineSpeed={state.turbineSpeed}
-           />
+           <Tabs defaultValue="overview" className="w-full">
+             <TabsList className="grid w-full grid-cols-3 bg-slate-900 mb-4">
+                <TabsTrigger value="overview">Plant Overview</TabsTrigger>
+                <TabsTrigger value="core">Core Grid</TabsTrigger>
+                <TabsTrigger value="systems">Primary Loop</TabsTrigger>
+             </TabsList>
 
-           <div className="grid grid-cols-2 gap-4">
+             <TabsContent value="overview">
+                <PlantOverview 
+                   reactorStatus={state.status}
+                   coreTemp={state.fuelTemp}
+                   primaryPressure={state.pressure}
+                   coolantFlow={state.coolantPumpSpeed}
+                   steamPressure={state.steamPressure}
+                   turbineSpeed={state.turbineSpeed}
+                   outputMw={state.outputMw}
+                   condenserTemp={state.condenserTemp}
+                   coolingEff={state.coolingTowerEfficiency}
+                />
+             </TabsContent>
+
+             <TabsContent value="core">
+                <div className="h-[500px] bg-slate-900 rounded-xl border border-slate-800 p-4">
+                   <CoreView 
+                      regions={state.coreRegions}
+                      controlRodPosition={state.controlRodPosition}
+                   />
+                </div>
+             </TabsContent>
+
+             <TabsContent value="systems">
+                <ReactorMap 
+                   coolantFlow={state.coolantPumpSpeed}
+                   controlRodLevel={state.controlRodPosition}
+                   coreTemp={state.fuelTemp}
+                   turbineSpeed={state.turbineSpeed}
+                />
+             </TabsContent>
+           </Tabs>
+
+           <div className="grid grid-cols-3 gap-4">
               <Card className="bg-slate-900 border-slate-800">
                   <CardContent className="pt-6">
                       <div className="flex items-center gap-2 mb-2">
                           <Thermometer className="text-orange-500 h-4 w-4" />
-                          <span className="text-slate-400 text-xs">CORE TEMP</span>
+                          <span className="text-slate-400 text-xs">CORE AVG</span>
                       </div>
                       <div className="text-2xl font-bold">{state.fuelTemp.toFixed(0)}°C</div>
-                      <Progress value={(state.fuelTemp / 2800) * 100} className="h-2 mt-2 bg-slate-800" />
                   </CardContent>
               </Card>
               <Card className="bg-slate-900 border-slate-800">
                   <CardContent className="pt-6">
                       <div className="flex items-center gap-2 mb-2">
                           <Activity className="text-blue-500 h-4 w-4" />
-                          <span className="text-slate-400 text-xs">PRESSURE</span>
+                          <span className="text-slate-400 text-xs">P-PRESSURE</span>
                       </div>
                       <div className="text-2xl font-bold">{state.pressure.toFixed(2)} MPa</div>
-                      <Progress value={(state.pressure / 18) * 100} className="h-2 mt-2 bg-slate-800" />
+                  </CardContent>
+              </Card>
+              <Card className="bg-slate-900 border-slate-800">
+                  <CardContent className="pt-6">
+                      <div className="flex items-center gap-2 mb-2">
+                          <Wind className="text-slate-400 h-4 w-4" />
+                          <span className="text-slate-400 text-xs">S-PRESSURE</span>
+                      </div>
+                      <div className="text-2xl font-bold">{state.steamPressure.toFixed(2)} MPa</div>
                   </CardContent>
               </Card>
            </div>
@@ -176,35 +232,31 @@ export default function ControlRoomPage() {
                        </div>
 
                        <div className="space-y-2">
-                          <h4 className="text-blue-400 font-bold text-xs uppercase">Phase 1: Cold Startup</h4>
+                          <h4 className="text-blue-400 font-bold text-xs uppercase">Phase 1: Startup</h4>
                           <ol className="list-decimal list-inside text-xs space-y-1 text-slate-400">
-                             <li>Verify all control rods are fully inserted (100%).</li>
-                             <li>Start Primary Coolant Pumps. Set to at least 50%.</li>
-                             <li>Wait for coolant circulation to stabilize.</li>
+                             <li>Ensure Feedwater Flow > 20%.</li>
+                             <li>Start Primary Pumps (50%+).</li>
+                             <li>Withdraw Rods slowly to criticality.</li>
                           </ol>
                        </div>
 
                        <div className="space-y-2">
-                          <h4 className="text-blue-400 font-bold text-xs uppercase">Phase 2: Criticality</h4>
+                          <h4 className="text-blue-400 font-bold text-xs uppercase">Phase 2: Power Ops</h4>
                           <ol className="list-decimal list-inside text-xs space-y-1 text-slate-400">
-                             <li>Slowly withdraw control rods (decrease insertion %).</li>
-                             <li>Monitor Neutron Flux. Warning: Reaction is exponential.</li>
-                             <li>Target criticality at ~40-50% rod insertion.</li>
-                          </ol>
-                       </div>
-
-                       <div className="space-y-2">
-                          <h4 className="text-blue-400 font-bold text-xs uppercase">Phase 3: Power Generation</h4>
-                          <ol className="list-decimal list-inside text-xs space-y-1 text-slate-400">
-                             <li>Allow core temp to rise to ~300°C.</li>
-                             <li>Pressure will rise. Turbine spins up at >5 MPa.</li>
-                             <li>Sync turbine speed (simulated auto-sync).</li>
-                             <li>Adjust rods to maintain steady temp/power.</li>
+                             <li>Maintain Core Temp ~300-320°C.</li>
+                             <li>Keep Pressurizer Pressure ~15.5 MPa.</li>
+                             <li>Monitor Steam Pressure (Target 8 MPa).</li>
+                             <li>Ensure Condenser Temp stays low (Feedwater).</li>
                           </ol>
                        </div>
                        
                        <div className="mt-4 p-2 bg-red-950/30 border border-red-900/50 rounded text-xs">
-                          <span className="text-red-500 font-bold">EMERGENCY:</span> If Core Temp exceeds 2000°C or Pressure exceeds 16 MPa, hit MANUAL SCRAM immediately.
+                          <span className="text-red-500 font-bold">TRIP CRITERIA:</span>
+                          <ul className="list-disc list-inside mt-1 space-y-1">
+                              <li>Core Temp {'>'} 2200°C</li>
+                              <li>Primary Pressure {'>'} 17 MPa</li>
+                              <li>Condenser Temp {'>'} 95°C</li>
+                          </ul>
                        </div>
                     </CardContent>
                  </Card>
@@ -230,6 +282,17 @@ export default function ControlRoomPage() {
                              {state.xenonLevel.toFixed(1)}
                           </span>
                        </div>
+                       <div className="border-t border-slate-800 my-2"></div>
+                       <div className="flex justify-between items-center">
+                          <span className="text-xs text-slate-500">CONDENSER</span>
+                          <span className={`font-mono ${state.condenserTemp > 80 ? 'text-red-500' : 'text-slate-300'}`}>
+                             {state.condenserTemp.toFixed(0)}°C
+                          </span>
+                       </div>
+                       <div className="flex justify-between items-center">
+                          <span className="text-xs text-slate-500">TOWER EFF</span>
+                          <span className="font-mono">{state.coolingTowerEfficiency.toFixed(0)}%</span>
+                       </div>
                     </CardContent>
                  </Card>
               </TabsContent>
@@ -243,4 +306,3 @@ export default function ControlRoomPage() {
     </div>
   )
 }
-
