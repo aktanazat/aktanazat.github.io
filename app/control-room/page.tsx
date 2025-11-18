@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useReactorSimulation } from '@/lib/simulation/reactor-engine'
 import { ReactorMap } from '@/components/control-room/reactor-map'
 import { PlantOverview } from '@/components/control-room/plant-overview'
@@ -17,6 +17,15 @@ import { Zap, Thermometer, Activity, Wind, BookOpen } from 'lucide-react'
 
 export default function ControlRoomPage() {
   const { state, actions } = useReactorSimulation()
+  const [logs, setLogs] = useState<string[]>([])
+
+  // Terminal Effect for Logs
+  useEffect(() => {
+      if (state.alarms.length > 0) {
+          const newLog = `[${new Date().toLocaleTimeString()}] CRITICAL: ${state.alarms[state.alarms.length - 1]}`
+          setLogs(prev => [...prev.slice(-4), newLog])
+      }
+  }, [state.alarms])
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -136,28 +145,35 @@ export default function ControlRoomPage() {
           </Card>
 
           {/* Alarms Panel */}
-          <Card className="bg-[#0A0A0A]/80 border-white/10 backdrop-blur-sm rounded-sm">
-             <CardHeader className="pb-2 border-b border-white/5">
+          <Card className="bg-[#0A0A0A]/80 border-white/10 backdrop-blur-sm rounded-sm overflow-hidden">
+             <CardHeader className="pb-2 border-b border-white/5 bg-black/20">
                 <CardTitle className="text-xs uppercase tracking-[0.2em] text-zinc-400 font-medium flex items-center gap-2">
                   <div className={`w-1.5 h-1.5 rounded-full ${state.alarms.length > 0 ? 'bg-red-500 animate-pulse' : 'bg-zinc-600'}`} /> 
-                  System Alerts
+                  System Log
                 </CardTitle>
              </CardHeader>
-             <CardContent className="pt-4">
-                <ScrollArea className="h-[120px] w-full rounded-sm border border-white/5 bg-black/40 p-3">
-                   {state.alarms.length === 0 ? (
-                       <div className="text-zinc-600 text-xs font-mono flex items-center gap-2 opacity-50">
-                           <div className="w-1 h-1 bg-emerald-500 rounded-full" />
-                           NO ACTIVE ALERTS
+             <CardContent className="p-0">
+                <div className="h-[150px] w-full bg-black p-4 font-mono text-[10px] leading-relaxed overflow-hidden flex flex-col justify-end">
+                   {state.alarms.length === 0 && logs.length === 0 ? (
+                       <div className="text-emerald-900/50 flex items-center gap-2">
+                           <span>&gt;</span> SYSTEM NORMAL. MONITORING ACTIVE.
                        </div>
                    ) : (
-                       state.alarms.map((alarm, i) => (
-                           <div key={i} className="text-red-400 text-xs font-mono font-medium animate-pulse mb-2 flex items-center gap-2 border-l-2 border-red-500 pl-2">
-                               ALERT: {alarm}
-                           </div>
-                       ))
+                       <>
+                           {logs.map((log, i) => (
+                               <div key={i} className="text-zinc-500">
+                                   <span className="text-zinc-700 mr-2">&gt;</span>{log}
+                               </div>
+                           ))}
+                           {state.alarms.map((alarm, i) => (
+                               <div key={`alarm-${i}`} className="text-red-500 animate-pulse font-bold">
+                                   <span className="mr-2">&gt;&gt;</span>ALERT: {alarm}
+                               </div>
+                           ))}
+                           <div className="w-2 h-4 bg-emerald-500/50 animate-pulse mt-1" />
+                       </>
                    )}
-                </ScrollArea>
+                </div>
              </CardContent>
           </Card>
         </div>
