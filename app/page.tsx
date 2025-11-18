@@ -1,6 +1,9 @@
+import { SecretTrigger } from "@/components/secret-trigger"
+
 export default function Home() {
   return (
     <main className="min-h-screen bg-stone-50 text-stone-900 font-mono">
+      <SecretTrigger />
       <div className="max-w-3xl mx-auto px-6 py-12 sm:px-8 sm:py-20">
         {/* Header */}
         <header className="mb-12">
