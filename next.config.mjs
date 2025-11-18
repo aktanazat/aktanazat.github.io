@@ -2,7 +2,7 @@
 const basePath = process.env.NEXT_BASE_PATH && process.env.NEXT_BASE_PATH !== '/' ? process.env.NEXT_BASE_PATH : ''
 
 const nextConfig = {
-  output: 'export',
+  // output: 'export', // DISABLED to fix dev mode 404s and allow dynamic behavior
   eslint: {
     ignoreDuringBuilds: true,
   },
