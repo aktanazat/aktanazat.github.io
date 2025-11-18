@@ -5,6 +5,7 @@ import { useReactorSimulation } from '@/lib/simulation/reactor-engine'
 import { ReactorMap } from '@/components/control-room/reactor-map'
 import { PlantOverview } from '@/components/control-room/plant-overview'
 import { CoreView } from '@/components/control-room/core-view'
+import { OperatorManual } from '@/components/control-room/operator-manual'
 import { Button } from '@/components/ui/button'
 import { Slider } from '@/components/ui/slider'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -253,57 +254,9 @@ export default function ControlRoomPage() {
                  <TabsTrigger value="stats" className="flex-1 h-full rounded-sm data-[state=active]:bg-white/10 text-xs uppercase tracking-widest font-medium">Telemetry</TabsTrigger>
               </TabsList>
               <TabsContent value="manual">
-                 <Card className="bg-[#0A0A0A]/80 border-white/10 backdrop-blur-sm rounded-sm h-[600px] flex flex-col">
-                    <CardContent className="p-5 text-sm text-zinc-400 space-y-6 overflow-y-auto flex-1 custom-scrollbar">
-                       <div className="border-b border-white/5 pb-4">
-                          <h3 className="font-medium text-white mb-2 flex items-center gap-2 tracking-wide text-sm uppercase">
-                             <BookOpen className="h-4 w-4 text-cyan-500" /> Standard Operating Procedure
-                          </h3>
-                          <p className="text-[10px] text-zinc-600 uppercase tracking-wider">Document Ref: SOP-8088-A</p>
-                       </div>
-
-                       <div className="space-y-3">
-                          <h4 className="text-cyan-400 font-medium text-xs uppercase tracking-widest flex items-center gap-2">
-                             <span className="w-1 h-4 bg-cyan-500/50 block"></span> Phase 1: Cold Startup
-                          </h4>
-                          <ul className="text-xs space-y-3 pl-2 border-l border-white/5 ml-1.5">
-                             <li className="flex gap-3"><span className="text-zinc-600 font-mono">01</span> Verify control rods fully inserted (100%).</li>
-                             <li className="flex gap-3"><span className="text-zinc-600 font-mono">02</span> Engage Feedwater (20%) & Primary Pumps (50%).</li>
-                             <li className="flex gap-3"><span className="text-zinc-600 font-mono">03</span> Confirm coolant circulation stability.</li>
-                          </ul>
-                       </div>
-
-                       <div className="space-y-3">
-                          <h4 className="text-amber-400 font-medium text-xs uppercase tracking-widest flex items-center gap-2">
-                             <span className="w-1 h-4 bg-amber-500/50 block"></span> Phase 2: Criticality
-                          </h4>
-                          <ul className="text-xs space-y-3 pl-2 border-l border-white/5 ml-1.5">
-                             <li className="flex gap-3"><span className="text-zinc-600 font-mono">04</span> Withdraw rods incrementally. Monitor flux.</li>
-                             <li className="flex gap-3"><span className="text-zinc-600 font-mono">05</span> Expect exponential reaction growth.</li>
-                             <li className="flex gap-3"><span className="text-zinc-600 font-mono">06</span> Stabilize at ~40-50% insertion.</li>
-                          </ul>
-                       </div>
-
-                       <div className="space-y-3">
-                          <h4 className="text-emerald-400 font-medium text-xs uppercase tracking-widest flex items-center gap-2">
-                             <span className="w-1 h-4 bg-emerald-500/50 block"></span> Phase 3: Generation
-                          </h4>
-                          <ul className="text-xs space-y-3 pl-2 border-l border-white/5 ml-1.5">
-                             <li className="flex gap-3"><span className="text-zinc-600 font-mono">07</span> Target Core Temp: 300°C.</li>
-                             <li className="flex gap-3"><span className="text-zinc-600 font-mono">08</span> Turbine Auto-Sync at >5 MPa.</li>
-                             <li className="flex gap-3"><span className="text-zinc-600 font-mono">09</span> Balance Feedwater to manage Condenser Temp.</li>
-                          </ul>
-                       </div>
-                       
-                       <div className="mt-6 p-3 bg-red-950/10 border border-red-900/30 rounded-sm text-xs">
-                          <span className="text-red-400 font-medium uppercase tracking-widest text-[10px] block mb-2">SCRAM Parameters</span>
-                          <div className="grid grid-cols-2 gap-2 font-mono text-red-300/80">
-                              <span>TEMP &gt; 2200°C</span>
-                              <span>PRESS &gt; 17 MPa</span>
-                          </div>
-                       </div>
-                    </CardContent>
-                 </Card>
+                 <div className="h-[600px]">
+                    <OperatorManual />
+                 </div>
               </TabsContent>
               <TabsContent value="stats">
                  <Card className="bg-[#0A0A0A]/80 border-white/10 backdrop-blur-sm rounded-sm h-[600px]">
