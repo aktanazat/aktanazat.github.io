@@ -11,7 +11,7 @@ export function SecretTrigger() {
     const handleKeyDown = (e: KeyboardEvent) => {
       setKeys((prev) => {
         const newKeys = [...prev, e.key].slice(-4) // Keep last 4
-        if (newKeys.join("").toLowerCase() === "nuke") {
+        if (newKeys.join("").toLowerCase() === "game") {
           router.push("/control-room")
         }
         return newKeys
