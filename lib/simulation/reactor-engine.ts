@@ -16,6 +16,8 @@ export interface SimulationConfig {
     scenario: ScenarioType
     difficulty: string
     coldStart: boolean
+    manualSync: boolean // New: Synchroscope
+    chemicalShim: boolean // New: Boron
 }
 
 export interface ReactorState {
@@ -26,12 +28,20 @@ export interface ReactorState {
   pressure: number // MPa
   neutronFlux: number // 0-120% power nominal
   xenonLevel: number // Poison level
+  boronConcentration: number // ppm (New)
   
   // Systems
   coolantPumpSpeed: number // 0-100%
   turbineSpeed: number // RPM
   gridLoad: number // MW
   outputMw: number // MW
+  
+  // Electrical / Grid (New)
+  gridFreq: number // Hz (60.00)
+  turbineFreq: number // Hz
+  gridPhase: number // 0-360
+  turbinePhase: number // 0-360
+  breakerOpen: boolean
   
   // Thermal Cycle
   steamPressure: number // MPa
@@ -85,7 +95,9 @@ const DEFAULT_CONFIG: SimulationConfig = {
     type: 'PWR',
     scenario: 'NORMAL',
     difficulty: 'NORMAL',
-    coldStart: false
+    coldStart: false,
+    manualSync: false,
+    chemicalShim: false
 }
 
 const INITIAL_STATE: ReactorState = {
@@ -95,10 +107,17 @@ const INITIAL_STATE: ReactorState = {
   pressure: 0.1,
   neutronFlux: 0,
   xenonLevel: 0,
+  boronConcentration: 1000, // Initial boron
   coolantPumpSpeed: 0,
   turbineSpeed: 0,
   gridLoad: 0,
   outputMw: 0,
+  
+  gridFreq: 60.00,
+  turbineFreq: 0,
+  gridPhase: 0,
+  turbinePhase: 0,
+  breakerOpen: true,
   
   steamPressure: 0.1,
   condenserTemp: 20,
@@ -143,6 +162,7 @@ export function useReactorSimulation({ tickRate = 100, initialConfig }: Simulati
           s.outputMw = 0
           s.status = 'SHUTDOWN'
           s.coreRegions = generateRegions(9)
+          s.breakerOpen = true
           return s
       }
 
@@ -156,6 +176,7 @@ export function useReactorSimulation({ tickRate = 100, initialConfig }: Simulati
           s.pressure = 6.5
           s.status = 'CRITICAL'
           s.coreRegions.forEach(r => r.temp = 300)
+          s.breakerOpen = false // Already connected? Or maybe not for test
       }
       
       if (initialConfig.scenario === 'TMI_ACCIDENT') {
@@ -167,6 +188,8 @@ export function useReactorSimulation({ tickRate = 100, initialConfig }: Simulati
            s.feedwaterFlow = 100
            s.status = 'POWER_OPS'
            s.coreRegions.forEach(r => r.temp = 320)
+           s.breakerOpen = false // Connected
+           s.turbineSpeed = 1800
       }
 
       if (initialConfig.scenario === 'XENON_PIT') {
@@ -174,6 +197,7 @@ export function useReactorSimulation({ tickRate = 100, initialConfig }: Simulati
           s.controlRodPosition = 100
           s.xenonLevel = 95 // Very high
           s.status = 'TRIPPED'
+          s.breakerOpen = true
       }
 
       return s
@@ -225,7 +249,15 @@ export function useReactorSimulation({ tickRate = 100, initialConfig }: Simulati
     const rodReactivity = (50 - s.controlRodPosition) * rodWorth
     const tempFeedback = (s.fuelTemp - 300) * voidCoeff
     const xenonFeedback = s.xenonLevel * -0.01
-    const totalReactivity = rodReactivity + tempFeedback + xenonFeedback
+    
+    // Boron (Chemical Shim)
+    let boronReactivity = 0
+    if (s.config.chemicalShim) {
+        // 1000 ppm = -5% reactivity approx
+        boronReactivity = (s.boronConcentration / 1000) * -0.05
+    }
+
+    const totalReactivity = rodReactivity + tempFeedback + xenonFeedback + boronReactivity
 
     // Power change rate
     let powerChange = s.neutronFlux * totalReactivity * heatAccumulationFactor
@@ -318,14 +350,38 @@ export function useReactorSimulation({ tickRate = 100, initialConfig }: Simulati
     newState.coolingTowerEfficiency = coolingEff * 100
     newState.condenserTemp = s.ambientTemp + (newState.outputMw * 0.05) / coolingEff
 
-    // --- 4. Turbine / Electrical ---
+    // --- 4. Turbine / Electrical / Synchroscope ---
+    
+    // Turbine Speed Logic
     if (newState.steamPressure > 2) {
+      // Target RPM based on steam pressure (simplified governor)
       const targetRPM = (newState.steamPressure / 8) * 1800 
       newState.turbineSpeed = s.turbineSpeed + (targetRPM - s.turbineSpeed) * 0.01
     } else {
       newState.turbineSpeed = s.turbineSpeed * 0.99 
     }
-    newState.outputMw = (newState.turbineSpeed / 1800) * newState.neutronFlux * 10 * (coolingEff)
+
+    // Frequency Calculation (RPM / 30 for 60Hz at 1800)
+    newState.turbineFreq = newState.turbineSpeed / 30
+    
+    // Phase Calculation (Integral of frequency difference)
+    // If turbine is faster, phase advances
+    const freqDiff = newState.turbineFreq - s.gridFreq
+    newState.turbinePhase = (s.turbinePhase + freqDiff * 360 * (tickRate / 1000)) % 360
+    if (newState.turbinePhase < 0) newState.turbinePhase += 360
+
+    // Generator Output Logic
+    if (!s.breakerOpen) {
+        // Locked to grid
+        newState.turbineSpeed = 1800 // Grid forces sync
+        newState.turbineFreq = 60
+        newState.turbinePhase = 0 // Synced
+        
+        // Load follows flux/steam
+        newState.outputMw = (newState.neutronFlux * 10) * coolingEff
+    } else {
+        newState.outputMw = 0
+    }
 
     // --- 5. Alarms & Trips ---
     const newAlarms = []
@@ -351,6 +407,7 @@ export function useReactorSimulation({ tickRate = 100, initialConfig }: Simulati
             newState.controlRodPosition = 100
             newState.status = 'TRIPPED'
             newState.alarms.push('AUTO SCRAM')
+            newState.breakerOpen = true // Trip turbine
           } else {
               // In Chernobyl run, scramming might actually CAUSE the explosion (positive scram effect not fully modeled but implies danger)
               if (!newState.isScrammed) newAlarms.push('SCRAM REQUIRED')
@@ -398,12 +455,46 @@ export function useReactorSimulation({ tickRate = 100, initialConfig }: Simulati
       setState(prev => ({ ...prev, feedwaterFlow: val }))
   }
 
+  const setBoronConcentration = (val: number) => {
+      setState(prev => ({ ...prev, boronConcentration: Math.max(0, val) }))
+  }
+
+  const toggleBreaker = () => {
+      setState(prev => {
+          // If trying to close
+          if (prev.breakerOpen) {
+              // Check sync if manual mode is on
+              if (prev.config.manualSync) {
+                  const phaseDiff = Math.abs(prev.turbinePhase) // 0 is target
+                  const freqDiff = Math.abs(prev.turbineFreq - prev.gridFreq)
+                  
+                  // Allow small margin
+                  if (phaseDiff > 20 || freqDiff > 0.5) {
+                      // BAD SYNC -> TRIP
+                      return {
+                          ...prev,
+                          isScrammed: true,
+                          controlRodPosition: 100,
+                          status: 'TRIPPED',
+                          alarms: [...prev.alarms, 'BAD SYNC - TURBINE TRIP']
+                      }
+                  }
+              }
+              return { ...prev, breakerOpen: false }
+          } else {
+              // Opening breaker
+              return { ...prev, breakerOpen: true }
+          }
+      })
+  }
+
   const scram = () => {
     setState(prev => ({ 
         ...prev, 
         isScrammed: true, 
         controlRodPosition: 100, 
         status: 'TRIPPED',
+        breakerOpen: true,
         alarms: [...prev.alarms, 'MANUAL SCRAM'] 
     }))
   }
@@ -420,6 +511,8 @@ export function useReactorSimulation({ tickRate = 100, initialConfig }: Simulati
       setRodPosition,
       setPumpSpeed,
       setFeedwaterFlow,
+      setBoronConcentration,
+      toggleBreaker,
       scram,
       reset
     }

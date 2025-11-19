@@ -12,13 +12,13 @@ import {
   SelectValue 
 } from '@/components/ui/select'
 import { motion } from 'framer-motion'
-import { AlertTriangle, FileText, Info, PowerOff } from 'lucide-react'
+import { AlertTriangle, FileText, Info, PowerOff, Settings2 } from 'lucide-react'
 
 export type ReactorType = 'PWR' | 'RBMK' | 'BWR'
 export type ScenarioType = 'NORMAL' | 'TMI_ACCIDENT' | 'CHERNOBYL_RUN' | 'XENON_PIT'
 
 interface MissionSetupProps {
-  onStart: (config: { type: ReactorType; scenario: ScenarioType; difficulty: string; coldStart: boolean }) => void
+  onStart: (config: { type: ReactorType; scenario: ScenarioType; difficulty: string; coldStart: boolean; manualSync: boolean; chemicalShim: boolean }) => void
 }
 
 export function MissionSetup({ onStart }: MissionSetupProps) {
@@ -26,6 +26,8 @@ export function MissionSetup({ onStart }: MissionSetupProps) {
   const [scenario, setScenario] = useState<ScenarioType>('NORMAL')
   const [difficulty, setDifficulty] = useState('NORMAL')
   const [coldStart, setColdStart] = useState(false)
+  const [manualSync, setManualSync] = useState(false)
+  const [chemicalShim, setChemicalShim] = useState(false)
 
   const reactorDescriptions = {
     PWR: {
@@ -145,25 +147,41 @@ export function MissionSetup({ onStart }: MissionSetupProps) {
                 </Select>
              </div>
 
-             {/* Cold Start Checkbox */}
-             <div className="flex items-center space-x-3 border border-zinc-800 p-4 rounded-sm bg-zinc-900/30">
-                <Checkbox 
-                    id="coldStart" 
-                    checked={coldStart} 
-                    onCheckedChange={(c) => setColdStart(c as boolean)}
-                    className="border-zinc-600 data-[state=checked]:bg-cyan-600 data-[state=checked]:border-cyan-600"
-                />
-                <div className="grid gap-1.5 leading-none">
-                    <Label
-                        htmlFor="coldStart"
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-white flex items-center gap-2"
-                    >
-                        <PowerOff className="w-3 h-3 text-zinc-400" />
-                        Cold Iron Start
-                    </Label>
-                    <p className="text-[10px] text-zinc-500">
-                        Force complete system shutdown. Requires full manual startup sequence.
-                    </p>
+             {/* Advanced Options */}
+             <div className="space-y-3 border border-zinc-800 p-4 rounded-sm bg-zinc-900/30">
+                <div className="flex items-center gap-2 text-zinc-400 mb-2">
+                    <Settings2 className="w-4 h-4" />
+                    <span className="text-xs font-bold tracking-widest uppercase">Advanced Realism</span>
+                </div>
+
+                <div className="flex items-center space-x-3">
+                    <Checkbox 
+                        id="coldStart" 
+                        checked={coldStart} 
+                        onCheckedChange={(c) => setColdStart(c as boolean)}
+                        className="border-zinc-600 data-[state=checked]:bg-cyan-600 data-[state=checked]:border-cyan-600"
+                    />
+                    <Label htmlFor="coldStart" className="text-xs text-zinc-300 cursor-pointer">Cold Iron Start (Full Sequence)</Label>
+                </div>
+
+                <div className="flex items-center space-x-3">
+                    <Checkbox 
+                        id="manualSync" 
+                        checked={manualSync} 
+                        onCheckedChange={(c) => setManualSync(c as boolean)}
+                        className="border-zinc-600 data-[state=checked]:bg-cyan-600 data-[state=checked]:border-cyan-600"
+                    />
+                    <Label htmlFor="manualSync" className="text-xs text-zinc-300 cursor-pointer">Manual Grid Synchronization</Label>
+                </div>
+
+                <div className="flex items-center space-x-3">
+                    <Checkbox 
+                        id="chemicalShim" 
+                        checked={chemicalShim} 
+                        onCheckedChange={(c) => setChemicalShim(c as boolean)}
+                        className="border-zinc-600 data-[state=checked]:bg-cyan-600 data-[state=checked]:border-cyan-600"
+                    />
+                    <Label htmlFor="chemicalShim" className="text-xs text-zinc-300 cursor-pointer">Chemical Shim (Boron Control)</Label>
                 </div>
              </div>
 
@@ -195,25 +213,13 @@ export function MissionSetup({ onStart }: MissionSetupProps) {
                                 <span className="text-sm font-mono text-zinc-300">LEVEL 5</span>
                             </div>
                         </div>
-
-                        <div className="pt-4">
-                             <span className="text-[10px] text-zinc-500 uppercase block mb-2">Primary Objectives</span>
-                             <ul className="space-y-1">
-                                 {scenarioIntel[scenario].objectives.map((obj, i) => (
-                                     <li key={i} className="text-xs text-zinc-400 flex items-center gap-2">
-                                         <div className="w-1 h-1 bg-zinc-600 rounded-full" />
-                                         {obj}
-                                     </li>
-                                 ))}
-                             </ul>
-                        </div>
                     </div>
                  </div>
              </Card>
 
              <Button 
                 size="lg" 
-                onClick={() => onStart({ type, scenario, difficulty, coldStart })}
+                onClick={() => onStart({ type, scenario, difficulty, coldStart, manualSync, chemicalShim })}
                 className="w-full bg-cyan-600 hover:bg-cyan-500 text-white h-14 text-lg tracking-widest font-bold shadow-[0_0_20px_rgba(8,145,178,0.3)] border border-cyan-400/20"
             >
                 INITIALIZE SYSTEM

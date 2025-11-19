@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { useReactorSimulation, SimulationConfig, ReactorType, ScenarioType } from '@/lib/simulation/reactor-engine'
+import { useAudioEngine } from '@/lib/audio/audio-engine'
 import { ReactorMap } from '@/components/control-room/reactor-map'
 import { PlantOverview } from '@/components/control-room/plant-overview'
 import { CoreView } from '@/components/control-room/core-view'
@@ -9,16 +10,16 @@ import { OperatorManual } from '@/components/control-room/operator-manual'
 import { LiveGraph } from '@/components/control-room/live-graph'
 import { MissionSetup } from '@/components/control-room/mission-setup'
 import { ReactorHall } from '@/components/control-room/reactor-hall'
+import { Synchroscope } from '@/components/control-room/synchroscope'
 import { Button } from '@/components/ui/button'
 import { Slider } from '@/components/ui/slider'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
-import { Zap, Thermometer, Activity, Wind } from 'lucide-react'
+import { Zap, Thermometer, Activity, Wind, Volume2, VolumeX } from 'lucide-react'
 
 // --- Sub-component for the Active Simulation ---
-// This ensures the hook is re-initialized whenever the component mounts with a new config
 function ActiveSimulation({ config, onAbort }: { config: SimulationConfig, onAbort: () => void }) {
     const { state, actions } = useReactorSimulation({ 
         tickRate: 100,
@@ -27,6 +28,15 @@ function ActiveSimulation({ config, onAbort }: { config: SimulationConfig, onAbo
     
     const [logs, setLogs] = useState<string[]>([])
     const [manualPage, setManualPage] = useState(0)
+    const [isMuted, setIsMuted] = useState(false)
+
+    // Audio Engine
+    const audio = useAudioEngine(
+        state.neutronFlux, 
+        state.turbineSpeed, 
+        state.alarms.length > 0,
+        isMuted
+    )
 
     // Terminal Effect for Logs
     useEffect(() => {
@@ -66,6 +76,14 @@ function ActiveSimulation({ config, onAbort }: { config: SimulationConfig, onAbo
                     </p>
                 </div>
                 <div className="flex items-center gap-6 w-full sm:w-auto justify-between sm:justify-end">
+                    <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        onClick={() => setIsMuted(!isMuted)}
+                        className="text-zinc-500 hover:text-white"
+                    >
+                        {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                    </Button>
                     <Badge variant="outline" className={`rounded-sm border-0 px-4 py-1 font-mono tracking-wider ${getStatusColor(state.status)}`}>
                         {state.status}
                     </Badge>
@@ -98,7 +116,10 @@ function ActiveSimulation({ config, onAbort }: { config: SimulationConfig, onAbo
                                     value={[state.controlRodPosition]} 
                                     max={100} 
                                     step={0.1}
-                                    onValueChange={(v) => actions.setRodPosition(v[0])}
+                                    onValueChange={(v) => {
+                                        actions.setRodPosition(v[0])
+                                        audio.playRodSound()
+                                    }}
                                     className="py-2 [&_.bg-primary]:bg-cyan-500 [&_.border-primary]:border-cyan-500"
                                 />
                                 <div className="flex justify-between text-[10px] text-zinc-600 font-mono tracking-widest uppercase">
@@ -106,11 +127,48 @@ function ActiveSimulation({ config, onAbort }: { config: SimulationConfig, onAbo
                                     <span>100% (SCRAM)</span>
                                 </div>
                             </div>
+
+                            {/* Chemical Shim (Optional) */}
+                            {config.chemicalShim && (
+                                <div className="space-y-4 pt-4 border-t border-white/5">
+                                    <div className="flex justify-between text-xs tracking-wider">
+                                        <span className="text-zinc-400">BORON CONC.</span>
+                                        <span className="text-purple-400 font-mono">{state.boronConcentration.toFixed(0)} ppm</span>
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <Button 
+                                            variant="outline" 
+                                            size="sm" 
+                                            className="flex-1 text-[10px] border-purple-900/50 text-purple-400 hover:bg-purple-900/20"
+                                            onClick={() => {
+                                                actions.setBoronConcentration(state.boronConcentration + 10)
+                                                audio.playSwitchSound()
+                                            }}
+                                        >
+                                            BORATE
+                                        </Button>
+                                        <Button 
+                                            variant="outline" 
+                                            size="sm" 
+                                            className="flex-1 text-[10px] border-blue-900/50 text-blue-400 hover:bg-blue-900/20"
+                                            onClick={() => {
+                                                actions.setBoronConcentration(state.boronConcentration - 10)
+                                                audio.playSwitchSound()
+                                            }}
+                                        >
+                                            DILUTE
+                                        </Button>
+                                    </div>
+                                </div>
+                            )}
                             
                             <Button 
                                 variant="destructive" 
                                 className="w-full bg-red-950/30 hover:bg-red-900/50 border border-red-900/50 text-red-500 hover:text-red-400 tracking-widest text-xs h-12 rounded-sm transition-all duration-300 uppercase font-medium"
-                                onClick={actions.scram}
+                                onClick={() => {
+                                    actions.scram()
+                                    audio.playSwitchSound()
+                                }}
                                 disabled={state.isScrammed}
                             >
                                 Initiate Manual SCRAM
@@ -292,6 +350,9 @@ function ActiveSimulation({ config, onAbort }: { config: SimulationConfig, onAbo
                         <TabsList className="w-full bg-black/40 border border-white/10 p-1 rounded-sm h-10 mb-4">
                             <TabsTrigger value="manual" className="flex-1 h-full rounded-sm data-[state=active]:bg-white/10 data-[state=active]:text-zinc-100 text-xs uppercase tracking-widest font-medium transition-all text-zinc-400">Protocol</TabsTrigger>
                             <TabsTrigger value="stats" className="flex-1 h-full rounded-sm data-[state=active]:bg-white/10 data-[state=active]:text-zinc-100 text-xs uppercase tracking-widest font-medium transition-all text-zinc-400">Telemetry</TabsTrigger>
+                            {config.manualSync && (
+                                <TabsTrigger value="sync" className="flex-1 h-full rounded-sm data-[state=active]:bg-white/10 data-[state=active]:text-zinc-100 text-xs uppercase tracking-widest font-medium transition-all text-zinc-400">Grid</TabsTrigger>
+                            )}
                         </TabsList>
                         <TabsContent value="manual">
                             <div className="h-[600px]">
@@ -347,6 +408,21 @@ function ActiveSimulation({ config, onAbort }: { config: SimulationConfig, onAbo
                                 </CardContent>
                             </Card>
                         </TabsContent>
+                        {config.manualSync && (
+                            <TabsContent value="sync">
+                                <Synchroscope 
+                                    phase={state.turbinePhase}
+                                    freqDiff={state.turbineFreq - state.gridFreq}
+                                    gridVoltage={13800}
+                                    genVoltage={13800} // Simplified voltage matching for now
+                                    breakerOpen={state.breakerOpen}
+                                    onSync={() => {
+                                        actions.toggleBreaker()
+                                        audio.playSwitchSound()
+                                    }}
+                                />
+                            </TabsContent>
+                        )}
                     </Tabs>
                     
                     <Button variant="outline" className="w-full border-white/10 bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white rounded-sm tracking-widest uppercase text-xs h-12 transition-colors" onClick={onAbort}>
