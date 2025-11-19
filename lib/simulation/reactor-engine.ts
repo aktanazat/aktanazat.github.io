@@ -226,9 +226,17 @@ export function useReactorSimulation({ tickRate = 100 }: SimulationParams = { ti
     }
 
     // Update History
-    newState.history.flux = [...s.history.flux.slice(1), newState.neutronFlux]
-    newState.history.fuelTemp = [...s.history.fuelTemp.slice(1), newState.fuelTemp]
-    newState.history.pressure = [...s.history.pressure.slice(1), newState.pressure]
+    if (!newState.history) {
+       newState.history = { flux: [], fuelTemp: [], pressure: [] }
+    }
+    
+    const prevFlux = s.history?.flux || new Array(60).fill(0)
+    const prevTemp = s.history?.fuelTemp || new Array(60).fill(25)
+    const prevPress = s.history?.pressure || new Array(60).fill(0.1)
+
+    newState.history.flux = [...prevFlux.slice(1), newState.neutronFlux]
+    newState.history.fuelTemp = [...prevTemp.slice(1), newState.fuelTemp]
+    newState.history.pressure = [...prevPress.slice(1), newState.pressure]
 
     setState(newState)
   }, [])

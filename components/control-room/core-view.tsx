@@ -24,41 +24,52 @@ export function CoreView({ regions, controlRodPosition }: CoreViewProps) {
 
     return (
         <div className="h-full flex flex-col gap-6 justify-center px-8">
-            <div className="grid grid-cols-2 gap-6 aspect-square w-full max-w-[400px] mx-auto">
+            <div className="grid grid-cols-2 gap-6 aspect-square w-full max-w-[400px] mx-auto relative">
                 {regions.map((region) => (
                     <div 
                         key={region.id}
-                        className="relative rounded-sm border border-white/20 flex flex-col items-center justify-center p-6 transition-all duration-500 backdrop-blur-md group hover:border-cyan-500/50 hover:shadow-[0_0_15px_rgba(6,182,212,0.1)]"
+                        className="relative rounded-sm border border-white/20 flex flex-col items-center justify-center p-4 transition-all duration-500 backdrop-blur-md group hover:border-cyan-500/50 hover:shadow-[0_0_15px_rgba(6,182,212,0.1)] overflow-hidden"
                         style={{ backgroundColor: getRegionColor(region.temp) }}
                     >
-                        {/* Corner Accents */}
-                        <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-white/30 group-hover:border-cyan-400" />
-                        <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-white/30 group-hover:border-cyan-400" />
-                        <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-white/30 group-hover:border-cyan-400" />
-                        <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-white/30 group-hover:border-cyan-400" />
-
-                        <div className="text-2xl font-light text-white drop-shadow-md tabular-nums">
-                            {region.temp.toFixed(0)}<span className="text-sm text-white">°C</span>
-                        </div>
-                        <div className="text-[10px] font-mono text-white drop-shadow-md tracking-wider mt-1">
-                            FLUX: {region.flux.toFixed(1)}%
-                        </div>
-                        
-                        {/* Control Rod Overlay */}
+                         {/* Control Rod Overlay - NOW BEHIND TEXT */}
                         <div 
-                            className="absolute top-0 left-0 w-full bg-black/90 transition-all duration-300 border-b border-cyan-500/50"
+                            className="absolute top-0 left-0 w-full bg-black/80 transition-all duration-300 border-b border-cyan-500/50 z-0 pointer-events-none"
                             style={{ height: `${controlRodPosition}%` }}
-                        >
-                            {controlRodPosition > 10 && (
-                                <div className="absolute bottom-2 w-full text-center">
-                                    <span className="text-[9px] text-cyan-500/70 font-mono uppercase tracking-[0.2em] bg-black/50 px-2 py-0.5 border border-cyan-900/30 rounded-full">
-                                        ROD {controlRodPosition.toFixed(0)}%
-                                    </span>
+                        />
+
+                        {/* Corner Accents */}
+                        <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-white/30 group-hover:border-cyan-400 z-10" />
+                        <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-white/30 group-hover:border-cyan-400 z-10" />
+                        <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-white/30 group-hover:border-cyan-400 z-10" />
+                        <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-white/30 group-hover:border-cyan-400 z-10" />
+
+                        {/* Content - z-index higher to stay on top of rod overlay */}
+                        <div className="relative z-20 text-center">
+                            <div className="flex flex-col gap-1">
+                                <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest">Temp</span>
+                                <div className="text-3xl font-light text-white drop-shadow-lg tabular-nums tracking-tight">
+                                    {region.temp.toFixed(0)}<span className="text-sm text-white/70 ml-0.5">°C</span>
                                 </div>
-                            )}
+                            </div>
+                            
+                            <div className="w-full h-px bg-white/10 my-2" />
+
+                            <div className="flex flex-col gap-1">
+                                <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest">Flux</span>
+                                <div className="text-lg font-mono text-cyan-300 drop-shadow-lg tracking-wider">
+                                    {region.flux.toFixed(1)}%
+                                </div>
+                            </div>
                         </div>
                     </div>
                 ))}
+                
+                {/* Central Crosshair Overlay */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 pointer-events-none z-30">
+                     <div className="absolute top-1/2 left-0 w-full h-px bg-white/20" />
+                     <div className="absolute left-1/2 top-0 h-full w-px bg-white/20" />
+                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 border border-cyan-500 rounded-full" />
+                </div>
             </div>
             
             <div className="bg-black/40 p-5 rounded-sm border border-white/10 backdrop-blur-sm">
