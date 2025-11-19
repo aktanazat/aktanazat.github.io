@@ -28,7 +28,7 @@ export function PlantOverview({
       if (type === 'steam') return temp > 100 ? '#ef4444' : '#27272a'
       if (temp > 280) return '#ef4444'
       if (temp > 100) return '#f97316'
-      return '#155e75' // Darker Cyan (cyan-800) for cold water
+      return '#52525b' // Zinc-600 (Metallic Grey) for cold water
   }
 
   return (
@@ -54,7 +54,7 @@ export function PlantOverview({
         {/* --- CONTAINMENT BUILDING (Left) --- */}
         <g transform="translate(50, 50)">
             {/* Dome Outline */}
-            <path d="M 0 380 L 0 100 Q 100 0 200 100 L 200 380" fill="#18181b" fillOpacity="0.5" stroke="#52525b" strokeWidth="2" strokeDasharray="10 5" />
+            <path d="M 0 350 L 0 100 Q 100 0 200 100 L 200 350" fill="#18181b" fillOpacity="0.5" stroke="#52525b" strokeWidth="2" strokeDasharray="10 5" />
             <text x="20" y="30" fill="#71717a" fontSize="10" fontFamily="monospace" letterSpacing="2" fontWeight="bold">CONTAINMENT</text>
             
             {/* Reactor Vessel */}
@@ -117,9 +117,8 @@ export function PlantOverview({
             
             {/* Condenser */}
             <rect x="50" y="200" width="220" height="80" rx="4" fill="#09090b" stroke="#52525b" strokeWidth="2" />
-            <text x="60" y="275" fill="#3f3f46" fontSize="8" fontFamily="monospace">CONDENSER TUBES</text>
-             {/* Condenser Tubes - Fixed Visuals */}
-            <path d="M 60 220 L 260 220 M 60 240 L 260 240 M 60 260 L 260 260" stroke="#3f3f46" strokeWidth="1" strokeDasharray="2 2" opacity="0.5" />
+            <text x="60" y="275" fill="#3f3f46" fontSize="8" fontFamily="monospace">CONDENSER</text>
+             {/* Condenser Tubes - REMOVED PER FEEDBACK */}
         </g>
 
         {/* --- COOLING TOWERS (Right) --- */}
@@ -149,12 +148,12 @@ export function PlantOverview({
 
         {/* Flow Lines / Arrows */}
         {/* Condensate Return - Raised to avoid overlap */}
-        <path d="M 510 280 L 510 430 L 210 430 L 210 320" stroke="#155e75" strokeWidth="2" strokeDasharray="4 4" fill="none" opacity="0.5" />
-        <circle cx="510" cy="430" r="2" fill="#155e75" />
-        <circle cx="210" cy="430" r="2" fill="#155e75" />
+        <path d="M 510 280 L 510 430 L 210 430 L 210 320" stroke="#52525b" strokeWidth="2" strokeDasharray="4 4" fill="none" opacity="0.5" />
+        <circle cx="510" cy="430" r="2" fill="#52525b" />
+        <circle cx="210" cy="430" r="2" fill="#52525b" />
         
         {/* Labels & Metrics Overlay in SVG - Status Moved */}
-        <g transform="translate(50, 460)">
+        <g transform="translate(50, 420)">
             <rect x="-10" y="-15" width="140" height="25" rx="4" fill="#09090b" stroke="#3f3f46" />
             <text x="0" y="0" fill="#e4e4e7" fontSize="10" fontFamily="monospace" fontWeight="bold">STATUS: {reactorStatus}</text>
         </g>
