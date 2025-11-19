@@ -1,12 +1,13 @@
 "use client"
 
 import React, { useEffect, useState } from 'react'
-import { useReactorSimulation } from '@/lib/simulation/reactor-engine'
+import { useReactorSimulation, SimulationConfig, ReactorType, ScenarioType } from '@/lib/simulation/reactor-engine'
 import { ReactorMap } from '@/components/control-room/reactor-map'
 import { PlantOverview } from '@/components/control-room/plant-overview'
 import { CoreView } from '@/components/control-room/core-view'
 import { OperatorManual } from '@/components/control-room/operator-manual'
 import { LiveGraph } from '@/components/control-room/live-graph'
+import { MissionSetup } from '@/components/control-room/mission-setup'
 import { Button } from '@/components/ui/button'
 import { Slider } from '@/components/ui/slider'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -17,9 +18,26 @@ import { Badge } from '@/components/ui/badge'
 import { Zap, Thermometer, Activity, Wind, BookOpen } from 'lucide-react'
 
 export default function ControlRoomPage() {
-  const { state, actions } = useReactorSimulation()
+  const [isSetup, setIsSetup] = useState(false)
+  const [config, setConfig] = useState<SimulationConfig | undefined>(undefined)
+  
+  // We initialize the hook with config only after setup is done
+  const { state, actions } = useReactorSimulation({ 
+      tickRate: 100,
+      initialConfig: config
+  })
+  
   const [logs, setLogs] = useState<string[]>([])
   const [manualPage, setManualPage] = useState(0)
+
+  // Handle Mission Start
+  const handleStart = (newConfig: { type: ReactorType; scenario: ScenarioType; difficulty: string }) => {
+      setConfig(newConfig)
+      setIsSetup(true)
+      // Reset simulation with new config logic happens inside the hook or via a force reset if needed
+      // Since we pass initialConfig, a key change or re-mount might be needed if we switch back and forth.
+      // For now, simple state flow works.
+  }
 
   // Terminal Effect for Logs
   useEffect(() => {
@@ -29,6 +47,11 @@ export default function ControlRoomPage() {
       }
   }, [state.alarms])
 
+  // Early Return for Setup Screen
+  if (!isSetup) {
+      return <MissionSetup onStart={handleStart} />
+  }
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'SHUTDOWN': return 'bg-zinc-600 text-zinc-100'
@@ -36,6 +59,7 @@ export default function ControlRoomPage() {
       case 'CRITICAL': return 'bg-amber-600 text-amber-50 shadow-[0_0_10px_rgba(217,119,6,0.5)]'
       case 'POWER_OPS': return 'bg-emerald-600 text-emerald-50 shadow-[0_0_10px_rgba(5,150,105,0.5)]'
       case 'TRIPPED': return 'bg-red-600 text-red-50 animate-pulse shadow-[0_0_15px_rgba(220,38,38,0.7)]'
+      case 'MELTDOWN': return 'bg-red-950 text-red-500 animate-bounce shadow-[0_0_30px_rgba(220,38,38,1)]'
       default: return 'bg-zinc-600'
     }
   }
@@ -49,11 +73,13 @@ export default function ControlRoomPage() {
         <div className="mb-4 sm:mb-0">
           <h1 className="text-3xl font-light tracking-tight flex items-center gap-3">
             <div className="p-2 bg-white/5 border border-white/10 rounded-sm">
-                <Zap className="text-cyan-400 w-5 h-5" />
+              <Zap className="text-cyan-400 w-5 h-5" />
             </div>
             <span className="uppercase tracking-[0.2em] text-zinc-100 text-lg sm:text-xl">A.T.L.A.S. Control</span>
           </h1>
-          <p className="text-zinc-500 text-xs tracking-widest mt-1 font-mono pl-14">UNIT 01 // PRESSURIZED WATER REACTOR</p>
+          <p className="text-zinc-500 text-xs tracking-widest mt-1 font-mono pl-14">
+              UNIT 01 // {config?.type} REACTOR // {config?.scenario.replace('_', ' ')}
+          </p>
         </div>
         <div className="flex items-center gap-6 w-full sm:w-auto justify-between sm:justify-end">
           <Badge variant="outline" className={`rounded-sm border-0 px-4 py-1 font-mono tracking-wider ${getStatusColor(state.status)}`}>
@@ -327,8 +353,8 @@ export default function ControlRoomPage() {
               </TabsContent>
            </Tabs>
            
-           <Button variant="outline" className="w-full border-white/10 bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white rounded-sm tracking-widest uppercase text-xs h-12 transition-colors" onClick={actions.reset}>
-              System Reset
+           <Button variant="outline" className="w-full border-white/10 bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white rounded-sm tracking-widest uppercase text-xs h-12 transition-colors" onClick={() => setIsSetup(false)}>
+              Abort Mission (Return to Menu)
            </Button>
         </div>
       </div>

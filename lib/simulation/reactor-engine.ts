@@ -1,13 +1,29 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 
-// types.ts
+// Constants
+const MAX_PRESSURE = 16
+const OPERATING_PRESSURE = 15.5
+const BASE_XENON_DECAY = 0.001
+const XENON_PRODUCTION_RATE = 0.005
+const XENON_BURNUP_RATE = 0.0001
+
+// --- Config Types ---
+export type ReactorType = 'PWR' | 'RBMK' | 'BWR'
+export type ScenarioType = 'NORMAL' | 'TMI_ACCIDENT' | 'CHERNOBYL_RUN' | 'XENON_PIT'
+
+export interface SimulationConfig {
+    type: ReactorType
+    scenario: ScenarioType
+    difficulty: string
+}
+
 export interface ReactorState {
   // Core Status
   controlRodPosition: number // 0-100% (100% = Fully Inserted)
   fuelTemp: number // Celsius
   coolantTemp: number // Celsius
   pressure: number // MPa
-  neutronFlux: number // 0-100% power nominal
+  neutronFlux: number // 0-120% power nominal
   xenonLevel: number // Poison level
   
   // Systems
@@ -16,21 +32,21 @@ export interface ReactorState {
   gridLoad: number // MW
   outputMw: number // MW
   
-  // New: Thermal Cycle
+  // Thermal Cycle
   steamPressure: number // MPa
   condenserTemp: number // Celsius
   feedwaterFlow: number // %
   
-  // New: Environmental
+  // Environmental
   ambientTemp: number // Celsius
   coolingTowerEfficiency: number // %
   
   // Alarms & Status
   isScrammed: boolean
   alarms: string[]
-  status: 'SHUTDOWN' | 'STARTUP' | 'CRITICAL' | 'POWER_OPS' | 'TRIPPED'
+  status: 'SHUTDOWN' | 'STARTUP' | 'CRITICAL' | 'POWER_OPS' | 'TRIPPED' | 'MELTDOWN'
   
-  // Abstract Core Model (Grid of 4 quadrants)
+  // Core Model (Expanded Grid of 3x3 = 9 regions for better visuals)
   coreRegions: {
       id: number
       temp: number
@@ -38,7 +54,10 @@ export interface ReactorState {
       flux: number
   }[]
 
-  // Historical Data for Graphs (last 60 ticks)
+  // Config (stored in state)
+  config: SimulationConfig
+
+  // Historical Data
   history: {
       flux: number[]
       fuelTemp: number[]
@@ -48,6 +67,23 @@ export interface ReactorState {
 
 export interface SimulationParams {
   tickRate: number // ms
+  initialConfig?: SimulationConfig
+}
+
+// Helper to generate regions
+const generateRegions = (count: number) => {
+    return Array.from({ length: count }).map((_, i) => ({
+        id: i + 1,
+        temp: 25,
+        power: 0,
+        flux: 0
+    }))
+}
+
+const DEFAULT_CONFIG: SimulationConfig = {
+    type: 'PWR',
+    scenario: 'NORMAL',
+    difficulty: 'NORMAL'
 }
 
 const INITIAL_STATE: ReactorState = {
@@ -73,12 +109,9 @@ const INITIAL_STATE: ReactorState = {
   alarms: [],
   status: 'SHUTDOWN',
   
-  coreRegions: [
-      { id: 1, temp: 25, power: 0, flux: 0 },
-      { id: 2, temp: 25, power: 0, flux: 0 },
-      { id: 3, temp: 25, power: 0, flux: 0 },
-      { id: 4, temp: 25, power: 0, flux: 0 },
-  ],
+  coreRegions: generateRegions(9), // 3x3 Grid
+
+  config: DEFAULT_CONFIG,
 
   history: {
       flux: new Array(60).fill(0),
@@ -87,15 +120,44 @@ const INITIAL_STATE: ReactorState = {
   }
 }
 
-// Constants
-const MAX_PRESSURE = 16
-const OPERATING_PRESSURE = 15.5
-const BASE_XENON_DECAY = 0.001
-const XENON_PRODUCTION_RATE = 0.005
-const XENON_BURNUP_RATE = 0.0001
+export function useReactorSimulation({ tickRate = 100, initialConfig }: SimulationParams = { tickRate: 100 }) {
+  const [state, setState] = useState<ReactorState>(() => {
+      if (!initialConfig) return INITIAL_STATE
+      
+      // Apply Scenario Logic at Initialization
+      let s = { ...INITIAL_STATE, config: initialConfig }
+      
+      if (initialConfig.scenario === 'CHERNOBYL_RUN') {
+          s.neutronFlux = 50
+          s.controlRodPosition = 20 // Dangerously withdrawn
+          s.xenonLevel = 80 // High poison
+          s.fuelTemp = 300
+          s.coolantTemp = 280
+          s.pressure = 6.5
+          s.status = 'CRITICAL'
+      }
+      
+      if (initialConfig.scenario === 'TMI_ACCIDENT') {
+           s.neutronFlux = 95
+           s.controlRodPosition = 10
+           s.fuelTemp = 320
+           s.pressure = 10
+           s.coolantPumpSpeed = 100
+           s.status = 'POWER_OPS'
+           // The "accident" triggers in logic later or is pre-set here
+           // e.g. stuck valve simulation
+      }
 
-export function useReactorSimulation({ tickRate = 100 }: SimulationParams = { tickRate: 100 }) {
-  const [state, setState] = useState<ReactorState>(INITIAL_STATE)
+      if (initialConfig.scenario === 'XENON_PIT') {
+          s.isScrammed = true
+          s.controlRodPosition = 100
+          s.xenonLevel = 95 // Very high
+          s.status = 'TRIPPED'
+      }
+
+      return s
+  })
+  
   const stateRef = useRef(state)
   
   useEffect(() => {
@@ -106,10 +168,25 @@ export function useReactorSimulation({ tickRate = 100 }: SimulationParams = { ti
     const s = stateRef.current
     let newState = { ...s }
 
-    // --- 1. Neutronics (Simplified Point Kinetics with Core Regions) ---
+    // --- 1. Neutronics & Physics Coefficients ---
     
-    const rodReactivity = (50 - s.controlRodPosition) * 0.05 
-    const tempFeedback = (s.fuelTemp - 300) * -0.0001 
+    // Default coefficients (PWR - Safe)
+    let voidCoeff = -0.0001 // Negative void coeff (Temp increase -> Power decrease)
+    let rodWorth = 0.05
+    
+    // RBMK - Unstable Logic
+    if (s.config.type === 'RBMK') {
+        // Positive void coefficient at low power / high void fraction
+        if (s.neutronFlux < 40) {
+            voidCoeff = 0.0005 // DANGER: Temp increase -> Power INCREASE (Positive feedback loop)
+        } else {
+            voidCoeff = -0.00005 // Slightly negative at higher power (still less safe than PWR)
+        }
+        rodWorth = 0.03 // Slower/Less effective rods (graphite tips?)
+    }
+
+    const rodReactivity = (50 - s.controlRodPosition) * rodWorth
+    const tempFeedback = (s.fuelTemp - 300) * voidCoeff
     const xenonFeedback = s.xenonLevel * -0.01
     const totalReactivity = rodReactivity + tempFeedback + xenonFeedback
 
@@ -121,22 +198,33 @@ export function useReactorSimulation({ tickRate = 100 }: SimulationParams = { ti
       powerChange += 0.05
     }
 
+    // TMI Scenario Logic: Pressure relief valve stuck open? (Simulated by pressure loss)
+    if (s.config.scenario === 'TMI_ACCIDENT' && s.pressure > 5) {
+        newState.pressure -= 0.05 // Leak
+    }
+
     if (s.isScrammed) {
         newState.neutronFlux = s.neutronFlux * 0.9
     } else {
-        newState.neutronFlux = Math.max(0, Math.min(120, s.neutronFlux + powerChange))
+        newState.neutronFlux = Math.max(0, Math.min(200, s.neutronFlux + powerChange)) // Cap at 200 for meltdown possibility
     }
 
-    // Xenon
+    // Xenon Dynamics
     const xenonProd = newState.neutronFlux * XENON_PRODUCTION_RATE
     const xenonDecay = s.xenonLevel * BASE_XENON_DECAY
     const xenonBurn = s.xenonLevel * newState.neutronFlux * XENON_BURNUP_RATE
     newState.xenonLevel = Math.max(0, s.xenonLevel + xenonProd - xenonDecay - xenonBurn)
 
-    // Update Core Regions (Slight variation for "realism")
+    // Update Core Regions (9 Regions)
     newState.coreRegions = s.coreRegions.map((r, i) => {
-        // Random variation per region
-        const variation = 1 + (Math.random() * 0.02 - 0.01)
+        // Hotspots logic for RBMK/Chernobyl
+        let variation = 1 + (Math.random() * 0.02 - 0.01)
+        
+        if (s.config.type === 'RBMK' && s.controlRodPosition < 10) {
+             // Bottom of core power surge (simulating graphite tip effect or spatial instability)
+             if (i > 6) variation += 0.5 
+        }
+
         const regionFlux = newState.neutronFlux * variation
         const regionHeatGen = regionFlux * 5.0
         const heatTransfer = (r.temp - s.coolantTemp) * 0.2
@@ -148,20 +236,17 @@ export function useReactorSimulation({ tickRate = 100 }: SimulationParams = { ti
         return {
             ...r,
             flux: regionFlux,
-            power: regionFlux, // simplified
+            power: regionFlux,
             temp: newTemp
         }
     })
     
-    // Average fuel temp from regions
-    newState.fuelTemp = newState.coreRegions.reduce((acc, r) => acc + r.temp, 0) / 4
+    // Average fuel temp
+    newState.fuelTemp = newState.coreRegions.reduce((acc, r) => acc + r.temp, 0) / newState.coreRegions.length
 
     // --- 2. Thermodynamics & Primary Loop ---
     
     const heatTransferToCoolant = (newState.fuelTemp - s.coolantTemp) * 0.2 * (s.coolantPumpSpeed > 0 ? 1 : 0.1)
-    
-    // Heat removal by Steam Gen (Secondary Loop)
-    // Proportional to T_primary - T_steam and Feedwater flow
     const heatRemovalBySteamGen = (s.coolantTemp - 100) * 0.15 * (s.coolantPumpSpeed / 100)
     
     newState.coolantTemp = s.coolantTemp + (heatTransferToCoolant - heatRemovalBySteamGen) * 0.05
@@ -170,18 +255,14 @@ export function useReactorSimulation({ tickRate = 100 }: SimulationParams = { ti
     newState.fuelTemp -= (newState.fuelTemp - 25) * 0.001
     newState.coolantTemp -= (newState.coolantTemp - 25) * 0.001
     
-    // Pressure Control (Pressurizer simplified)
+    // Pressure Control
     const targetPressure = (newState.coolantTemp / 300) * 15 
     newState.pressure = s.pressure + (targetPressure - s.pressure) * 0.02
 
-    // --- 3. Secondary Loop (Steam Cycle) ---
-    
-    // Steam pressure follows Primary Temp but lags
-    const targetSteamPressure = (newState.coolantTemp / 320) * 8 // 8 MPa secondary
+    // --- 3. Secondary Loop ---
+    const targetSteamPressure = (newState.coolantTemp / 320) * 8 
     newState.steamPressure = s.steamPressure + (targetSteamPressure - s.steamPressure) * 0.01
     
-    // Condenser
-    // Efficiency drops if ambient temp is high
     const coolingEff = Math.max(0.5, 1 - (s.ambientTemp - 20) * 0.01)
     newState.coolingTowerEfficiency = coolingEff * 100
     newState.condenserTemp = s.ambientTemp + (newState.outputMw * 0.05) / coolingEff
@@ -193,32 +274,34 @@ export function useReactorSimulation({ tickRate = 100 }: SimulationParams = { ti
     } else {
       newState.turbineSpeed = s.turbineSpeed * 0.99 
     }
-
-    // Generator Output
     newState.outputMw = (newState.turbineSpeed / 1800) * newState.neutronFlux * 10 * (coolingEff)
 
     // --- 5. Alarms & Trips ---
     const newAlarms = []
-    if (newState.fuelTemp > 2000) newAlarms.push('CORE MELT RISK')
+    if (newState.fuelTemp > 2000) newAlarms.push('CORE TEMP HIGH')
     if (newState.pressure > MAX_PRESSURE) newAlarms.push('PRI OVERPRESSURE')
     if (newState.neutronFlux > 110) newAlarms.push('OVERPOWER')
     if (newState.xenonLevel > 50) newAlarms.push('XENON POISONING')
-    if (newState.condenserTemp > 80) newAlarms.push('CONDENSER HOT')
+    
+    // Meltdown Logic
+    if (newState.fuelTemp > 2800) {
+        newState.status = 'MELTDOWN'
+        newAlarms.push('CORE MELTDOWN IMMINENT')
+    }
     
     newState.alarms = newAlarms
 
-    // Auto-Scram
-    if (newState.fuelTemp > 2200 || newState.pressure > 17 || newState.condenserTemp > 95) {
-      if (!newState.isScrammed) {
+    // Auto-Scram (Only works if not disabled in scenarios like Chernobyl?)
+    // For simplicity, auto-scram always works unless broken specifically, but let's keep it working
+    if ((newState.fuelTemp > 2400 || newState.pressure > 17) && !newState.isScrammed) {
           newState.isScrammed = true
           newState.controlRodPosition = 100
           newState.status = 'TRIPPED'
           newState.alarms.push('AUTO SCRAM')
-      }
     }
 
     // Status logic
-    if (!newState.isScrammed) {
+    if (!newState.isScrammed && newState.status !== 'MELTDOWN') {
         if (newState.neutronFlux > 1) newState.status = 'CRITICAL'
         if (newState.outputMw > 100) newState.status = 'POWER_OPS'
         if (newState.neutronFlux < 1 && newState.coolantPumpSpeed > 0) newState.status = 'STARTUP'
@@ -226,9 +309,7 @@ export function useReactorSimulation({ tickRate = 100 }: SimulationParams = { ti
     }
 
     // Update History
-    if (!newState.history) {
-       newState.history = { flux: [], fuelTemp: [], pressure: [] }
-    }
+    if (!newState.history) newState.history = { flux: [], fuelTemp: [], pressure: [] }
     
     const prevFlux = s.history?.flux || new Array(60).fill(0)
     const prevTemp = s.history?.fuelTemp || new Array(60).fill(25)
@@ -271,7 +352,9 @@ export function useReactorSimulation({ tickRate = 100 }: SimulationParams = { ti
   }
 
   const reset = () => {
-    setState(INITIAL_STATE)
+      // Should ideally reset with same config, but this simple reset goes to default
+      // Use window.location.reload for full reset or complex logic
+      setState(INITIAL_STATE) 
   }
 
   return {
