@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import React from 'react'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const PAGES = [
@@ -151,21 +151,25 @@ const PAGES = [
    }
 ]
 
-export function OperatorManual() {
-  const [page, setPage] = useState(0)
+interface OperatorManualProps {
+    page: number
+    setPage: (page: number) => void
+}
+
+export function OperatorManual({ page, setPage }: OperatorManualProps) {
   const [direction, setDirection] = useState(0)
 
   const nextPage = () => {
     if (page < PAGES.length - 1) {
       setDirection(1)
-      setPage(p => p + 1)
+      setPage(page + 1)
     }
   }
 
   const prevPage = () => {
     if (page > 0) {
       setDirection(-1)
-      setPage(p => p - 1)
+      setPage(page - 1)
     }
   }
 
@@ -214,7 +218,7 @@ export function OperatorManual() {
           </div>
        </div>
 
-       {/* Page Content */}
+       {/* Page Content - Using flex-1 and overflow-hidden to contain ScrollArea */}
        <div className="flex-1 relative z-20 pl-14 overflow-hidden bg-[#fdfcf5] flex flex-col min-h-0">
           <AnimatePresence custom={direction} mode="wait">
             <motion.div 

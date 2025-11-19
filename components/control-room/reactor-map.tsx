@@ -17,6 +17,8 @@ export function ReactorMap({ coolantFlow, controlRodLevel, coreTemp, turbineSpee
     return '#ef4444' // Red
   }
 
+  const isRodBottomLit = controlRodLevel > 99
+
   return (
     <div className="relative w-full h-[400px] bg-[#080808] p-4 overflow-hidden select-none">
       <svg viewBox="0 0 800 400" className="w-full h-full">
@@ -25,11 +27,21 @@ export function ReactorMap({ coolantFlow, controlRodLevel, coreTemp, turbineSpee
                 <feGaussianBlur stdDeviation="2" result="blur" />
                 <feComposite in="SourceGraphic" in2="blur" operator="over" />
             </filter>
+            <filter id="light-glow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="4" result="blur" />
+                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
         </defs>
 
         {/* Reactor Vessel */}
         <g transform="translate(100, 100)">
           <rect x="0" y="0" width="120" height="200" rx="4" fill="#18181b" stroke="#3f3f46" strokeWidth="2" />
+          
+          {/* Rod Bottom Lights (Indicators) */}
+          <circle cx="35" cy="190" r="3" fill={isRodBottomLit ? "#10b981" : "#27272a"} filter={isRodBottomLit ? "url(#light-glow)" : ""} />
+          <circle cx="60" cy="190" r="3" fill={isRodBottomLit ? "#10b981" : "#27272a"} filter={isRodBottomLit ? "url(#light-glow)" : ""} />
+          <circle cx="85" cy="190" r="3" fill={isRodBottomLit ? "#10b981" : "#27272a"} filter={isRodBottomLit ? "url(#light-glow)" : ""} />
+
           {/* Core */}
           <rect 
             x="20" 
@@ -94,7 +106,7 @@ export function ReactorMap({ coolantFlow, controlRodLevel, coreTemp, turbineSpee
         {/* Labels */}
         <text x="130" y="330" fill="#52525b" fontSize="10" fontFamily="monospace" letterSpacing="1">REACTOR VESSEL</text>
         <text x="310" y="370" fill="#52525b" fontSize="10" fontFamily="monospace" letterSpacing="1">STEAM GEN</text>
-        <text x="520" y="130" fill="#52525b" fontSize="10" fontFamily="monospace" letterSpacing="1">TURBINE</text>
+        <text x="520" y="170" fill="#52525b" fontSize="10" fontFamily="monospace" letterSpacing="1">TURBINE</text>
       </svg>
       
       {/* Overlay Data */}

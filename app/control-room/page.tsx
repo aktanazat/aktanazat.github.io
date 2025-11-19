@@ -6,6 +6,7 @@ import { ReactorMap } from '@/components/control-room/reactor-map'
 import { PlantOverview } from '@/components/control-room/plant-overview'
 import { CoreView } from '@/components/control-room/core-view'
 import { OperatorManual } from '@/components/control-room/operator-manual'
+import { LiveGraph } from '@/components/control-room/live-graph'
 import { Button } from '@/components/ui/button'
 import { Slider } from '@/components/ui/slider'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -18,6 +19,7 @@ import { Zap, Thermometer, Activity, Wind, BookOpen } from 'lucide-react'
 export default function ControlRoomPage() {
   const { state, actions } = useReactorSimulation()
   const [logs, setLogs] = useState<string[]>([])
+  const [manualPage, setManualPage] = useState(0)
 
   // Terminal Effect for Logs
   useEffect(() => {
@@ -154,11 +156,11 @@ export default function ControlRoomPage() {
              </CardHeader>
              <CardContent className="p-0">
                 <div className="h-[150px] w-full bg-black p-4 font-mono text-[10px] leading-relaxed overflow-hidden flex flex-col justify-end">
-                           {state.alarms.length === 0 && logs.length === 0 ? (
-                               <div className="text-emerald-400 flex items-center gap-2">
-                                   <span>&gt;</span> SYSTEM NORMAL. MONITORING ACTIVE.
-                               </div>
-                           ) : (
+                   {state.alarms.length === 0 && logs.length === 0 ? (
+                       <div className="text-emerald-400 flex items-center gap-2">
+                           <span>&gt;</span> SYSTEM NORMAL. MONITORING ACTIVE.
+                       </div>
+                   ) : (
                        <>
                            {logs.map((log, i) => (
                                <div key={i} className="text-zinc-500">
@@ -271,12 +273,30 @@ export default function ControlRoomPage() {
               </TabsList>
               <TabsContent value="manual">
                  <div className="h-[600px]">
-                    <OperatorManual />
+                    <OperatorManual page={manualPage} setPage={setManualPage} />
                  </div>
               </TabsContent>
               <TabsContent value="stats">
-                 <Card className="bg-[#0A0A0A]/80 border-white/10 backdrop-blur-sm rounded-sm h-[600px]">
+                 <Card className="bg-[#0A0A0A]/80 border-white/10 backdrop-blur-sm rounded-sm h-[600px] overflow-y-auto custom-scrollbar">
                     <CardContent className="space-y-6 pt-6">
+                       <div className="space-y-4">
+                           <div className="text-[10px] text-zinc-500 uppercase tracking-widest mb-2">Live Trends</div>
+                           <LiveGraph 
+                               data={state.history.flux} 
+                               color="#fbbf24" 
+                               label="Flux" 
+                               max={120}
+                           />
+                           <LiveGraph 
+                               data={state.history.fuelTemp} 
+                               color="#ef4444" 
+                               label="Core Temp" 
+                               max={2500}
+                           />
+                       </div>
+
+                       <div className="border-t border-white/10 my-4" />
+
                        {[
                            { label: "Neutron Flux", value: state.neutronFlux.toFixed(2), unit: "%", color: "text-amber-400" },
                            { label: "Coolant Temp", value: state.coolantTemp.toFixed(0), unit: "°C", color: "text-cyan-400" },

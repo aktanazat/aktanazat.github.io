@@ -37,6 +37,13 @@ export interface ReactorState {
       power: number
       flux: number
   }[]
+
+  // Historical Data for Graphs (last 60 ticks)
+  history: {
+      flux: number[]
+      fuelTemp: number[]
+      pressure: number[]
+  }
 }
 
 export interface SimulationParams {
@@ -71,7 +78,13 @@ const INITIAL_STATE: ReactorState = {
       { id: 2, temp: 25, power: 0, flux: 0 },
       { id: 3, temp: 25, power: 0, flux: 0 },
       { id: 4, temp: 25, power: 0, flux: 0 },
-  ]
+  ],
+
+  history: {
+      flux: new Array(60).fill(0),
+      fuelTemp: new Array(60).fill(25),
+      pressure: new Array(60).fill(0.1)
+  }
 }
 
 // Constants
@@ -211,6 +224,11 @@ export function useReactorSimulation({ tickRate = 100 }: SimulationParams = { ti
         if (newState.neutronFlux < 1 && newState.coolantPumpSpeed > 0) newState.status = 'STARTUP'
         if (newState.controlRodPosition === 100) newState.status = 'SHUTDOWN'
     }
+
+    // Update History
+    newState.history.flux = [...s.history.flux.slice(1), newState.neutronFlux]
+    newState.history.fuelTemp = [...s.history.fuelTemp.slice(1), newState.fuelTemp]
+    newState.history.pressure = [...s.history.pressure.slice(1), newState.pressure]
 
     setState(newState)
   }, [])
