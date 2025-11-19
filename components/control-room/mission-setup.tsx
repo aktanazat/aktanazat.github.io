@@ -26,9 +26,21 @@ export function MissionSetup({ onStart }: MissionSetupProps) {
   const [difficulty, setDifficulty] = useState('NORMAL')
 
   const reactorDescriptions = {
-    PWR: "Pressurized Water Reactor. The most common type. Stable negative void coefficient. inherently safe design characteristics.",
-    RBMK: "Reaktor Bolshoy Moshchnosti Kanalny. Graphite-moderated, water-cooled. POSITIVE void coefficient. Highly unstable at low power. Proceed with extreme caution.",
-    BWR: "Boiling Water Reactor. Steam generated directly in the core. Simpler loop, but radioactive steam enters the turbine hall."
+    PWR: {
+        title: "Pressurized Water Reactor",
+        desc: "The most common type. Stable negative void coefficient. Inherently safe design characteristics.",
+        gameplay: "GAMEPLAY: Forgiving thermal inertia. Slow response to control inputs. Safe for beginners."
+    },
+    RBMK: {
+        title: "Reaktor Bolshoy Moshchnosti Kanalny",
+        desc: "Graphite-moderated, water-cooled. POSITIVE void coefficient. Highly unstable at low power.",
+        gameplay: "GAMEPLAY: DANGER! Power increases when coolant boils. Control rods are slow. Prone to runaway excursions."
+    },
+    BWR: {
+        title: "Boiling Water Reactor",
+        desc: "Steam generated directly in the core. Simpler loop, but radioactive steam enters the turbine hall.",
+        gameplay: "GAMEPLAY: Fast pressure-power coupling. Turbine trips cause immediate pressure spikes. Responsive but volatile."
+    }
   }
 
   const scenarioIntel = {
@@ -83,11 +95,14 @@ export function MissionSetup({ onStart }: MissionSetupProps) {
                         className={`relative cursor-pointer border p-4 rounded-sm transition-all ${type === r ? 'bg-zinc-900 border-cyan-500 shadow-[0_0_15px_rgba(6,182,212,0.1)]' : 'bg-black/40 border-zinc-800 hover:border-zinc-600'}`}
                     >
                         <div className="flex justify-between items-center mb-1">
-                            <span className={`font-bold ${type === r ? 'text-white' : 'text-zinc-400'}`}>{r}</span>
+                            <span className={`font-bold ${type === r ? 'text-white' : 'text-zinc-400'}`}>{reactorDescriptions[r as ReactorType].title}</span>
                             {type === r && <div className="w-2 h-2 bg-cyan-500 rounded-full" />}
                         </div>
-                        <p className="text-[10px] text-zinc-500 leading-relaxed">
-                            {reactorDescriptions[r as ReactorType]}
+                        <p className="text-[10px] text-zinc-500 leading-relaxed mb-2">
+                            {reactorDescriptions[r as ReactorType].desc}
+                        </p>
+                        <p className="text-[10px] text-amber-500 font-bold leading-relaxed border-t border-white/5 pt-2">
+                            {reactorDescriptions[r as ReactorType].gameplay}
                         </p>
                     </div>
                     ))}
