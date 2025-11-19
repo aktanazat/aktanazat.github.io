@@ -1,6 +1,7 @@
 import React from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 import { Zap, ZapOff } from 'lucide-react'
 
 interface SynchroscopeProps {
@@ -17,7 +18,7 @@ export function Synchroscope({ phase, freqDiff, gridVoltage, genVoltage, breaker
     const rotationSpeed = freqDiff * 20 
 
     return (
-        <Card className="bg-[#0A0A0A]/80 border-white/10 backdrop-blur-sm rounded-sm h-[600px] flex flex-col">
+        <Card className="bg-[#0A0A0A]/80 border-white/10 backdrop-blur-sm rounded-sm h-[500px] flex flex-col">
             <CardHeader className="pb-2 border-b border-white/5 bg-black/20">
                 <CardTitle className="text-xs uppercase tracking-[0.2em] text-zinc-400 font-medium flex items-center gap-2">
                     <div className="w-1.5 h-1.5 bg-amber-500 rounded-full" /> 
@@ -27,7 +28,7 @@ export function Synchroscope({ phase, freqDiff, gridVoltage, genVoltage, breaker
             <CardContent className="flex-1 flex flex-col items-center justify-center p-8 space-y-8">
                 
                 {/* The Synchroscope Dial */}
-                <div className="relative w-64 h-64 rounded-full border-4 border-zinc-700 bg-black shadow-[inset_0_0_20px_rgba(0,0,0,0.8)] flex items-center justify-center">
+                <div className="relative w-56 h-56 rounded-full border-4 border-zinc-700 bg-black shadow-[inset_0_0_20px_rgba(0,0,0,0.8)] flex items-center justify-center">
                     {/* Markings */}
                     <div className="absolute top-2 text-xs font-mono text-emerald-500 font-bold">12</div>
                     <div className="absolute bottom-2 text-xs font-mono text-zinc-600">6</div>
@@ -39,7 +40,7 @@ export function Synchroscope({ phase, freqDiff, gridVoltage, genVoltage, breaker
 
                     {/* The Needle */}
                     <div 
-                        className="absolute w-1 h-28 bg-amber-500 origin-bottom rounded-full shadow-[0_0_10px_rgba(245,158,11,0.8)] transition-transform duration-75 ease-linear"
+                        className="absolute w-1 h-24 bg-amber-500 origin-bottom rounded-full shadow-[0_0_10px_rgba(245,158,11,0.8)] transition-transform duration-75 ease-linear"
                         style={{ 
                             transform: `rotate(${phase}deg) translateY(-50%)`,
                             bottom: '50%'
@@ -67,7 +68,7 @@ export function Synchroscope({ phase, freqDiff, gridVoltage, genVoltage, breaker
                 </div>
 
                 {/* Breaker Control */}
-                <div className="w-full pt-8 border-t border-white/5">
+                <div className="w-full pt-6 border-t border-white/5">
                     <div className="flex justify-between items-center mb-4">
                         <span className="text-xs text-zinc-400 uppercase tracking-widest">Main Breaker Status</span>
                         <Badge variant={breakerOpen ? "destructive" : "default"} className="font-mono">
@@ -78,7 +79,7 @@ export function Synchroscope({ phase, freqDiff, gridVoltage, genVoltage, breaker
                     <Button 
                         size="lg"
                         variant={breakerOpen ? "outline" : "destructive"}
-                        className={`w-full h-16 text-lg tracking-widest font-bold border-2 ${
+                        className={`w-full h-14 text-lg tracking-widest font-bold border-2 ${
                             breakerOpen 
                                 ? "border-emerald-900/50 text-emerald-500 hover:bg-emerald-900/20 hover:text-emerald-400" 
                                 : "border-red-900/50 text-red-500 hover:bg-red-900/20"
