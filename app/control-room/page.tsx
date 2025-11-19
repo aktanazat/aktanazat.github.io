@@ -137,9 +137,9 @@ function ActiveSimulation({ config, onAbort }: { config: SimulationConfig, onAbo
                                     </div>
                                     <div className="flex gap-2">
                                         <Button 
-                                            variant="outline" 
+                                            variant="ghost" 
                                             size="sm" 
-                                            className="flex-1 text-[10px] border-purple-900/50 text-purple-400 hover:bg-purple-900/20 h-8"
+                                            className="flex-1 text-[10px] border border-purple-900/50 text-purple-400 hover:bg-purple-900/20 hover:text-purple-300 h-8 bg-transparent"
                                             onClick={() => {
                                                 actions.setBoronConcentration(state.boronConcentration + 10)
                                                 audio.playSwitchSound()
@@ -148,9 +148,9 @@ function ActiveSimulation({ config, onAbort }: { config: SimulationConfig, onAbo
                                             BORATE
                                         </Button>
                                         <Button 
-                                            variant="outline" 
+                                            variant="ghost" 
                                             size="sm" 
-                                            className="flex-1 text-[10px] border-blue-900/50 text-blue-400 hover:bg-blue-900/20 h-8"
+                                            className="flex-1 text-[10px] border border-blue-900/50 text-blue-400 hover:bg-blue-900/20 hover:text-blue-300 h-8 bg-transparent"
                                             onClick={() => {
                                                 actions.setBoronConcentration(state.boronConcentration - 10)
                                                 audio.playSwitchSound()
@@ -312,8 +312,8 @@ function ActiveSimulation({ config, onAbort }: { config: SimulationConfig, onAbo
 
                     <div className="grid grid-cols-3 gap-4">
                         <Card className="bg-[#0A0A0A]/80 border-white/10 backdrop-blur-sm rounded-sm hover:border-white/20 transition-colors">
-                            <CardContent className="pt-6">
-                                <div className="flex items-center gap-2 mb-3">
+                            <CardContent className="pt-4 pb-4">
+                                <div className="flex items-center gap-2 mb-2">
                                     <Thermometer className="text-amber-500 h-4 w-4" />
                                     <span className="text-zinc-500 text-[10px] uppercase tracking-widest">Core Temp</span>
                                 </div>
@@ -322,8 +322,8 @@ function ActiveSimulation({ config, onAbort }: { config: SimulationConfig, onAbo
                             </CardContent>
                         </Card>
                         <Card className="bg-[#0A0A0A]/80 border-white/10 backdrop-blur-sm rounded-sm hover:border-white/20 transition-colors">
-                            <CardContent className="pt-6">
-                                <div className="flex items-center gap-2 mb-3">
+                            <CardContent className="pt-4 pb-4">
+                                <div className="flex items-center gap-2 mb-2">
                                     <Activity className="text-cyan-500 h-4 w-4" />
                                     <span className="text-zinc-500 text-[10px] uppercase tracking-widest">Pri. Press</span>
                                 </div>
@@ -332,8 +332,8 @@ function ActiveSimulation({ config, onAbort }: { config: SimulationConfig, onAbo
                             </CardContent>
                         </Card>
                         <Card className="bg-[#0A0A0A]/80 border-white/10 backdrop-blur-sm rounded-sm hover:border-white/20 transition-colors">
-                            <CardContent className="pt-6">
-                                <div className="flex items-center gap-2 mb-3">
+                            <CardContent className="pt-4 pb-4">
+                                <div className="flex items-center gap-2 mb-2">
                                     <Wind className="text-purple-500 h-4 w-4" />
                                     <span className="text-zinc-500 text-[10px] uppercase tracking-widest">Sec. Press</span>
                                 </div>

@@ -18,17 +18,17 @@ export function Synchroscope({ phase, freqDiff, gridVoltage, genVoltage, breaker
     const rotationSpeed = freqDiff * 20 
 
     return (
-        <Card className="bg-[#0A0A0A]/80 border-white/10 backdrop-blur-sm rounded-sm h-[500px] flex flex-col">
-            <CardHeader className="pb-2 border-b border-white/5 bg-black/20">
+        <Card className="bg-[#0A0A0A]/80 border-white/10 backdrop-blur-sm rounded-sm h-[500px] flex flex-col overflow-hidden">
+            <CardHeader className="pb-2 border-b border-white/5 bg-black/20 flex-shrink-0">
                 <CardTitle className="text-xs uppercase tracking-[0.2em] text-zinc-400 font-medium flex items-center gap-2">
                     <div className="w-1.5 h-1.5 bg-amber-500 rounded-full" /> 
                     Grid Synchronization
                 </CardTitle>
             </CardHeader>
-            <CardContent className="flex-1 flex flex-col items-center justify-center p-8 space-y-8">
+            <CardContent className="flex-1 flex flex-col items-center justify-between p-6">
                 
                 {/* The Synchroscope Dial */}
-                <div className="relative w-56 h-56 rounded-full border-4 border-zinc-700 bg-black shadow-[inset_0_0_20px_rgba(0,0,0,0.8)] flex items-center justify-center">
+                <div className="relative w-48 h-48 rounded-full border-4 border-zinc-700 bg-black shadow-[inset_0_0_20px_rgba(0,0,0,0.8)] flex items-center justify-center flex-shrink-0 mt-4">
                     {/* Markings */}
                     <div className="absolute top-2 text-xs font-mono text-emerald-500 font-bold">12</div>
                     <div className="absolute bottom-2 text-xs font-mono text-zinc-600">6</div>
@@ -40,7 +40,7 @@ export function Synchroscope({ phase, freqDiff, gridVoltage, genVoltage, breaker
 
                     {/* The Needle */}
                     <div 
-                        className="absolute w-1 h-24 bg-amber-500 origin-bottom rounded-full shadow-[0_0_10px_rgba(245,158,11,0.8)] transition-transform duration-75 ease-linear"
+                        className="absolute w-1 h-20 bg-amber-500 origin-bottom rounded-full shadow-[0_0_10px_rgba(245,158,11,0.8)] transition-transform duration-75 ease-linear"
                         style={{ 
                             transform: `rotate(${phase}deg) translateY(-50%)`,
                             bottom: '50%'
@@ -52,26 +52,26 @@ export function Synchroscope({ phase, freqDiff, gridVoltage, genVoltage, breaker
                 </div>
 
                 {/* Digital Readouts */}
-                <div className="grid grid-cols-2 gap-8 w-full">
+                <div className="grid grid-cols-2 gap-4 w-full flex-shrink-0">
                     <div className="text-center space-y-1">
                         <div className="text-[10px] text-zinc-500 uppercase tracking-widest">Slip Freq</div>
-                        <div className={`font-mono text-xl ${Math.abs(freqDiff) < 0.1 ? 'text-emerald-400' : 'text-amber-400'}`}>
+                        <div className={`font-mono text-lg ${Math.abs(freqDiff) < 0.1 ? 'text-emerald-400' : 'text-amber-400'}`}>
                             {freqDiff.toFixed(3)} Hz
                         </div>
                     </div>
                     <div className="text-center space-y-1">
                         <div className="text-[10px] text-zinc-500 uppercase tracking-widest">Phase Angle</div>
-                        <div className={`font-mono text-xl ${Math.abs(phase) < 10 || Math.abs(phase) > 350 ? 'text-emerald-400' : 'text-red-400'}`}>
+                        <div className={`font-mono text-lg ${Math.abs(phase) < 10 || Math.abs(phase) > 350 ? 'text-emerald-400' : 'text-red-400'}`}>
                             {phase.toFixed(1)}°
                         </div>
                     </div>
                 </div>
 
                 {/* Breaker Control */}
-                <div className="w-full pt-6 border-t border-white/5">
-                    <div className="flex justify-between items-center mb-4">
-                        <span className="text-xs text-zinc-400 uppercase tracking-widest">Main Breaker Status</span>
-                        <Badge variant={breakerOpen ? "destructive" : "default"} className="font-mono">
+                <div className="w-full pt-4 border-t border-white/5 flex-shrink-0">
+                    <div className="flex justify-between items-center mb-3">
+                        <span className="text-xs text-zinc-400 uppercase tracking-widest">Main Breaker</span>
+                        <Badge variant={breakerOpen ? "destructive" : "default"} className="font-mono text-[10px] px-2 py-0.5">
                             {breakerOpen ? "OPEN" : "CLOSED"}
                         </Badge>
                     </div>
@@ -79,7 +79,7 @@ export function Synchroscope({ phase, freqDiff, gridVoltage, genVoltage, breaker
                     <Button 
                         size="lg"
                         variant={breakerOpen ? "outline" : "destructive"}
-                        className={`w-full h-14 text-lg tracking-widest font-bold border-2 ${
+                        className={`w-full h-12 text-sm tracking-widest font-bold border-2 ${
                             breakerOpen 
                                 ? "border-emerald-900/50 text-emerald-500 hover:bg-emerald-900/20 hover:text-emerald-400" 
                                 : "border-red-900/50 text-red-500 hover:bg-red-900/20"
@@ -87,9 +87,9 @@ export function Synchroscope({ phase, freqDiff, gridVoltage, genVoltage, breaker
                         onClick={onSync}
                     >
                         {breakerOpen ? (
-                            <span className="flex items-center gap-2"><Zap className="w-5 h-5" /> CLOSE BREAKER</span>
+                            <span className="flex items-center gap-2"><Zap className="w-4 h-4" /> CLOSE BREAKER</span>
                         ) : (
-                            <span className="flex items-center gap-2"><ZapOff className="w-5 h-5" /> TRIP BREAKER</span>
+                            <span className="flex items-center gap-2"><ZapOff className="w-4 h-4" /> TRIP BREAKER</span>
                         )}
                     </Button>
                     
