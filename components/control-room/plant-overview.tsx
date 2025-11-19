@@ -25,10 +25,10 @@ export function PlantOverview({
 }: PlantOverviewProps) {
   
   const getPipeColor = (temp: number, type: 'water' | 'steam') => {
-      if (type === 'steam') return temp > 100 ? '#ef4444' : '#3f3f46'
+      if (type === 'steam') return temp > 100 ? '#ef4444' : '#27272a'
       if (temp > 280) return '#ef4444'
       if (temp > 100) return '#f97316'
-      return '#06b6d4' // Cyan for normal water
+      return '#155e75' // Darker Cyan (cyan-800) for cold water
   }
 
   return (
@@ -54,7 +54,7 @@ export function PlantOverview({
         {/* --- CONTAINMENT BUILDING (Left) --- */}
         <g transform="translate(50, 50)">
             {/* Dome Outline */}
-            <path d="M 0 400 L 0 100 Q 100 0 200 100 L 200 400 Z" fill="#18181b" fillOpacity="0.5" stroke="#52525b" strokeWidth="2" strokeDasharray="10 5" />
+            <path d="M 0 380 L 0 100 Q 100 0 200 100 L 200 380" fill="#18181b" fillOpacity="0.5" stroke="#52525b" strokeWidth="2" strokeDasharray="10 5" />
             <text x="20" y="30" fill="#71717a" fontSize="10" fontFamily="monospace" letterSpacing="2" fontWeight="bold">CONTAINMENT</text>
             
             {/* Reactor Vessel */}
@@ -76,17 +76,17 @@ export function PlantOverview({
             
             {/* Steam Generator (Primary Side) */}
             <rect x="160" y="180" width="50" height="140" rx="6" fill="#09090b" stroke="#71717a" strokeWidth="2" />
-            {/* Internal Tubes */}
-            <path d="M 170 200 Q 185 200 200 200" stroke="#0e7490" strokeWidth="1" fill="none" opacity="0.5" />
-            <path d="M 170 220 Q 185 220 200 220" stroke="#0e7490" strokeWidth="1" fill="none" opacity="0.5" />
-            <path d="M 170 240 Q 185 240 200 240" stroke="#0e7490" strokeWidth="1" fill="none" opacity="0.5" />
+            {/* Internal Tubes - Subtler */}
+            <path d="M 170 200 Q 185 200 200 200" stroke="#3f3f46" strokeWidth="1" fill="none" opacity="0.5" />
+            <path d="M 170 220 Q 185 220 200 220" stroke="#3f3f46" strokeWidth="1" fill="none" opacity="0.5" />
+            <path d="M 170 240 Q 185 240 200 240" stroke="#3f3f46" strokeWidth="1" fill="none" opacity="0.5" />
         </g>
 
         {/* --- PIPING CONNECTORS --- */}
         {/* Primary Loop (Reactor -> SG) */}
-        <path d="M 140 240 L 210 240" stroke={getPipeColor(coreTemp, 'water')} strokeWidth="6" fill="none" strokeLinecap="round" />
+        <path d="M 140 240 L 210 240" stroke={getPipeColor(coreTemp, 'water')} strokeWidth="4" fill="none" strokeLinecap="round" />
         {/* Cold Leg */}
-        <path d="M 210 330 L 140 330" stroke="#0e7490" strokeWidth="6" fill="none" strokeLinecap="round" opacity="0.6" />
+        <path d="M 210 330 L 140 330" stroke={getPipeColor(coreTemp > 50 ? 50 : 25, 'water')} strokeWidth="4" fill="none" strokeLinecap="round" opacity="0.8" />
         
         {/* Secondary Loop (Steam) SG -> Turbine */}
         <path 
@@ -117,8 +117,9 @@ export function PlantOverview({
             
             {/* Condenser */}
             <rect x="50" y="200" width="220" height="80" rx="4" fill="#09090b" stroke="#52525b" strokeWidth="2" />
-            <path d="M 60 220 L 260 220 M 60 240 L 260 240 M 60 260 L 260 260" stroke="#0e7490" strokeWidth="2" opacity="0.5" />
             <text x="60" y="275" fill="#3f3f46" fontSize="8" fontFamily="monospace">CONDENSER TUBES</text>
+             {/* Condenser Tubes - Fixed Visuals */}
+            <path d="M 60 220 L 260 220 M 60 240 L 260 240 M 60 260 L 260 260" stroke="#3f3f46" strokeWidth="1" strokeDasharray="2 2" opacity="0.5" />
         </g>
 
         {/* --- COOLING TOWERS (Right) --- */}
@@ -147,14 +148,14 @@ export function PlantOverview({
         </g>
 
         {/* Flow Lines / Arrows */}
-        {/* Condensate Return */}
-        <path d="M 510 280 L 510 450 L 210 450 L 210 320" stroke="#0e7490" strokeWidth="2" strokeDasharray="4 4" fill="none" opacity="0.6" />
-        <circle cx="510" cy="450" r="3" fill="#0e7490" />
-        <circle cx="210" cy="450" r="3" fill="#0e7490" />
+        {/* Condensate Return - Raised to avoid overlap */}
+        <path d="M 510 280 L 510 430 L 210 430 L 210 320" stroke="#155e75" strokeWidth="2" strokeDasharray="4 4" fill="none" opacity="0.5" />
+        <circle cx="510" cy="430" r="2" fill="#155e75" />
+        <circle cx="210" cy="430" r="2" fill="#155e75" />
         
-        {/* Labels & Metrics Overlay in SVG */}
-        <g transform="translate(70, 460)">
-            <rect x="-10" y="-15" width="120" height="25" rx="4" fill="#09090b" stroke="#3f3f46" />
+        {/* Labels & Metrics Overlay in SVG - Status Moved */}
+        <g transform="translate(50, 460)">
+            <rect x="-10" y="-15" width="140" height="25" rx="4" fill="#09090b" stroke="#3f3f46" />
             <text x="0" y="0" fill="#e4e4e7" fontSize="10" fontFamily="monospace" fontWeight="bold">STATUS: {reactorStatus}</text>
         </g>
 
