@@ -171,21 +171,27 @@ export function OperatorManual() {
 
   const variants = {
     enter: (direction: number) => ({
-      x: direction > 0 ? 20 : -20,
+      x: direction > 0 ? 100 : -100,
+      rotateY: direction > 0 ? 45 : -45,
       opacity: 0,
+      scale: 0.9,
     }),
     center: {
       x: 0,
+      rotateY: 0,
       opacity: 1,
+      scale: 1,
     },
     exit: (direction: number) => ({
-      x: direction < 0 ? 20 : -20,
+      x: direction < 0 ? 100 : -100,
+      rotateY: direction < 0 ? 45 : -45,
       opacity: 0,
+      scale: 0.9,
     }),
   }
 
   return (
-    <div className="relative w-full h-full bg-[#f4f4e8] text-zinc-900 rounded-sm overflow-hidden flex flex-col shadow-xl border-l-[12px] border-[#2a2a2a]">
+    <div className="relative w-full h-full bg-[#f4f4e8] text-zinc-900 rounded-sm overflow-hidden flex flex-col shadow-xl border-l-[12px] border-[#2a2a2a] perspective-[1000px]">
        {/* Vintage Paper Texture Overlay */}
        <div className="absolute inset-0 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/aged-paper.png')] opacity-40 z-10 mix-blend-multiply" />
        
@@ -208,7 +214,7 @@ export function OperatorManual() {
           </div>
        </div>
 
-       {/* Page Content - Using flex-1 and overflow-hidden to contain ScrollArea */}
+       {/* Page Content */}
        <div className="flex-1 relative z-20 pl-14 overflow-hidden bg-[#fdfcf5] flex flex-col min-h-0">
           <AnimatePresence custom={direction} mode="wait">
             <motion.div 
@@ -218,8 +224,8 @@ export function OperatorManual() {
                 initial="enter"
                 animate="center"
                 exit="exit"
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                className="h-full flex flex-col p-8"
+                transition={{ type: "spring", stiffness: 200, damping: 25, mass: 1 }}
+                className="h-full flex flex-col p-8 origin-left"
             >
                 <div className="mb-8 border-b-2 border-zinc-200 pb-4 flex-shrink-0">
                     <h2 className="text-3xl font-serif font-black text-zinc-900 tracking-tight mb-1">

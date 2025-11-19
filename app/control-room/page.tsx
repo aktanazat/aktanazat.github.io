@@ -154,11 +154,11 @@ export default function ControlRoomPage() {
              </CardHeader>
              <CardContent className="p-0">
                 <div className="h-[150px] w-full bg-black p-4 font-mono text-[10px] leading-relaxed overflow-hidden flex flex-col justify-end">
-                   {state.alarms.length === 0 && logs.length === 0 ? (
-                       <div className="text-emerald-900/50 flex items-center gap-2">
-                           <span>&gt;</span> SYSTEM NORMAL. MONITORING ACTIVE.
-                       </div>
-                   ) : (
+                           {state.alarms.length === 0 && logs.length === 0 ? (
+                               <div className="text-emerald-400 flex items-center gap-2">
+                                   <span>&gt;</span> SYSTEM NORMAL. MONITORING ACTIVE.
+                               </div>
+                           ) : (
                        <>
                            {logs.map((log, i) => (
                                <div key={i} className="text-zinc-500">
@@ -266,8 +266,8 @@ export default function ControlRoomPage() {
         <div className="lg:col-span-3 space-y-6">
            <Tabs defaultValue="manual" className="w-full">
               <TabsList className="w-full bg-black/40 border border-white/10 p-1 rounded-sm h-10 mb-4">
-                 <TabsTrigger value="manual" className="flex-1 h-full rounded-sm data-[state=active]:bg-white/10 text-xs uppercase tracking-widest font-medium">Protocol</TabsTrigger>
-                 <TabsTrigger value="stats" className="flex-1 h-full rounded-sm data-[state=active]:bg-white/10 text-xs uppercase tracking-widest font-medium">Telemetry</TabsTrigger>
+                 <TabsTrigger value="manual" className="flex-1 h-full rounded-sm data-[state=active]:bg-white/10 data-[state=active]:text-zinc-100 text-xs uppercase tracking-widest font-medium transition-all text-zinc-400">Protocol</TabsTrigger>
+                 <TabsTrigger value="stats" className="flex-1 h-full rounded-sm data-[state=active]:bg-white/10 data-[state=active]:text-zinc-100 text-xs uppercase tracking-widest font-medium transition-all text-zinc-400">Telemetry</TabsTrigger>
               </TabsList>
               <TabsContent value="manual">
                  <div className="h-[600px]">

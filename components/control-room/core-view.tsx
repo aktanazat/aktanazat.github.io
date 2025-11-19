@@ -37,14 +37,11 @@ export function CoreView({ regions, controlRodPosition }: CoreViewProps) {
                         <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-white/30 group-hover:border-cyan-400" />
                         <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-white/30 group-hover:border-cyan-400" />
 
-                        <div className="text-4xl font-light text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] tabular-nums tracking-tighter">
-                            {region.temp.toFixed(0)}<span className="text-lg text-white/60 ml-1">°C</span>
+                        <div className="text-2xl font-light text-white drop-shadow-md tabular-nums">
+                            {region.temp.toFixed(0)}<span className="text-sm text-white">°C</span>
                         </div>
-                        <div className="flex items-center gap-2 mt-2">
-                            <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest">Flux</span>
-                            <span className="text-sm font-mono text-cyan-300 drop-shadow-md tracking-wider">
-                                {region.flux.toFixed(1)}%
-                            </span>
+                        <div className="text-[10px] font-mono text-white drop-shadow-md tracking-wider mt-1">
+                            FLUX: {region.flux.toFixed(1)}%
                         </div>
                         
                         {/* Control Rod Overlay */}
