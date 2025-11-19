@@ -236,7 +236,7 @@ export function OperatorManual() {
                     </p>
                 </div>
                 
-                <ScrollArea className="flex-1 pr-6 -mr-2">
+                <ScrollArea className="flex-1 h-[400px] pr-6 -mr-2">
                     <div className="text-zinc-900 font-serif leading-relaxed pb-12">
                         {PAGES[page].content}
                     </div>
