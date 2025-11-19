@@ -15,6 +15,7 @@ export interface SimulationConfig {
     type: ReactorType
     scenario: ScenarioType
     difficulty: string
+    coldStart: boolean
 }
 
 export interface ReactorState {
@@ -83,7 +84,8 @@ const generateRegions = (count: number) => {
 const DEFAULT_CONFIG: SimulationConfig = {
     type: 'PWR',
     scenario: 'NORMAL',
-    difficulty: 'NORMAL'
+    difficulty: 'NORMAL',
+    coldStart: false
 }
 
 const INITIAL_STATE: ReactorState = {
@@ -127,6 +129,24 @@ export function useReactorSimulation({ tickRate = 100, initialConfig }: Simulati
       // Apply Scenario Logic at Initialization
       let s = { ...INITIAL_STATE, config: initialConfig }
       
+      // If Cold Start is checked, force everything to 0/Ambient regardless of scenario
+      if (initialConfig.coldStart) {
+          s.controlRodPosition = 100
+          s.neutronFlux = 0
+          s.coolantPumpSpeed = 0
+          s.feedwaterFlow = 0
+          s.fuelTemp = 25
+          s.coolantTemp = 25
+          s.pressure = 0.1
+          s.steamPressure = 0.1
+          s.turbineSpeed = 0
+          s.outputMw = 0
+          s.status = 'SHUTDOWN'
+          s.coreRegions = generateRegions(9)
+          return s
+      }
+
+      // Otherwise, apply scenario presets
       if (initialConfig.scenario === 'CHERNOBYL_RUN') {
           s.neutronFlux = 50
           s.controlRodPosition = 20 // Dangerously withdrawn
@@ -217,7 +237,7 @@ export function useReactorSimulation({ tickRate = 100, initialConfig }: Simulati
 
     // TMI Scenario Logic: Pressure relief valve stuck open
     // Logic: Loss of pressure -> boiling -> voids -> poor heat transfer
-    if (s.config.scenario === 'TMI_ACCIDENT') {
+    if (s.config.scenario === 'TMI_ACCIDENT' && !s.config.coldStart) {
         // Artificial pressure drop simulating stuck valve
         if (s.pressure > 4) {
              newState.pressure -= 0.05 * (s.pressure / 10)

@@ -8,6 +8,7 @@ import { CoreView } from '@/components/control-room/core-view'
 import { OperatorManual } from '@/components/control-room/operator-manual'
 import { LiveGraph } from '@/components/control-room/live-graph'
 import { MissionSetup } from '@/components/control-room/mission-setup'
+import { ReactorHall } from '@/components/control-room/reactor-hall'
 import { Button } from '@/components/ui/button'
 import { Slider } from '@/components/ui/slider'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -196,6 +197,7 @@ function ActiveSimulation({ config, onAbort }: { config: SimulationConfig, onAbo
                             <TabsTrigger value="overview" className="flex-1 h-full rounded-sm data-[state=active]:bg-white/10 data-[state=active]:text-zinc-100 text-zinc-500 text-xs uppercase tracking-widest font-medium transition-all">Overview</TabsTrigger>
                             <TabsTrigger value="core" className="flex-1 h-full rounded-sm data-[state=active]:bg-white/10 data-[state=active]:text-zinc-100 text-zinc-500 text-xs uppercase tracking-widest font-medium transition-all">Core Grid</TabsTrigger>
                             <TabsTrigger value="systems" className="flex-1 h-full rounded-sm data-[state=active]:bg-white/10 data-[state=active]:text-zinc-100 text-zinc-500 text-xs uppercase tracking-widest font-medium transition-all">Schematic</TabsTrigger>
+                            <TabsTrigger value="hall" className="flex-1 h-full rounded-sm data-[state=active]:bg-white/10 data-[state=active]:text-zinc-100 text-zinc-500 text-xs uppercase tracking-widest font-medium transition-all">Reactor Hall</TabsTrigger>
                         </TabsList>
 
                         <div className="bg-[#050505] border border-white/10 rounded-sm overflow-hidden shadow-2xl relative group">
@@ -235,6 +237,17 @@ function ActiveSimulation({ config, onAbort }: { config: SimulationConfig, onAbo
                                     coreTemp={state.fuelTemp}
                                     turbineSpeed={state.turbineSpeed}
                                 />
+                            </TabsContent>
+
+                            <TabsContent value="hall" className="m-0 bg-[#080808]">
+                                <div className="h-[500px]">
+                                    <ReactorHall 
+                                        type={config.type}
+                                        flux={state.neutronFlux}
+                                        temp={state.fuelTemp}
+                                        waterLevel={100}
+                                    />
+                                </div>
                             </TabsContent>
                         </div>
                     </Tabs>

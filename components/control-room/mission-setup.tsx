@@ -3,6 +3,7 @@ import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { Checkbox } from '@/components/ui/checkbox'
 import { 
   Select, 
   SelectContent, 
@@ -11,19 +12,20 @@ import {
   SelectValue 
 } from '@/components/ui/select'
 import { motion } from 'framer-motion'
-import { AlertTriangle, FileText, Info } from 'lucide-react'
+import { AlertTriangle, FileText, Info, PowerOff } from 'lucide-react'
 
 export type ReactorType = 'PWR' | 'RBMK' | 'BWR'
 export type ScenarioType = 'NORMAL' | 'TMI_ACCIDENT' | 'CHERNOBYL_RUN' | 'XENON_PIT'
 
 interface MissionSetupProps {
-  onStart: (config: { type: ReactorType; scenario: ScenarioType; difficulty: string }) => void
+  onStart: (config: { type: ReactorType; scenario: ScenarioType; difficulty: string; coldStart: boolean }) => void
 }
 
 export function MissionSetup({ onStart }: MissionSetupProps) {
   const [type, setType] = useState<ReactorType>('PWR')
   const [scenario, setScenario] = useState<ScenarioType>('NORMAL')
   const [difficulty, setDifficulty] = useState('NORMAL')
+  const [coldStart, setColdStart] = useState(false)
 
   const reactorDescriptions = {
     PWR: {
@@ -143,6 +145,28 @@ export function MissionSetup({ onStart }: MissionSetupProps) {
                 </Select>
              </div>
 
+             {/* Cold Start Checkbox */}
+             <div className="flex items-center space-x-3 border border-zinc-800 p-4 rounded-sm bg-zinc-900/30">
+                <Checkbox 
+                    id="coldStart" 
+                    checked={coldStart} 
+                    onCheckedChange={(c) => setColdStart(c as boolean)}
+                    className="border-zinc-600 data-[state=checked]:bg-cyan-600 data-[state=checked]:border-cyan-600"
+                />
+                <div className="grid gap-1.5 leading-none">
+                    <Label
+                        htmlFor="coldStart"
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-white flex items-center gap-2"
+                    >
+                        <PowerOff className="w-3 h-3 text-zinc-400" />
+                        Cold Iron Start
+                    </Label>
+                    <p className="text-[10px] text-zinc-500">
+                        Force complete system shutdown. Requires full manual startup sequence.
+                    </p>
+                </div>
+             </div>
+
              {/* Intel Card */}
              <Card className="flex-1 bg-zinc-900/30 border-zinc-800 relative overflow-hidden">
                  <div className="absolute top-0 left-0 w-1 h-full bg-amber-500/20" />
@@ -189,7 +213,7 @@ export function MissionSetup({ onStart }: MissionSetupProps) {
 
              <Button 
                 size="lg" 
-                onClick={() => onStart({ type, scenario, difficulty })}
+                onClick={() => onStart({ type, scenario, difficulty, coldStart })}
                 className="w-full bg-cyan-600 hover:bg-cyan-500 text-white h-14 text-lg tracking-widest font-bold shadow-[0_0_20px_rgba(8,145,178,0.3)] border border-cyan-400/20"
             >
                 INITIALIZE SYSTEM
