@@ -23,9 +23,9 @@ export function CoreView({ regions, controlRodPosition }: CoreViewProps) {
     }
 
     return (
-        <div className="h-full w-full flex flex-col gap-4 justify-center items-center p-4 bg-[#0a0a0a]">
-            {/* Main Core Grid (3x3) */}
-            <div className="grid grid-cols-3 gap-2 w-full max-w-[500px] aspect-square relative">
+        <div className="h-full w-full flex flex-col justify-between items-center p-4 bg-[#0a0a0a] overflow-hidden">
+            {/* Main Core Grid (3x3) - Using flex-1 to take available space */}
+            <div className="w-full h-full max-h-[380px] aspect-square grid grid-cols-3 grid-rows-3 gap-2 relative">
                 {regions.map((region) => (
                     <div 
                         key={region.id}
@@ -44,23 +44,23 @@ export function CoreView({ regions, controlRodPosition }: CoreViewProps) {
                         {/* Region Data */}
                         <div className="relative z-10 w-full h-full flex flex-col justify-between">
                             <div className="flex justify-between items-start">
-                                <span className="text-[10px] text-zinc-500 font-mono">R-{region.id}</span>
+                                <span className="text-[8px] text-zinc-500 font-mono">R-{region.id}</span>
                                 <span className={cn(
-                                    "text-xs font-bold font-mono",
+                                    "text-[10px] font-bold font-mono",
                                     region.temp > 1000 ? "text-amber-500" : "text-zinc-300"
                                 )}>
                                     {region.temp.toFixed(0)}°C
                                 </span>
                             </div>
 
-                            <div className="flex flex-col items-center py-2">
-                                <span className="text-[32px] font-light text-white tracking-tighter drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
+                            <div className="flex flex-col items-center justify-center flex-1">
+                                <span className="text-2xl font-light text-white tracking-tighter drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
                                     {region.flux.toFixed(0)}
-                                    <span className="text-sm text-zinc-500 ml-1">%</span>
+                                    <span className="text-[10px] text-zinc-500 ml-0.5">%</span>
                                 </span>
                             </div>
 
-                            <div className="w-full bg-zinc-900 h-1 rounded-full overflow-hidden">
+                            <div className="w-full bg-zinc-900 h-0.5 rounded-full overflow-hidden mt-1">
                                 <div 
                                     className="h-full bg-cyan-500 transition-all duration-300"
                                     style={{ width: `${Math.min(100, region.flux)}%` }}
@@ -78,20 +78,20 @@ export function CoreView({ regions, controlRodPosition }: CoreViewProps) {
                 </div>
             </div>
             
-            {/* Bottom Telemetry Bar */}
-            <div className="w-full max-w-[500px] bg-zinc-900/50 border border-zinc-800 p-4 rounded flex justify-between items-center backdrop-blur-sm">
+            {/* Bottom Telemetry Bar - Compact */}
+            <div className="w-full max-w-[380px] mt-4 bg-zinc-900/50 border border-zinc-800 p-3 rounded flex justify-between items-center backdrop-blur-sm shrink-0">
                 <div className="flex flex-col">
-                     <span className="text-[10px] text-zinc-500 uppercase tracking-widest">Avg Fuel Temp</span>
-                     <span className="text-xl font-mono text-white">
+                     <span className="text-[9px] text-zinc-500 uppercase tracking-widest">Avg Fuel Temp</span>
+                     <span className="text-lg font-mono text-white leading-none">
                         {(regions.reduce((a, b) => a + b.temp, 0) / regions.length).toFixed(0)}°C
                      </span>
                 </div>
                 
-                <div className="h-8 w-px bg-zinc-800" />
+                <div className="h-6 w-px bg-zinc-800" />
 
                 <div className="flex flex-col items-end">
-                     <span className="text-[10px] text-zinc-500 uppercase tracking-widest">Control Rods</span>
-                     <span className="text-xl font-mono text-cyan-400">
+                     <span className="text-[9px] text-zinc-500 uppercase tracking-widest">Control Rods</span>
+                     <span className="text-lg font-mono text-cyan-400 leading-none">
                         {controlRodPosition.toFixed(1)}%
                      </span>
                 </div>
