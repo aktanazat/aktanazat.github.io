@@ -171,7 +171,7 @@ export function OperatorManual() {
 
   const variants = {
     enter: (direction: number) => ({
-      x: direction > 0 ? 50 : -50,
+      x: direction > 0 ? 20 : -20,
       opacity: 0,
     }),
     center: {
@@ -179,7 +179,7 @@ export function OperatorManual() {
       opacity: 1,
     },
     exit: (direction: number) => ({
-      x: direction < 0 ? 50 : -50,
+      x: direction < 0 ? 20 : -20,
       opacity: 0,
     }),
   }
