@@ -28,6 +28,7 @@ const PAGES = [
                <li className="flex justify-between border-b border-dotted border-zinc-400 pb-1"><span>2. Criticality Approach</span> <span>Pg. 3</span></li>
                <li className="flex justify-between border-b border-dotted border-zinc-400 pb-1"><span>3. Power Generation</span> <span>Pg. 4</span></li>
                <li className="flex justify-between border-b border-dotted border-zinc-400 pb-1"><span>4. Emergency Scram</span> <span>Pg. 5</span></li>
+               <li className="flex justify-between border-b border-dotted border-zinc-400 pb-1"><span>5. Advanced Systems</span> <span>Pg. 6</span></li>
             </ul>
          </div>
       </div>
@@ -148,7 +149,42 @@ const PAGES = [
            </div>
         </div>
      )
-   }
+   },
+   {
+    title: "Phase 5: Advanced",
+    subtitle: "Manual Sync & Chemical Shim",
+    content: (
+       <div className="space-y-6 font-serif text-zinc-900">
+          <h3 className="text-xl font-bold uppercase border-b-2 border-zinc-900 pb-1">5.0 Advanced Systems</h3>
+          
+          <div className="space-y-6">
+             <div className="bg-zinc-100 p-4 border border-zinc-300">
+                <h4 className="font-bold text-sm uppercase mb-2">5.1 Manual Synchronization</h4>
+                <p className="text-sm leading-relaxed mb-2">
+                   If Manual Sync is enabled, the Main Breaker will NOT close automatically.
+                </p>
+                <ul className="list-disc pl-4 text-sm space-y-1">
+                   <li>Open the <strong>GRID</strong> tab on the telemetry panel.</li>
+                   <li>Adjust turbine speed until the Synchroscope needle is stationary at 12 o'clock (Phase 0°).</li>
+                   <li>Close the breaker ONLY when phase is within ±10°.</li>
+                </ul>
+             </div>
+
+             <div className="bg-zinc-100 p-4 border border-zinc-300">
+                <h4 className="font-bold text-sm uppercase mb-2">5.2 Chemical Shim (Boron)</h4>
+                <p className="text-sm leading-relaxed mb-2">
+                   Use Boric Acid for long-term reactivity control instead of control rods.
+                </p>
+                <ul className="list-disc pl-4 text-sm space-y-1">
+                   <li><strong>BORATE:</strong> Inject Boron to lower reactivity (Negative insertion).</li>
+                   <li><strong>DILUTE:</strong> Add pure water to raise reactivity (Positive insertion).</li>
+                   <li>Effect is slow. Plan maneuvers 10-15 minutes in advance.</li>
+                </ul>
+             </div>
+          </div>
+       </div>
+    )
+  }
 ]
 
 interface OperatorManualProps {

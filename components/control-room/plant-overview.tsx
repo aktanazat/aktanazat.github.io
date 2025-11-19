@@ -32,7 +32,7 @@ export function PlantOverview({
   }
 
   return (
-    <div className="w-full h-[500px] bg-[#080808] p-4 relative overflow-hidden select-none">
+    <div className="w-full h-[380px] bg-[#080808] p-4 relative overflow-hidden select-none">
       {/* SVG Diagram */}
       <svg viewBox="0 0 1000 500" className="w-full h-full">
         <defs>
@@ -118,7 +118,6 @@ export function PlantOverview({
             {/* Condenser */}
             <rect x="50" y="200" width="220" height="80" rx="4" fill="#09090b" stroke="#52525b" strokeWidth="2" />
             <text x="60" y="275" fill="#3f3f46" fontSize="8" fontFamily="monospace">CONDENSER</text>
-             {/* Condenser Tubes - REMOVED PER FEEDBACK */}
         </g>
 
         {/* --- COOLING TOWERS (Right) --- */}
@@ -158,7 +157,8 @@ export function PlantOverview({
             <text x="0" y="0" fill="#e4e4e7" fontSize="10" fontFamily="monospace" fontWeight="bold">STATUS: {reactorStatus}</text>
         </g>
 
-        <g transform="translate(450, 380)">
+        {/* Condenser Temp - Moved Down */}
+        <g transform="translate(450, 420)">
              <text x="0" y="0" fill="#71717a" fontSize="10" fontFamily="monospace">CONDENSER TEMP</text>
              <text x="0" y="15" fill="#e4e4e7" fontSize="14" fontFamily="monospace">{condenserTemp.toFixed(0)}°C</text>
         </g>

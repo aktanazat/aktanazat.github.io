@@ -53,7 +53,7 @@ function ActiveSimulation({ config, onAbort }: { config: SimulationConfig, onAbo
           case 'CRITICAL': return 'bg-amber-600 text-amber-50 shadow-[0_0_10px_rgba(217,119,6,0.5)]'
           case 'POWER_OPS': return 'bg-emerald-600 text-emerald-50 shadow-[0_0_10px_rgba(5,150,105,0.5)]'
           case 'TRIPPED': return 'bg-red-600 text-red-50 animate-pulse shadow-[0_0_15px_rgba(220,38,38,0.7)]'
-          case 'MELTDOWN': return 'bg-red-950 text-red-500 animate-bounce shadow-[0_0_30px_rgba(220,38,38,1)]'
+          case 'MELTDOWN': return 'bg-red-950 text-red-50 animate-bounce shadow-[0_0_30px_rgba(220,38,38,1)]'
           default: return 'bg-zinc-600'
         }
     }
@@ -106,8 +106,8 @@ function ActiveSimulation({ config, onAbort }: { config: SimulationConfig, onAbo
                                 <div className="w-1.5 h-1.5 bg-cyan-500 rounded-full" /> Reactivity
                             </CardTitle>
                         </CardHeader>
-                        <CardContent className="space-y-8 pt-6">
-                            <div className="space-y-4">
+                        <CardContent className="space-y-6 pt-6">
+                            <div className="space-y-3">
                                 <div className="flex justify-between text-xs tracking-wider">
                                     <span className="text-zinc-400">ROD INSERTION</span>
                                     <span className="text-cyan-400 font-mono">{state.controlRodPosition.toFixed(1)}%</span>
@@ -130,7 +130,7 @@ function ActiveSimulation({ config, onAbort }: { config: SimulationConfig, onAbo
 
                             {/* Chemical Shim (Optional) */}
                             {config.chemicalShim && (
-                                <div className="space-y-4 pt-4 border-t border-white/5">
+                                <div className="space-y-3 pt-3 border-t border-white/5">
                                     <div className="flex justify-between text-xs tracking-wider">
                                         <span className="text-zinc-400">BORON CONC.</span>
                                         <span className="text-purple-400 font-mono">{state.boronConcentration.toFixed(0)} ppm</span>
@@ -139,7 +139,7 @@ function ActiveSimulation({ config, onAbort }: { config: SimulationConfig, onAbo
                                         <Button 
                                             variant="outline" 
                                             size="sm" 
-                                            className="flex-1 text-[10px] border-purple-900/50 text-purple-400 hover:bg-purple-900/20"
+                                            className="flex-1 text-[10px] border-purple-900/50 text-purple-400 hover:bg-purple-900/20 h-8"
                                             onClick={() => {
                                                 actions.setBoronConcentration(state.boronConcentration + 10)
                                                 audio.playSwitchSound()
@@ -150,7 +150,7 @@ function ActiveSimulation({ config, onAbort }: { config: SimulationConfig, onAbo
                                         <Button 
                                             variant="outline" 
                                             size="sm" 
-                                            className="flex-1 text-[10px] border-blue-900/50 text-blue-400 hover:bg-blue-900/20"
+                                            className="flex-1 text-[10px] border-blue-900/50 text-blue-400 hover:bg-blue-900/20 h-8"
                                             onClick={() => {
                                                 actions.setBoronConcentration(state.boronConcentration - 10)
                                                 audio.playSwitchSound()
@@ -164,7 +164,7 @@ function ActiveSimulation({ config, onAbort }: { config: SimulationConfig, onAbo
                             
                             <Button 
                                 variant="destructive" 
-                                className="w-full bg-red-950/30 hover:bg-red-900/50 border border-red-900/50 text-red-500 hover:text-red-400 tracking-widest text-xs h-12 rounded-sm transition-all duration-300 uppercase font-medium"
+                                className="w-full bg-red-950/30 hover:bg-red-900/50 border border-red-900/50 text-red-500 hover:text-red-400 tracking-widest text-xs h-10 rounded-sm transition-all duration-300 uppercase font-medium"
                                 onClick={() => {
                                     actions.scram()
                                     audio.playSwitchSound()
@@ -183,8 +183,8 @@ function ActiveSimulation({ config, onAbort }: { config: SimulationConfig, onAbo
                                 <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full" /> Hydraulics
                             </CardTitle>
                         </CardHeader>
-                        <CardContent className="space-y-6 pt-6">
-                            <div className="space-y-3">
+                        <CardContent className="space-y-4 pt-6">
+                            <div className="space-y-2">
                                 <div className="flex justify-between text-xs tracking-wider">
                                     <span className="text-zinc-400">PRIMARY PUMPS</span>
                                     <span className="text-emerald-400 font-mono">{state.coolantPumpSpeed.toFixed(1)}%</span>
@@ -198,7 +198,7 @@ function ActiveSimulation({ config, onAbort }: { config: SimulationConfig, onAbo
                                 />
                             </div>
 
-                            <div className="space-y-3">
+                            <div className="space-y-2">
                                 <div className="flex justify-between text-xs tracking-wider">
                                     <span className="text-zinc-400">FEEDWATER FLOW</span>
                                     <span className="text-blue-400 font-mono">{state.feedwaterFlow.toFixed(1)}%</span>
@@ -223,7 +223,7 @@ function ActiveSimulation({ config, onAbort }: { config: SimulationConfig, onAbo
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-0">
-                            <div className="h-[150px] w-full bg-black p-4 font-mono text-[10px] leading-relaxed overflow-hidden flex flex-col justify-end">
+                            <div className="h-[120px] w-full bg-black p-4 font-mono text-[10px] leading-relaxed overflow-hidden flex flex-col justify-end">
                                 {state.alarms.length === 0 && logs.length === 0 ? (
                                     <div className="text-emerald-400 flex items-center gap-2">
                                         <span>&gt;</span> SYSTEM NORMAL. MONITORING ACTIVE.
@@ -280,7 +280,7 @@ function ActiveSimulation({ config, onAbort }: { config: SimulationConfig, onAbo
                             </TabsContent>
 
                             <TabsContent value="core" className="m-0 p-6 bg-[#080808]">
-                                <div className="h-[500px] flex items-center justify-center">
+                                <div className="h-[380px] flex items-center justify-center">
                                     <CoreView 
                                         regions={state.coreRegions}
                                         controlRodPosition={state.controlRodPosition}
@@ -298,7 +298,7 @@ function ActiveSimulation({ config, onAbort }: { config: SimulationConfig, onAbo
                             </TabsContent>
 
                             <TabsContent value="hall" className="m-0 bg-[#080808]">
-                                <div className="h-[500px]">
+                                <div className="h-[380px]">
                                     <ReactorHall 
                                         type={config.type}
                                         flux={state.neutronFlux}
@@ -355,12 +355,12 @@ function ActiveSimulation({ config, onAbort }: { config: SimulationConfig, onAbo
                             )}
                         </TabsList>
                         <TabsContent value="manual">
-                            <div className="h-[600px]">
+                            <div className="h-[500px]">
                                 <OperatorManual page={manualPage} setPage={setManualPage} />
                             </div>
                         </TabsContent>
                         <TabsContent value="stats">
-                            <Card className="bg-[#0A0A0A]/80 border-white/10 backdrop-blur-sm rounded-sm h-[600px] overflow-y-auto custom-scrollbar">
+                            <Card className="bg-[#0A0A0A]/80 border-white/10 backdrop-blur-sm rounded-sm h-[500px] overflow-y-auto custom-scrollbar">
                                 <CardContent className="space-y-6 pt-6">
                                     <div className="space-y-4">
                                         <div className="text-[10px] text-zinc-500 uppercase tracking-widest mb-2">Live Trends</div>
