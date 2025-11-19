@@ -35,20 +35,25 @@ export function Synchroscope({ phase, freqDiff, gridVoltage, genVoltage, breaker
                     <div className="absolute left-2 text-xs font-mono text-zinc-600">9</div>
                     <div className="absolute right-2 text-xs font-mono text-zinc-600">3</div>
                     
-                    <div className="absolute top-8 text-[10px] font-mono text-zinc-500 uppercase tracking-widest">SLOW</div>
-                    <div className="absolute top-8 right-12 text-[10px] font-mono text-zinc-500 uppercase tracking-widest">FAST</div>
+                    {/* SLOW / FAST Labels - Moved to sides */}
+                    <div className="absolute left-8 top-1/2 -translate-y-1/2 text-[10px] font-mono text-zinc-600 uppercase tracking-widest -rotate-90 origin-center">SLOW</div>
+                    <div className="absolute right-8 top-1/2 -translate-y-1/2 text-[10px] font-mono text-zinc-600 uppercase tracking-widest rotate-90 origin-center">FAST</div>
 
-                    {/* The Needle */}
+                    {/* The Needle - SVG for better shape */}
                     <div 
-                        className="absolute w-1 h-20 bg-amber-500 origin-bottom rounded-full shadow-[0_0_10px_rgba(245,158,11,0.8)] transition-transform duration-75 ease-linear"
+                        className="absolute w-full h-full flex items-center justify-center transition-transform duration-75 ease-linear"
                         style={{ 
-                            transform: `rotate(${phase}deg) translateY(-50%)`,
-                            bottom: '50%'
+                            transform: `rotate(${phase}deg)`
                         }}
-                    />
+                    >
+                        {/* Needle Shape */}
+                        <svg width="20" height="100" viewBox="0 0 20 100" className="drop-shadow-[0_0_5px_rgba(245,158,11,0.8)]" style={{ transform: 'translateY(-35%)' }}>
+                            <path d="M 10 0 L 20 100 L 10 90 L 0 100 Z" fill="#f59e0b" />
+                        </svg>
+                    </div>
                     
                     {/* Center Cap */}
-                    <div className="absolute w-4 h-4 bg-zinc-800 rounded-full border border-zinc-600 z-10" />
+                    <div className="absolute w-6 h-6 bg-zinc-800 rounded-full border-2 border-zinc-600 z-10 shadow-lg" />
                 </div>
 
                 {/* Digital Readouts */}

@@ -14,12 +14,20 @@ export function useAudioEngine(flux: number, turbineSpeed: number, isAlarming: b
             gainNodeRef.current = audioContextRef.current.createGain()
             gainNodeRef.current.connect(audioContextRef.current.destination)
         }
+
+        return () => {
+            // Cleanup on unmount
+            if (audioContextRef.current) {
+                audioContextRef.current.close()
+                audioContextRef.current = null
+            }
+        }
     }, [])
 
     // Master Mute
     useEffect(() => {
-        if (gainNodeRef.current) {
-            gainNodeRef.current.gain.setTargetAtTime(isMuted ? 0 : 0.5, audioContextRef.current!.currentTime, 0.1)
+        if (gainNodeRef.current && audioContextRef.current) {
+            gainNodeRef.current.gain.setTargetAtTime(isMuted ? 0 : 0.5, audioContextRef.current.currentTime, 0.1)
         }
     }, [isMuted])
 
@@ -49,6 +57,13 @@ export function useAudioEngine(flux: number, turbineSpeed: number, isAlarming: b
             // Pitch shift with RPM
             turbineOscRef.current.frequency.setTargetAtTime(50 + (turbineSpeed / 1800) * 100, audioContextRef.current.currentTime, 0.5)
         }
+
+        return () => {
+            if (turbineOscRef.current) {
+                turbineOscRef.current.stop()
+                turbineOscRef.current = null
+            }
+        }
     }, [turbineSpeed, isMuted])
 
     // Geiger Counter (Random clicks based on flux)
@@ -59,21 +74,21 @@ export function useAudioEngine(flux: number, turbineSpeed: number, isAlarming: b
         const clickInterval = Math.max(10, 1000 / (flux * 5 + 1))
         
         const interval = setInterval(() => {
-            if (Math.random() > 0.3) { // Randomness
-                const osc = audioContextRef.current!.createOscillator()
-                const gain = audioContextRef.current!.createGain()
+            if (Math.random() > 0.3 && audioContextRef.current) { // Randomness
+                const osc = audioContextRef.current.createOscillator()
+                const gain = audioContextRef.current.createGain()
                 
                 osc.type = 'square'
                 osc.frequency.value = 800 + Math.random() * 200
                 
                 gain.gain.value = 0.02
-                gain.gain.exponentialRampToValueAtTime(0.001, audioContextRef.current!.currentTime + 0.05)
+                gain.gain.exponentialRampToValueAtTime(0.001, audioContextRef.current.currentTime + 0.05)
                 
                 osc.connect(gain)
                 gain.connect(gainNodeRef.current!)
                 
                 osc.start()
-                osc.stop(audioContextRef.current!.currentTime + 0.05)
+                osc.stop(audioContextRef.current.currentTime + 0.05)
             }
         }, clickInterval)
 
@@ -110,6 +125,13 @@ export function useAudioEngine(flux: number, turbineSpeed: number, isAlarming: b
         } else if (!isAlarming && alarmOscRef.current) {
             alarmOscRef.current.stop()
             alarmOscRef.current = null
+        }
+
+        return () => {
+            if (alarmOscRef.current) {
+                alarmOscRef.current.stop()
+                alarmOscRef.current = null
+            }
         }
     }, [isAlarming, isMuted])
 
