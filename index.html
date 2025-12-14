@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aktan Azat</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #f6f3ee;
+      color: #1f1f1f;
+      font-family: "Courier New", Courier, monospace;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .page {
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 44px 22px 68px;
+    }
+
+    .header {
+      border-bottom: 1px solid #d9d4cc;
+      padding-bottom: 20px;
+      margin-bottom: 32px;
+    }
+
+    .top-row {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 500;
+      letter-spacing: 0.4px;
+    }
+
+    .links {
+      display: flex;
+      gap: 12px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .links a {
+      display: inline-block;
+      padding: 6px 12px;
+      border: 1px solid #d9d4cc;
+      border-radius: 4px;
+      background: #ffffff;
+      text-decoration: none;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .links a:hover {
+      background: #1f1f1f;
+      color: #ffffff;
+      border-color: #1f1f1f;
+    }
+
+    .line {
+      border: none;
+      border-top: 1px solid #d9d4cc;
+      margin: 18px 0;
+    }
+
+    .intro {
+      display: grid;
+      gap: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .quote-block {
+      border-left: 3px solid #1f1f1f;
+      padding-left: 14px;
+      color: #2f2f2f;
+    }
+
+    .quote-block p {
+      margin: 6px 0;
+    }
+
+    .quote-footnote {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+      font-size: 13px;
+      color: #5c5c5c;
+    }
+
+    @media (min-width: 640px) {
+      .container {
+        padding: 60px 24px 80px;
+      }
+
+      .top-row {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="container">
+      <header class="header">
+        <div class="top-row">
+          <h1 class="title">Aktan Azat</h1>
+          <nav aria-label="Social links">
+            <ul class="links">
+              <li><a href="https://x.com/aktan_azat_" target="_blank" rel="noopener noreferrer">X</a></li>
+              <li><a href="https://www.linkedin.com/in/aktanazat/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+              <li><a href="https://github.com/tadoophom" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+            </ul>
+          </nav>
+        </div>
+
+        <hr class="line" />
+
+        <div class="intro">
+          <p>Currently at UC Davis.</p>
+          <p>Among my interests are LLM's, Pool (virtual and in person), and Languages (human).</p>
+          <p>Feel free to reach out.</p>
+        </div>
+      </header>
+
+      <section class="quote-block" aria-label="Favorite quote">
+        <p>"The best way to find out if you can trust somebody</p>
+        <p>is to trust them."</p>
+        <p>&mdash; Ernest Hemingway</p>
+        <div class="quote-footnote">
+          <span>&gt;</span>
+          <span>On Building Things That Matter</span>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
