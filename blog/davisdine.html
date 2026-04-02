@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Building DavisDine | Aktan Azat</title>
+  <meta name="description" content="How I built DavisDine, a dining commons app for UC Davis students, from menu scraping to the App Store." />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #111111;
+      --muted: #444444;
+      --line: #d9d9d9;
+      --link: #0645ad;
+      --link-hover: #0b0080;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { font-size: 17px; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Georgia, "Times New Roman", Times, serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a { color: var(--link); }
+    a:hover { color: var(--link-hover); }
+
+    article {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 48px 24px 64px;
+    }
+
+    .back {
+      display: inline-block;
+      margin-bottom: 2rem;
+      font-size: 0.9rem;
+    }
+
+    h1 {
+      margin: 0 0 0.25rem;
+      font-size: 1.8rem;
+      font-weight: 700;
+      line-height: 1.15;
+    }
+
+    .date {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+      display: block;
+    }
+
+    h2 {
+      margin: 2.2rem 0 0.75rem;
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+
+    p { margin: 0 0 1rem; }
+
+    code {
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 0.88em;
+      background: #f4f4f4;
+      padding: 0.15em 0.35em;
+      border-radius: 3px;
+    }
+
+    @media (max-width: 760px) {
+      article { padding: 24px 16px 40px; }
+    }
+  </style>
+</head>
+<body>
+  <article>
+    <a href="/" class="back">&larr; Home</a>
+
+    <h1>Building DavisDine</h1>
+    <span class="date">April 2026</span>
+
+    <p>DavisDine is an iOS app that shows UC Davis students what's being served at the dining commons, with AI-powered meal recommendations, allergen tracking, and nutrition planning. It's on the App Store. This is how it came together.</p>
+
+    <h2>The problem</h2>
+
+    <p>UC Davis has four dining commons. The university publishes menus online, but the experience is bad -- slow page loads, no filtering, no way to plan meals across locations. Students with allergies have to manually scan ingredient lists every day. I wanted something that felt native and fast, where you open the app and immediately see what's good today.</p>
+
+    <h2>Stack</h2>
+
+    <p>SwiftUI on the front end, Python FastAPI on the back end, deployed on Google Cloud App Engine. Firestore for persistence. The backend scrapes UC Davis menu data on a cron schedule, classifies items using Claude's API, caches everything, and serves it through a REST API. The iOS app is a standard SwiftUI architecture with local caching via <code>UserDefaults</code> for offline use.</p>
+
+    <h2>Menu scraping and ingredient analysis</h2>
+
+    <p>The first real technical problem was getting menu data. UC Davis doesn't have a public API, so the backend scrapes and parses their menu pages on a schedule. Each item needs allergen info extracted, descriptions pulled, and ingredients parsed for things like soy, dairy, eggs, sesame, shellfish. This all runs at scrape time so there's zero per-request overhead -- when a student opens the app, everything is pre-computed and cached.</p>
+
+    <p>I added AI-powered cuisine categorization on top of this. At scrape time, menu items get batch-classified into 12 categories (American, Mexican, Asian, Italian, Mediterranean, etc.) using Claude Sonnet. 150 items per API call, with a fallback to "other" for anything ambiguous. This lets students filter by cuisine type without any latency cost at request time.</p>
+
+    <h2>SMS verification</h2>
+
+    <p>The app has anonymous reviews -- students can rate and review dishes without revealing their identity. But anonymous systems need some form of verification to prevent spam. I implemented SMS verification: you prove you have a real phone number, get a random anonymous handle, and that's your identity in the review system. No names, no bios, no profile photos. Just a phone number hash the server never displays.</p>
+
+    <h2>Billing spike and cost optimization</h2>
+
+    <p>About a month in, I noticed a billing spike on Google Cloud. Dug into the usage data and found three culprits: the analytics dashboard was polling too aggressively, rapid deployments during dev sessions were causing expensive cold starts, and the instance size was larger than needed.</p>
+
+    <p>Three changes cut costs significantly. Scale-to-zero configuration (<code>min_instances: 0</code>) saved roughly $115/month. Cron frequency went from every 15 minutes to every hour -- 75% fewer API calls with no user-facing difference. Instance downgrade from F2 to F1 halved the per-hour cost. The whole investigation and fix took an afternoon.</p>
+
+    <h2>User testing and iteration</h2>
+
+    <p>I ran three rounds of user testing with other students. The feedback was specific and useful. Adding menu items to a meal plan took too many taps -- so I added a quick-add button overlay. The dining commons picker wasn't ordered by proximity or preference -- so I made it sort dynamically based on user rankings. Too much white space on the home screen, not enough color variety in the theme, no undo for accidentally dismissing a recommendation. Each piece of feedback became a GitHub issue, got its own branch, and merged separately.</p>
+
+    <p>In one sprint session, I shipped 12 features in about two hours: a favorites screen, station filtering, sort options (by rating, calories, protein), skeleton loaders to replace spinner states, a trending endpoint showing the most-liked items from the past week, review helpfulness voting, a daily meal plan generator, batch ingredient analysis, persistent recommendation caching, and real-time macro totals. Each feature got its own branch, commit history, and PR.</p>
+
+    <h2>What I'd do differently</h2>
+
+    <p>I over-built the review system. After watching how students actually used the app, I ended up removing the chat feature and most of the review infrastructure entirely. People wanted quick menu info and meal planning, not a social platform. I should have shipped the minimal version first and waited for pull from users before building social features.</p>
+
+    <p>The other lesson was about monitoring. The billing spike would have been caught earlier with alerts in place from day one. I set up cost alerts after the fact, but that's backwards -- infrastructure monitoring should be part of the initial deployment, not a reaction to a surprise invoice.</p>
+
+    <h2>Where it is now</h2>
+
+    <p>DavisDine is live on the App Store. Students at UC Davis use it to check menus, track nutrition, and find meals that fit their dietary needs. The backend runs on a single App Engine instance that scales to zero when idle. The whole thing costs less than a meal plan per month to operate.</p>
+
+  </article>
+</body>
+</html>
