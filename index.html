@@ -9,6 +9,14 @@
     content="Aktan Azat."
   />
   <style>
+    @font-face {
+      font-family: "Berkeley Mono";
+      src: url("/assets/fonts/BerkeleyMonoVariable.woff2") format("woff2");
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+    }
+
     :root {
       --bg: #ffffff;
       --text: #111111;
@@ -31,8 +39,9 @@
       min-height: 100vh;
       background: var(--bg);
       color: var(--text);
-      font-family: Georgia, "Times New Roman", Times, serif;
-      line-height: 1.6;
+      font-family: "Berkeley Mono", "SFMono-Regular", Consolas, "Liberation Mono", ui-monospace, monospace;
+      font-size: 14px;
+      line-height: 24px;
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
     }
@@ -51,14 +60,53 @@
       padding: 48px 24px 64px;
     }
 
-    h1 {
-      margin: 0;
-      font-size: clamp(2.4rem, 5vw, 3.8rem);
-      font-weight: 700;
-      line-height: 1.05;
-      letter-spacing: 0;
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
     }
 
+    h1 {
+      margin: 0;
+      font-size: clamp(3.25rem, 8vw, 5.8rem);
+      font-weight: 700;
+      line-height: 0.95;
+      text-transform: uppercase;
+      letter-spacing: -0.06em;
+    }
+
+    .blob-stage {
+      width: clamp(170px, 30vw, 240px);
+      height: clamp(170px, 30vw, 240px);
+      flex: 0 0 auto;
+      position: relative;
+      cursor: grab;
+      touch-action: none;
+    }
+
+    .blob-stage:active {
+      cursor: grabbing;
+    }
+
+    .blob-stage::before {
+      content: "";
+      position: absolute;
+      inset: 23%;
+      border: 1px dashed rgba(17, 17, 17, 0.5);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .blob-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      filter: drop-shadow(0 14px 18px rgba(0, 0, 0, 0.14));
+      contain: strict;
+    }
 
     .grid {
       display: grid;
@@ -74,8 +122,10 @@
 
     h2 {
       margin: 0 0 0.75rem;
-      font-size: 1rem;
+      font-size: 14px;
       font-weight: 700;
+      line-height: 24px;
+      text-transform: uppercase;
     }
 
     p {
@@ -95,6 +145,27 @@
       margin-top: 0.45rem;
     }
 
+    .inline-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      text-transform: uppercase;
+    }
+
+    .inline-links li + li {
+      margin-top: 0.25rem;
+    }
+
+    .inline-links a::before { content: "[ "; color: var(--muted); }
+    .inline-links a::after  { content: " ]"; color: var(--muted); }
+
+    .ornament {
+      margin-top: 3rem;
+      text-align: center;
+      color: var(--muted);
+      letter-spacing: 0.6em;
+    }
+
     .note {
       color: var(--muted);
     }
@@ -112,18 +183,32 @@
         padding: 24px 16px 40px;
       }
 
+      .hero {
+        align-items: flex-start;
+      }
+
+      .blob-stage {
+        width: 132px;
+        height: 132px;
+        margin-top: -8px;
+      }
+
       .grid {
         grid-template-columns: 1fr;
         gap: 20px;
         margin-top: 2rem;
       }
-
     }
   </style>
 </head>
 <body>
   <main>
-    <h1>Aktan Azat</h1>
+    <div class="hero">
+      <h1>Aktan Azat</h1>
+      <div class="blob-stage" id="blobStage" aria-hidden="true">
+        <canvas class="blob-canvas" id="blobCanvas"></canvas>
+      </div>
+    </div>
 
     <div class="grid">
       <div>
@@ -137,8 +222,8 @@
 
         <section>
           <h2>Links</h2>
-          <ul>
-            <li><a href="mailto:aktanaazat@gmail.com">aktanaazat@gmail.com</a></li>
+          <ul class="inline-links">
+            <li><a href="mailto:aktanaazat@gmail.com">Email</a></li>
             <li><a href="https://github.com/aktanazat" target="_blank" rel="noopener noreferrer">GitHub</a></li>
             <li><a href="https://x.com/aktan_azat_" target="_blank" rel="noopener noreferrer">X</a></li>
             <li><a href="https://www.linkedin.com/in/aktanazat/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
@@ -149,7 +234,7 @@
       <div>
         <section>
           <h2>Documents</h2>
-          <ul>
+          <ul class="inline-links">
             <li><a href="/Azat_Aktan_Resume.pdf">Resume</a></li>
             <li><a href="/Azat_Aktan_CV.pdf">CV</a></li>
           </ul>
@@ -157,7 +242,7 @@
 
         <section>
           <h2>Writing</h2>
-          <ul>
+          <ul class="inline-links">
             <li><a href="/blog/davisdine.html">Building DavisDine</a></li>
           </ul>
         </section>
@@ -180,6 +265,152 @@
         </section>
       </div>
     </div>
+
+    <p class="ornament">~*~ ~*~ ~*~</p>
   </main>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module">
+    import * as THREE from 'three';
+    import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
+    import { mergeVertices } from 'three/addons/utils/BufferGeometryUtils.js';
+
+    const HDR_URL = 'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/venice_sunset_1k.hdr';
+
+    const stage = document.getElementById('blobStage');
+    const canvas = document.getElementById('blobCanvas');
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+    camera.position.set(0, 0, 5.5);
+
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      alpha: true,
+      antialias: true,
+      powerPreference: 'high-performance'
+    });
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.setClearColor(0x000000, 0);
+
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    new RGBELoader().load(HDR_URL, (hdr) => {
+      hdr.mapping = THREE.EquirectangularReflectionMapping;
+      scene.environment = pmrem.fromEquirectangular(hdr).texture;
+      hdr.dispose();
+      pmrem.dispose();
+    });
+
+    const geometry = mergeVertices(
+      new THREE.SphereGeometry(1.4, 64, 64).deleteAttribute('uv')
+    );
+    const positions = geometry.attributes.position;
+    const rest = positions.array.slice();
+
+    const material = new THREE.MeshPhysicalMaterial({
+      color: '#f8f9fa',
+      roughness: 0.01,
+      metalness: 0.98,
+      reflectivity: 0.95,
+      envMapIntensity: 2,
+      clearcoat: 1,
+      clearcoatRoughness: 0,
+      transmission: 0.1,
+      thickness: 0.5,
+      ior: 2.4,
+      specularIntensity: 1,
+      specularColor: '#ffffff'
+    });
+
+    const blob = new THREE.Mesh(geometry, material);
+    blob.scale.setScalar(0.01);
+    scene.add(blob);
+
+    const noise = (x, y, z, t) =>
+      Math.sin(x * 2 + t) * Math.cos(y * 3 + t * 0.5) * Math.sin(z * 1.5 + t * 0.8);
+
+    let dragging = false;
+    let lastX = 0, lastY = 0;
+    let velX = 0, velY = 0;
+
+    stage.addEventListener('pointerdown', (e) => {
+      dragging = true;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      velX = velY = 0;
+      stage.setPointerCapture(e.pointerId);
+    });
+    stage.addEventListener('pointermove', (e) => {
+      if (!dragging) return;
+      const dx = (e.clientX - lastX) * 0.008;
+      const dy = (e.clientY - lastY) * 0.008;
+      blob.rotation.y += dx;
+      blob.rotation.x += dy;
+      velY = dx;
+      velX = dy;
+      lastX = e.clientX;
+      lastY = e.clientY;
+    }, { passive: true });
+    const release = () => { dragging = false; };
+    stage.addEventListener('pointerup', release);
+    stage.addEventListener('pointercancel', release);
+
+    const resize = () => {
+      const size = Math.max(1, Math.round(stage.getBoundingClientRect().width));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(size, size, false);
+    };
+    window.addEventListener('resize', resize, { passive: true });
+    resize();
+
+    const clock = new THREE.Clock();
+    const tick = () => {
+      const t = clock.getElapsedTime();
+      blob.scale.setScalar(Math.min(0.01 + t * 1.6, 1));
+
+      const v = positions.array;
+      for (let i = 0; i < v.length; i += 3) {
+        const x = rest[i], y = rest[i + 1], z = rest[i + 2];
+        const r = Math.sqrt(x * x + y * y + z * z);
+        const d =
+          noise(x * 0.5, y * 0.5, z * 0.5, t * 0.5) * 0.30 +
+          noise(x * 1.2, y * 1.2, z * 1.2, t * 0.8) * 0.15 +
+          noise(x * 2.0, y * 2.0, z * 2.0, t * 1.2) * 0.08;
+        const s = 1 + d / r;
+        v[i]     = x * s;
+        v[i + 1] = y * s;
+        v[i + 2] = z * s;
+      }
+      positions.needsUpdate = true;
+      geometry.computeVertexNormals();
+
+      if (dragging) {
+        velX *= 0.9;
+        velY *= 0.9;
+      } else {
+        blob.rotation.y += 0.005 + velY;
+        blob.rotation.x += 0.002 + velX;
+        velX *= 0.92;
+        velY *= 0.92;
+      }
+
+      material.roughness       = 0.01 + Math.sin(t * 0.4) * 0.005;
+      material.metalness       = 0.98 + Math.cos(t * 0.3) * 0.02;
+      material.envMapIntensity = 2.00 + Math.sin(t * 0.5) * 0.5;
+      material.reflectivity    = 0.95 + Math.cos(t * 0.2) * 0.05;
+
+      renderer.render(scene, camera);
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  </script>
 </body>
 </html>
