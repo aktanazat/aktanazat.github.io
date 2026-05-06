@@ -350,8 +350,8 @@
     });
     stage.addEventListener('pointermove', (e) => {
       if (!dragging) return;
-      const dx = (e.clientX - lastX) * 0.008;
-      const dy = (e.clientY - lastY) * 0.008;
+      const dx = (lastX - e.clientX) * 0.008;
+      const dy = (lastY - e.clientY) * 0.008;
       blob.rotation.y += dx;
       blob.rotation.x += dy;
       velY = dx;
