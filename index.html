@@ -3,263 +3,99 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aktan Azat</title>
-  <meta
-    name="description"
-    content="Aktan Azat."
-  />
+  <title>Aktan Azat's Home Page</title>
+  <meta name="description" content="Aktan Azat." />
   <style>
-    @font-face {
-      font-family: "Berkeley Mono";
-      src: url("/assets/fonts/BerkeleyMonoVariable.woff2") format("woff2");
-      font-weight: 100 900;
-      font-style: normal;
-      font-display: swap;
-    }
-
-    :root {
-      --bg: #ffffff;
-      --text: #111111;
-      --muted: #444444;
-      --line: #d9d9d9;
-      --link: #0645ad;
-      --link-hover: #0b0080;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      font-size: 17px;
-    }
-
     body {
+      padding: 0;
       margin: 0;
-      min-height: 100vh;
-      background: var(--bg);
-      color: var(--text);
-      font-family: "Berkeley Mono", "SFMono-Regular", Consolas, "Liberation Mono", ui-monospace, monospace;
-      font-size: 14px;
-      line-height: 24px;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
+      background-color: #666;
+      color: #000;
     }
 
-    a {
-      color: var(--link);
+    #contents {
+      margin: 10px 15%;
+      padding: 10px 30px 24px;
+      background-color: #fff;
+      color: #000;
+      overflow: hidden;
     }
 
-    a:hover {
-      color: var(--link-hover);
-    }
+    a { color: #0645ad; }
+    a:hover { color: #0b0080; }
 
-    main {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 48px 24px 64px;
-    }
+    h2 { margin: 0.3em 0; }
+    h3 { margin: 1.1em 0 0.3em; }
+    p  { margin: 0.6em 0; }
+    ul li { margin-top: 4px; }
 
-    .hero {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-    }
-
-    h1 {
-      margin: 0;
-      font-size: clamp(3.25rem, 8vw, 5.8rem);
-      font-weight: 700;
-      line-height: 0.95;
-      text-transform: uppercase;
-      letter-spacing: -0.06em;
-    }
-
+    /* draggable metallic blob — floated right where a photo would sit */
     .blob-stage {
-      width: clamp(170px, 30vw, 240px);
-      height: clamp(170px, 30vw, 240px);
-      flex: 0 0 auto;
+      float: right;
+      width: 150px;
+      height: 150px;
+      margin: 4px 0 10px 20px;
       position: relative;
       cursor: grab;
       touch-action: none;
     }
-
-    .blob-stage:active {
-      cursor: grabbing;
-    }
-
-    .blob-stage::before {
-      content: "";
-      position: absolute;
-      inset: 23%;
-      border: 1px dashed rgba(17, 17, 17, 0.5);
-      border-radius: 50%;
-      pointer-events: none;
-    }
-
+    .blob-stage:active { cursor: grabbing; }
     .blob-canvas {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
       display: block;
-      filter: drop-shadow(0 14px 18px rgba(0, 0, 0, 0.14));
+      filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.14));
       contain: strict;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.45fr) minmax(13rem, 1fr);
-      gap: 36px;
-      margin-top: 2.5rem;
-      align-items: start;
-    }
-
-    section + section {
-      margin-top: 2rem;
-    }
-
-    h2 {
-      margin: 0 0 0.75rem;
-      font-size: 14px;
-      font-weight: 700;
-      line-height: 24px;
-      text-transform: uppercase;
-    }
-
-    p {
-      margin: 0;
-    }
-
-    p + p {
-      margin-top: 0.9rem;
-    }
-
-    ul {
-      margin: 0;
-      padding-left: 1.2rem;
-    }
-
-    li + li {
-      margin-top: 0.45rem;
-    }
-
-    .inline-links {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      text-transform: uppercase;
-    }
-
-    .inline-links li + li {
-      margin-top: 0.25rem;
-    }
-
-    .inline-links a::before { content: "[ "; color: var(--muted); }
-    .inline-links a::after  { content: " ]"; color: var(--muted); }
-
-    .ornament {
-      margin-top: 3rem;
-      text-align: center;
-      color: var(--muted);
-      letter-spacing: 0.6em;
-    }
-
-    .note {
-      color: var(--muted);
-    }
-
-    blockquote {
-      margin: 0;
-      padding-left: 0.9rem;
-      border-left: 1px solid var(--line);
-      color: var(--muted);
-      font-style: italic;
-    }
-
     @media (max-width: 760px) {
-      main {
-        padding: 24px 16px 40px;
-      }
-
-      .hero {
-        align-items: flex-start;
-      }
-
-      .blob-stage {
-        width: 132px;
-        height: 132px;
-        margin-top: -8px;
-      }
-
-      .grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
-        margin-top: 2rem;
-      }
+      #contents { margin: 10px 5%; }
+      .blob-stage { width: 110px; height: 110px; }
     }
   </style>
 </head>
 <body>
-  <main>
-    <div class="hero">
-      <h1>Aktan Azat</h1>
-      <div class="blob-stage" id="blobStage" aria-hidden="true">
-        <canvas class="blob-canvas" id="blobCanvas"></canvas>
-      </div>
+  <div id="contents">
+    <div class="blob-stage" id="blobStage" aria-hidden="true">
+      <canvas class="blob-canvas" id="blobCanvas"></canvas>
     </div>
 
-    <div class="grid">
-      <div>
-        <section>
-          <h2>About</h2>
-          <p>
-            I think about how people and models reason through problems. Precision, rhythm, and long-term refinement
-            are what draw me to most of what I work on.
-          </p>
-        </section>
+    <h2>Aktan Azat</h2>
 
-        <section>
-          <h2>Links</h2>
-          <ul class="inline-links">
-            <li><a href="mailto:aktanaazat@gmail.com">Email</a></li>
-            <li><a href="https://github.com/aktanazat" target="_blank" rel="noopener noreferrer">GitHub</a></li>
-            <li><a href="https://x.com/aktan_azat_" target="_blank" rel="noopener noreferrer">X</a></li>
-            <li><a href="https://www.linkedin.com/in/aktanazat/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-          </ul>
-        </section>
-      </div>
+    <h3>Contact</h3>
+    <ul>
+      <li><a href="https://x.com/aktan_azat_">@aktan_azat_</a> on X</li>
+      <li><a href="https://github.com/aktanazat">@aktanazat</a> on Github</li>
+      <li><a href="mailto:aktanaazat@gmail.com">aktanaazat@gmail.com</a> via email</li>
+      <li><a href="https://www.linkedin.com/in/aktanazat/">aktanazat</a> on LinkedIn</li>
+    </ul>
 
-      <div>
-        <section>
-          <h2>Writing</h2>
-          <ul class="inline-links">
-            <li><a href="/blog/davisdine.html">Building DavisDine</a></li>
-          </ul>
-        </section>
+    <h3>Interests</h3>
+    <p>
+      I think about how people and models reason through problems. Precision, rhythm, and
+      long-term refinement are what draw me to most of what I work on.
+    </p>
 
-        <section>
-          <h2>Current Interests</h2>
-          <ul>
-            <li>Large language models</li>
-            <li>Languages</li>
-            <li>Pool</li>
-          </ul>
-        </section>
+    <h3>Current Interests</h3>
+    <ul>
+      <li>Large language models</li>
+      <li>Languages</li>
+      <li>Pool</li>
+    </ul>
 
-        <section>
-          <h2>Line I Like</h2>
-          <blockquote>
-            The best way to find out if you can trust somebody is to trust them.
-          </blockquote>
-          <p class="note">Ernest Hemingway</p>
-        </section>
-      </div>
-    </div>
+    <h3>Writing</h3>
+    <ul>
+      <li><a href="/blog/davisdine.html">Building DavisDine</a></li>
+    </ul>
 
-    <p class="ornament">~*~ ~*~ ~*~</p>
-  </main>
+    <h3>A line I like</h3>
+    <p>
+      <i>"The best way to find out if you can trust somebody is to trust them."</i>
+      &mdash; Ernest Hemingway
+    </p>
+  </div>
 
   <script type="importmap">
     {

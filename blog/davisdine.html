@@ -4,137 +4,234 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Building DavisDine | Aktan Azat</title>
-  <meta name="description" content="How I built DavisDine, a dining commons app for UC Davis students, from menu scraping to the App Store." />
+  <meta name="description" content="DavisDine: a UC Davis dining app with allergen filtering and a macro meal planner. Short build notes with a live demo." />
   <style>
-    @font-face {
-      font-family: "Berkeley Mono";
-      src: url("/assets/fonts/BerkeleyMonoVariable.woff2") format("woff2");
-      font-weight: 100 900;
-      font-style: normal;
-      font-display: swap;
-    }
-
-    :root {
-      --bg: #ffffff;
-      --text: #111111;
-      --muted: #444444;
-      --line: #d9d9d9;
-      --link: #0645ad;
-      --link-hover: #0b0080;
-    }
-
-    * { box-sizing: border-box; }
-
-    html { font-size: 17px; }
-
     body {
+      padding: 0;
       margin: 0;
-      min-height: 100vh;
-      background: var(--bg);
-      color: var(--text);
-      font-family: "Berkeley Mono", "SFMono-Regular", Consolas, "Liberation Mono", ui-monospace, monospace;
-      font-size: 14px;
-      line-height: 24px;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
+      background-color: #666;
+      color: #000;
     }
 
-    a { color: var(--link); }
-    a:hover { color: var(--link-hover); }
-
-    article {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 48px 24px 64px;
+    #contents {
+      margin: 10px 15%;
+      padding: 10px 30px 28px;
+      background-color: #fff;
+      color: #000;
     }
 
-    .back {
-      display: inline-block;
-      margin-bottom: 2rem;
-      font-size: 14px;
-      text-transform: uppercase;
+    a { color: #0645ad; }
+    a:hover { color: #0b0080; }
+
+    .back { display: inline-block; margin: 0.4em 0 0.2em; }
+    h2 { margin: 0.4em 0 0.1em; }
+    .date { color: #444; font-style: italic; }
+    h3 { margin: 1.4em 0 0.4em; }
+    p { margin: 0.7em 0; }
+    code { font-family: monospace; background: #f4f4f4; padding: 0.1em 0.3em; }
+
+    /* ---- live demo, plain style ---- */
+    .demo { border: 1px solid #000; margin: 1em 0; }
+    .demo-head { padding: 10px 14px; border-bottom: 1px solid #d9d9d9; }
+    .demo-label { font-size: 0.85em; color: #444; margin-bottom: 6px; }
+    .demo-hint { color: #444; font-size: 0.85em; margin: 8px 0 0; }
+    p.demo-note { color: #444; font-style: italic; font-size: 0.9em; }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chip {
+      font: inherit;
+      font-size: 0.85em;
+      padding: 2px 9px;
+      border: 1px solid #999;
+      background: #fff;
+      color: #000;
+      cursor: pointer;
+    }
+    .chip[aria-pressed="true"] {
+      background: #000;
+      color: #fff;
+      border-color: #000;
+      text-decoration: line-through;
     }
 
-    h1 {
-      margin: 0 0 0.25rem;
-      font-size: clamp(2.2rem, 6vw, 4rem);
-      font-weight: 700;
-      line-height: 0.98;
-      letter-spacing: -0.06em;
-      text-transform: uppercase;
+    .demo-body { display: grid; grid-template-columns: 1fr; }
+    .menu { border-bottom: 1px solid #d9d9d9; }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 4px 14px;
+      align-items: baseline;
+      width: 100%;
+      text-align: left;
+      font: inherit;
+      background: #fff;
+      border: 0;
+      border-bottom: 1px solid #eee;
+      padding: 9px 14px;
+      cursor: pointer;
+      color: #000;
     }
+    .row:last-child { border-bottom: 0; }
+    .row:hover:not([disabled]) { background: #f7f7f7; }
+    .row[disabled] { opacity: 0.32; cursor: not-allowed; }
+    .row .name { font-weight: 700; }
+    .row .macros { color: #444; font-size: 0.85em; white-space: nowrap; }
+    .row .tags { grid-column: 1 / -1; color: #444; font-size: 0.8em; }
+    .row .add { grid-column: 2; color: #0645ad; font-size: 0.85em; }
 
-    .date {
-      color: var(--muted);
-      font-size: 14px;
-      margin-bottom: 2rem;
-      display: block;
+    .plate { padding: 10px 14px; }
+    .plate h4 { margin: 0 0 6px; font-size: 0.85em; color: #444; font-weight: 700; }
+    .plate-empty { color: #444; font-size: 0.85em; }
+    .plate-item {
+      display: flex; justify-content: space-between; align-items: baseline;
+      gap: 10px; padding: 3px 0; border-bottom: 1px dotted #d9d9d9;
     }
+    .plate-item button { font: inherit; font-size: 0.85em; border: 0; background: none; color: #0645ad; cursor: pointer; padding: 0; }
+    .totals { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 10px; padding-top: 8px; border-top: 1px solid #000; }
+    .totals[hidden] { display: none; }
+    .totals span { color: #444; }
 
-    h2 {
-      margin: 2.2rem 0 0.75rem;
-      font-size: 14px;
-      font-weight: 700;
-      line-height: 24px;
-      text-transform: uppercase;
+    @media (min-width: 620px) {
+      .demo-body { grid-template-columns: 1.35fr 1fr; }
+      .menu { border-bottom: 0; border-right: 1px solid #d9d9d9; }
     }
-
-    p { margin: 0 0 1rem; }
-
-    code {
-      font-family: "Berkeley Mono", "SFMono-Regular", Consolas, "Liberation Mono", ui-monospace, monospace;
-      font-size: 0.88em;
-      background: #f4f4f4;
-      padding: 0.15em 0.35em;
-      border-radius: 3px;
-    }
-
-    @media (max-width: 760px) {
-      article { padding: 24px 16px 40px; }
-    }
+    @media (max-width: 760px) { #contents { margin: 10px 5%; padding: 10px 18px 24px; } }
   </style>
 </head>
 <body>
-  <article>
+  <div id="contents">
     <a href="/" class="back">&larr; Home</a>
 
-    <h1>Building DavisDine</h1>
-    <span class="date">April 2026</span>
+    <h2>Building DavisDine</h2>
+    <p class="date">April 2026</p>
 
-    <p>DavisDine is an iOS app that shows UC Davis students what's in the dining commons today, with allergen filtering, AI cuisine sorting, and a meal planner that totals macros across stations. It's <a href="https://apps.apple.com/us/app/davisdinebuddy/id6758647990" target="_blank" rel="noopener noreferrer">on the App Store</a>.</p>
+    <p>DavisDine shows UC Davis students what's in the dining commons today. You filter by allergen, and then you build a plate that adds up the calories and macros across every single station you happened to pull a dish from. Before it existed, working out what I could actually eat meant clicking through a slow campus menu portal for a couple of minutes at every meal, which honestly got old faster than you'd think. I wanted five seconds instead. It's <a href="https://apps.apple.com/us/app/davisdinebuddy/id6758647990" target="_blank" rel="noopener noreferrer">on the App Store</a>.</p>
 
-    <h2>The problem</h2>
+    <h3>Try it</h3>
 
-    <p>UC Davis publishes menus on a slow web portal with no filters and no cross-location search. Students with allergies scan ingredient lists by hand every meal. The path from hungry to "what should I eat right now" was something like two minutes of clicking. I wanted that down to five seconds.</p>
+    <p>Here's the core loop, running right on this page. Turn off an allergen and anything that contains it drops straight out of the list below. Tap a few dishes, watch the plate fill in, and the totals shift as you go. Why bother filtering at all? Because a student with a real allergy otherwise has to read through every ingredient label by hand, at every meal, forever, and that is exactly the chore the app is built to kill.</p>
 
-    <h2>Stack</h2>
+    <div class="demo" id="demo">
+      <div class="demo-head">
+        <div class="demo-label">Exclude allergens:</div>
+        <div class="chips" id="chips"></div>
+        <p class="demo-hint" id="hint"></p>
+      </div>
+      <div class="demo-body">
+        <div class="menu" id="menu"></div>
+        <div class="plate">
+          <h4>My plate</h4>
+          <div id="plate"></div>
+          <div class="totals" id="totals" hidden>
+            <div><b id="tCal">0</b> <span>cal</span></div>
+            <div><b id="tP">0</b> <span>g protein</span></div>
+            <div><b id="tC">0</b> <span>g carbs</span></div>
+            <div><b id="tF">0</b> <span>g fat</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <p>SwiftUI on the front; FastAPI on Python deployed to Google App Engine; Firestore for persistence. The backend scrapes UC Davis menus on a cron schedule, runs each batch through Claude Sonnet to classify items into 12 cuisines at 150 items per call, and serves the cached result through a REST API. The iOS app holds a <code>UserDefaults</code> mirror so it works offline. Everything heavy happens at scrape time; a per-request call is a Firestore read.</p>
+    <p class="demo-note">The sample menu uses the same shape the app does. The real one pulls today's actual stations.</p>
 
-    <h2>Anonymous reviews, SMS-gated</h2>
+    <h3>How it works</h3>
 
-    <p>Reviews are anonymous but bot-resistant. Verification is one SMS code; the server stores a hash of the phone number and hands back a random handle. No name, bio, photo, or settable username. The phone number is the cost-of-spam signal and never appears in the UI. That gave me a review system with no moderation queue and no harassment surface.</p>
+    <p>The front end is SwiftUI on iOS and Jetpack Compose on Android. Behind it sits a FastAPI service on Google App Engine, with Firestore underneath for storage. A cron job scrapes the UC Davis menus, pushes each batch through Claude Sonnet to sort the items into twelve cuisines at a hundred and fifty per call, and caches whatever comes back, so all the expensive work lands at scrape time instead of the moment a hungry person opens the app. A request is just a Firestore read. The app holds a local copy too, so it still works with no signal.</p>
 
-    <h2>The billing spike</h2>
+    <h3>What I got wrong</h3>
 
-    <p>A month in, my Google Cloud bill jumped. Three causes, in order of damage: an analytics dashboard polling on a tight loop during dev sessions, frequent redeploys triggering cold-start charges, and an F2 instance for a workload that fits in F1. Setting <code>min_instances: 0</code> saved about $115/month. Cron dropped from every 15 minutes to hourly (75% fewer API calls, zero user-visible change). The instance downgrade halved the hourly rate. Total fix: one afternoon.</p>
+    <p>I regret the social layer more than anything else I shipped. I wrote chat, threaded replies, the whole helpfulness-voting thing, before I had bothered to check whether one single student actually wanted any of it. None of them did. They pretty much came to look at a menu fast and plan a meal, nothing more, so I pulled most of that code back out inside two weeks. Old lesson, learned again: ship the smallest thing that solves the real problem, then wait for people to pull on it before you build anything else on top.</p>
 
-    <h2>User testing</h2>
+    <p>Cost was the other miss. About a month in, the Cloud bill jumped. A dev dashboard had been polling in a tight loop the entire time, and the instance was probably a size bigger than the workload ever actually needed. Setting <code>min_instances</code> to zero and moving the cron from every fifteen minutes down to hourly sorted it in an afternoon. To be fair, a billing alert wired up on day one would have caught the whole run-up in hours, not three weeks.</p>
 
-    <p>Three rounds with other students. The useful feedback was specific: too many taps to add an item to a meal plan, the dining commons picker not sorted by proximity, no undo on dismissed recommendations, too much whitespace on the home screen. Each one became a GitHub issue, a branch, and a separate PR.</p>
+    <h3>Where it is now</h3>
 
-    <p>In one two-hour sprint I shipped twelve features against that backlog: favorites, station filtering, sort by rating/calories/protein, skeleton loaders, a trending endpoint, helpfulness votes on reviews, a daily meal plan generator, batch ingredient analysis, recommendation caching, and real-time macro totals. The branching discipline mattered more than the speed; if the next round of testing hated a feature, it could be reverted on its own.</p>
+    <p>It's <a href="https://apps.apple.com/us/app/davisdinebuddy/id6758647990" target="_blank" rel="noopener noreferrer">live on the App Store</a>, and students use it daily to plan around allergens and macros. The backend scales down to nothing when nobody is hungry, so running the entire thing costs less than a single meal swipe a month.</p>
+  </div>
 
-    <h2>What I got wrong</h2>
+  <script>
+    const ALLERGENS = [
+      ["gluten","gluten"],["dairy","dairy"],["eggs","eggs"],["tree_nuts","tree nuts"],
+      ["soy","soy"],["fish","fish"],["sesame","sesame"]
+    ];
+    const MENU = [
+      { id:"egg_white", name:"Egg White Scramble", hall:"Segundo",  cal:210, p:26, c:9,  f:8,  a:["eggs"] },
+      { id:"oats",      name:"Berry Overnight Oats",hall:"Tercero",  cal:330, p:14, c:49, f:9,  a:["tree_nuts"] },
+      { id:"tofu",      name:"Teriyaki Tofu Bowl",  hall:"Tercero",  cal:510, p:24, c:66, f:17, a:["soy","sesame"] },
+      { id:"salmon",    name:"Grilled Salmon Plate",hall:"Cuarto",   cal:610, p:39, c:44, f:26, a:["fish"] },
+      { id:"kebab",     name:"Halal Chicken Kebab", hall:"Latitude", cal:560, p:42, c:51, f:18, a:[] },
+      { id:"wrap",      name:"Turkey Avocado Wrap", hall:"Segundo",  cal:490, p:31, c:43, f:19, a:["gluten"] },
+      { id:"pesto",     name:"Basil Pesto Pasta",   hall:"Segundo",  cal:580, p:19, c:72, f:22, a:["dairy","gluten","tree_nuts"] },
+      { id:"curry",     name:"Lentil Coconut Curry",hall:"Tercero",  cal:470, p:22, c:57, f:16, a:[] }
+    ];
 
-    <p>The biggest waste was the review system. I built chat, helpfulness voting, threaded replies, and an entire social layer before testing whether anyone wanted it. They didn't. Students came for fast menu lookup and meal planning. I tore most of that infrastructure out within two weeks. Lesson older than the project: ship the smallest thing that solves the actual problem, watch users pull on it, build social features only after the pull appears.</p>
+    const excluded = new Set();
+    const plate = [];
+    const label = Object.fromEntries(ALLERGENS);
+    const $ = (id) => document.getElementById(id);
 
-    <p>Second mistake: monitoring. Cost alerts went up after the spike instead of with the first deployment. Day-one alerts would have caught the run-up in hours instead of weeks.</p>
+    function renderChips() {
+      $("chips").innerHTML = "";
+      for (const [key, text] of ALLERGENS) {
+        const b = document.createElement("button");
+        b.className = "chip";
+        b.textContent = text;
+        b.setAttribute("aria-pressed", excluded.has(key));
+        b.onclick = () => { excluded.has(key) ? excluded.delete(key) : excluded.add(key); render(); };
+        $("chips").appendChild(b);
+      }
+    }
 
-    <h2>Where it is now</h2>
+    function hidden(item) { return item.a.some((x) => excluded.has(x)); }
 
-    <p><a href="https://apps.apple.com/us/app/davisdinebuddy/id6758647990" target="_blank" rel="noopener noreferrer">DavisDine is live on the App Store</a>. Students use it daily to plan around allergens and macros. The backend runs on a single F1 App Engine instance that scales to zero when no one is hungry; operating cost is under a meal swipe per month. Next is widening the cuisine model and pulling in menu data from neighboring colleges so the app travels.</p>
+    function renderMenu() {
+      const m = $("menu"); m.innerHTML = "";
+      let shown = 0;
+      for (const item of MENU) {
+        const off = hidden(item);
+        if (!off) shown++;
+        const row = document.createElement("button");
+        row.className = "row";
+        if (off) row.disabled = true;
+        const tags = item.a.length ? item.a.map((x) => label[x]).join(", ") : "no top-9 allergens";
+        row.innerHTML =
+          `<span class="name">${item.name}</span>` +
+          `<span class="macros">${item.cal} cal &middot; ${item.p}p ${item.c}c ${item.f}f</span>` +
+          `<span class="tags">${item.hall} — ${tags}</span>` +
+          `<span class="add">${off ? "filtered out" : "+ add to plate"}</span>`;
+        if (!off) row.onclick = () => { plate.push(item); renderPlate(); };
+        m.appendChild(row);
+      }
+      const n = excluded.size;
+      $("hint").textContent = n
+        ? `${shown} of ${MENU.length} dishes safe with ${n} allergen${n > 1 ? "s" : ""} excluded.`
+        : "Nothing excluded — showing all stations.";
+    }
 
-  </article>
+    function renderPlate() {
+      const el = $("plate");
+      if (!plate.length) {
+        el.innerHTML = `<div class="plate-empty">Empty. Tap a dish to add it.</div>`;
+        $("totals").hidden = true;
+        return;
+      }
+      el.innerHTML = "";
+      let cal = 0, p = 0, c = 0, f = 0;
+      plate.forEach((item, i) => {
+        cal += item.cal; p += item.p; c += item.c; f += item.f;
+        const r = document.createElement("div");
+        r.className = "plate-item";
+        r.innerHTML = `<span>${item.name}</span><button aria-label="remove">remove &times;</button>`;
+        r.querySelector("button").onclick = () => { plate.splice(i, 1); renderPlate(); };
+        el.appendChild(r);
+      });
+      $("tCal").textContent = cal; $("tP").textContent = p; $("tC").textContent = c; $("tF").textContent = f;
+      $("totals").hidden = false;
+    }
+
+    function render() { renderChips(); renderMenu(); }
+    render();
+    renderPlate();
+  </script>
 </body>
 </html>
