@@ -82,7 +82,6 @@
     .sim-status { color: #444; font-size: 0.85em; font-family: monospace; }
     .sim-stage { margin-top: 10px; }
     #simCanvas { width: 100%; max-width: 720px; height: 320px; display: block; margin: 0 auto; border: 1px solid #d9d9d9; }
-    .paper { width: 100%; height: 78vh; border: 1px solid #000; margin: 1em 0 0.4em; }
 
     @media (max-width: 760px) { #contents { padding: 0 1em; } }
   </style>
@@ -188,22 +187,18 @@
       <figcaption>Concentration per segment as an equal-share HHI floor: 10,000 divided by the supplier count, a provable lower bound on true concentration. Every segment crossed both DOJ/FTC "highly concentrated" thresholds by the early 2000s and never came back.</figcaption>
     </figure>
 
-    <p>The historical record says structure is the lever that works. In the 1980s the Air Force forced Pratt &amp; Whitney and General Electric to compete year after year for fighter-engine buys, the Great Engine War, and got roughly <a href="https://www.rand.org/content/dam/rand/pubs/notes/2007/N3618.pdf" target="_blank" rel="noopener noreferrer">20 percent life-cycle savings</a> plus a sharp drop in engine failures. The same record cuts the other way for some programs: for low-volume missiles, running a second production line cost more than it saved. Competition pays where volume is high enough to climb the learning curve. That argues for dual-sourcing chosen segment by segment, protection for the new entrants already arriving, and breakups only where nothing else works.</p>
+    <p>Adding a second seller has worked before. In the 1980s the Air Force forced Pratt &amp; Whitney and General Electric to compete year after year for fighter-engine buys, the Great Engine War, and got roughly <a href="https://www.rand.org/content/dam/rand/pubs/notes/2007/N3618.pdf" target="_blank" rel="noopener noreferrer">20 percent life-cycle savings</a> plus a sharp drop in engine failures. But for low-volume missiles, a second production line cost more than it saved. Competition pays where volume is high enough to climb the learning curve. That argues for dual-sourcing chosen segment by segment, protection for the new entrants already arriving, and breakups only where nothing else works.</p>
 
     <figure id="fig-engines">
       <img src="img/unit_cost_trajectories.png" alt="Chart: modeled missile unit-cost trajectories, sole source versus dual source, with the dual-source line about 21 percent cheaper at every volume" />
       <figcaption>Wright's-law unit costs anchored to the real 1987 AMRAAM Lot-I average ($3.1M around unit 100), an 87.5 percent learning curve, and an illustrative 2,700 missiles a year. The dual-source line applies the 21 percent life-cycle saving GAO measured on the Great Engine War: roughly $7.4B over ten years on a $35B program.</figcaption>
     </figure>
 
-    <p>Ukraine is the existence proof that a distributed base can out-produce a concentrated one under far worse conditions. Its domestic drone industry went from a handful of makers before the invasion to roughly 500 serious manufacturers, with about 2,500 registered on <a href="https://brave1.gov.ua/en" target="_blank" rel="noopener noreferrer">Brave1</a>, the state's procurement cluster, iterating against Russian jamming on a cycle of weeks.</p>
+    <p>Ukraine is the existence proof that a distributed base can out-produce a concentrated one under far worse conditions. Its domestic drone industry went from a handful of makers before the invasion to roughly 500 serious manufacturers, with about 2,500 registered on <a href="https://brave1.gov.ua/en" target="_blank" rel="noopener noreferrer">Brave1</a>, the state's procurement cluster. They iterate against Russian jamming on a cycle of weeks.</p>
 
     <h3>Read the paper</h3>
 
-    <p>Everything above is the short version. The full paper, with the models, figures, and about 140 primary sources behind every claim, is below: <i>Competition by Design: Why the United States Must Deconsolidate Its Defense Industrial Base</i>, 44 pages. You can also <a href="/blog/competition-by-design.pdf">download the PDF</a>. If you work on defense industrial policy, or you think I'm wrong somewhere, <a href="mailto:aktanaazat@gmail.com">email me</a>.</p>
-
-    <object class="paper" data="competition-by-design.pdf" type="application/pdf" aria-label="Competition by Design, full paper PDF">
-      <p>Your browser doesn't show PDFs inline. <a href="competition-by-design.pdf">Download the paper</a> instead.</p>
-    </object>
+    <p>Everything above is the short version. <a href="/blog/competition-by-design.pdf" download>Download the full 44-page paper</a>: <i>Competition by Design: Why the United States Must Deconsolidate Its Defense Industrial Base</i>. It includes the models, figures, and about 140 primary sources behind every claim. If you work on defense industrial policy, or you think I'm wrong somewhere, <a href="mailto:aktanaazat@gmail.com">email me</a>.</p>
   </div>
 
   <script>
@@ -686,7 +681,7 @@
       segment, color, n,
       year: YEARS[i],
       hhi: hhiOf(n),
-      title: `${segment}\n${YEARS[i]}: HHI floor \u2248 ${fmtHHI(hhiOf(n))} (${n} suppliers)\nDoD State of Competition count (2022);\nequal-share floor \u2014 true concentration is at least this.`,
+      title: `${segment}\n${YEARS[i]}: HHI floor \u2248 ${fmtHHI(hhiOf(n))} (${n} suppliers)\nDoD State of Competition count (2022);\nequal-share floor: true concentration is at least this.`,
     })));
     const hhiSeriesLabels = [
       { y: 769,  text: 'Tactical missiles',   color: BLUE },

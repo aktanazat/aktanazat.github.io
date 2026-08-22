@@ -106,11 +106,11 @@
     <h2>Building DavisDine</h2>
     <p class="date">April 2026</p>
 
-    <p>DavisDine shows UC Davis students what's in the dining commons today. You filter by allergen, and then you build a plate that adds up the calories and macros across every single station you happened to pull a dish from. Before it existed, working out what I could actually eat meant clicking through a slow campus menu portal for a couple of minutes at every meal, which honestly got old faster than you'd think. I wanted five seconds instead. It's <a href="https://apps.apple.com/us/app/davisdinebuddy/id6758647990" target="_blank" rel="noopener noreferrer">on the App Store</a>.</p>
+    <p>DavisDine shows UC Davis students what's in the dining commons today. You filter by allergen, then build a plate that adds up the calories and macros across every station you pulled a dish from. Before it existed, working out what I could eat meant a couple of minutes clicking through a slow campus menu portal at every meal, which got old fast. I wanted five seconds instead. It's <a href="https://apps.apple.com/us/app/davisdinebuddy/id6758647990" target="_blank" rel="noopener noreferrer">on the App Store</a>.</p>
 
     <h3>Try it</h3>
 
-    <p>Here's the core loop, running right on this page. Turn off an allergen and anything that contains it drops straight out of the list below. Tap a few dishes, watch the plate fill in, and the totals shift as you go. Why bother filtering at all? Because a student with a real allergy otherwise has to read through every ingredient label by hand, at every meal, forever, and that is exactly the chore the app is built to kill.</p>
+    <p>Here's the core loop, running on this page. Turn off an allergen and anything that contains it drops out of the list below. Tap a few dishes, watch the plate fill in, and the totals shift as you go. Without the filter, a student with a real allergy reads every ingredient label by hand, at every meal, which is the chore the app is built to kill.</p>
 
     <div class="demo" id="demo">
       <div class="demo-head">
@@ -133,7 +133,7 @@
       </div>
     </div>
 
-    <p class="demo-note">The sample menu uses the same shape the app does. The real one pulls today's actual stations.</p>
+    <p class="demo-note">The sample menu uses the same shape the app does. The real one pulls today's stations.</p>
 
     <h3>How it works</h3>
 
@@ -141,13 +141,13 @@
 
     <h3>What I got wrong</h3>
 
-    <p>I regret the social layer more than anything else I shipped. I wrote chat, threaded replies, the whole helpfulness-voting thing, before I had bothered to check whether one single student actually wanted any of it. None of them did. They pretty much came to look at a menu fast and plan a meal, nothing more, so I pulled most of that code back out inside two weeks. Old lesson, learned again: ship the smallest thing that solves the real problem, then wait for people to pull on it before you build anything else on top.</p>
+    <p>I regret the social layer more than anything else I shipped. I wrote chat, threaded replies, the whole helpfulness-voting thing, before I had bothered to check whether a single student wanted any of it. None of them did. They came to look at a menu fast and plan a meal, nothing more, so I pulled most of that code back out inside two weeks. I should have shipped the menu alone and waited for someone to ask for more.</p>
 
-    <p>Cost was the other miss. About a month in, the Cloud bill jumped. A dev dashboard had been polling in a tight loop the entire time, and the instance was probably a size bigger than the workload ever actually needed. Setting <code>min_instances</code> to zero and moving the cron from every fifteen minutes down to hourly sorted it in an afternoon. To be fair, a billing alert wired up on day one would have caught the whole run-up in hours, not three weeks.</p>
+    <p>Cost was the other miss. About a month in, the Cloud bill jumped. A dev dashboard had been polling in a tight loop the entire time, and the instance was probably a size bigger than the workload needed. Setting <code>min_instances</code> to zero and moving the cron from every fifteen minutes down to hourly sorted it in an afternoon. A billing alert on day one would have flagged the run-up within hours. Without one, it ran for three weeks.</p>
 
     <h3>Where it is now</h3>
 
-    <p>It's <a href="https://apps.apple.com/us/app/davisdinebuddy/id6758647990" target="_blank" rel="noopener noreferrer">live on the App Store</a>, and students use it daily to plan around allergens and macros. The backend scales down to nothing when nobody is hungry, so running the entire thing costs less than a single meal swipe a month.</p>
+    <p>It's <a href="https://apps.apple.com/us/app/davisdinebuddy/id6758647990" target="_blank" rel="noopener noreferrer">live on the App Store</a>, and students use it daily to plan around allergens and macros. The backend scales down to nothing when nobody is hungry, so running it costs less than a meal swipe a month.</p>
   </div>
 
   <script>
