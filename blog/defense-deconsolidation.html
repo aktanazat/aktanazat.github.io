@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How Fifty-One Defense Companies Became Five | Aktan Azat</title>
+  <meta name="description" content="The 1993 Pentagon dinner that consolidated the US defense industry, what that base does under wartime stress, and an interactive calculator for drone-versus-interceptor economics." />
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+      background-color: #666;
+      color: #000;
+    }
+
+    #contents {
+      margin: 10px 15%;
+      padding: 10px 30px 28px;
+      background-color: #fff;
+      color: #000;
+    }
+
+    a { color: #0645ad; }
+    a:hover { color: #0b0080; }
+
+    .back { display: inline-block; margin: 0.4em 0 0.2em; }
+    h2 { margin: 0.4em 0 0.1em; }
+    .date { color: #444; font-style: italic; }
+    h3 { margin: 1.4em 0 0.4em; }
+    p { margin: 0.7em 0; }
+    code { font-family: monospace; background: #f4f4f4; padding: 0.1em 0.3em; }
+
+    figure { margin: 1em 0; }
+    figure img { width: 100%; height: auto; display: block; border: 1px solid #d9d9d9; }
+    figcaption { color: #444; font-style: italic; font-size: 0.9em; margin-top: 4px; }
+
+    /* ---- live demo, plain style ---- */
+    .demo { border: 1px solid #000; margin: 1em 0; }
+    .demo-head { padding: 10px 14px; border-bottom: 1px solid #d9d9d9; }
+    .demo-label { font-size: 0.85em; color: #444; margin-bottom: 6px; }
+    p.demo-note { color: #444; font-style: italic; font-size: 0.9em; }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chip {
+      font: inherit;
+      font-size: 0.85em;
+      padding: 2px 9px;
+      border: 1px solid #999;
+      background: #fff;
+      color: #000;
+      cursor: pointer;
+    }
+    .chip[aria-pressed="true"] {
+      background: #000;
+      color: #fff;
+      border-color: #000;
+    }
+
+    .demo-body { padding: 10px 14px; }
+    .ctl { display: grid; grid-template-columns: 12em 1fr 7.5em; gap: 4px 12px; align-items: center; padding: 5px 0; }
+    .ctl label { font-size: 0.9em; }
+    .ctl input[type="range"] { width: 100%; accent-color: #000; }
+    .ctl .val { font-family: monospace; font-size: 0.9em; text-align: right; white-space: nowrap; }
+    @media (max-width: 619px) {
+      .ctl { grid-template-columns: 1fr 7.5em; }
+      .ctl label { grid-column: 1 / -1; }
+    }
+
+    .outcome { border-top: 1px solid #000; margin-top: 10px; padding-top: 10px; }
+    .bars { margin: 8px 0; }
+    .barrow { display: grid; grid-template-columns: 8.5em 1fr; gap: 10px; align-items: center; padding: 3px 0; font-size: 0.9em; }
+    .bar { height: 14px; min-width: 2px; }
+    .bar.attacker { background: #b40000; }
+    .bar.defender { background: #0645ad; }
+    .verdict { margin-top: 8px; }
+    .verdict b { font-size: 1.05em; }
+    .leak { color: #b40000; font-weight: 700; }
+
+    @media (max-width: 760px) { #contents { margin: 10px 5%; padding: 10px 18px 24px; } }
+  </style>
+</head>
+<body>
+  <div id="contents">
+    <a href="/" class="back">&larr; Home</a>
+
+    <h2>How Fifty-One Defense Companies Became Five</h2>
+    <p class="date">August 2026</p>
+
+    <p>In the fall of 1993, Secretary of Defense Les Aspin and his deputy William Perry invited the chief executives of the biggest American defense contractors to <a href="https://www.wbur.org/onpoint/2023/03/01/the-last-supper-how-a-1993-pentagon-dinner-reshaped-the-defense-industry" target="_blank" rel="noopener noreferrer">dinner at the Pentagon</a> and told them, over what the industry still calls the Last Supper, that the post&ndash;Cold War budget could not keep them all alive. Perry put it plainly: "We expect defense companies to go out of business. We will stand by and watch." They did. Within a decade, fifty-one prime contractors merged down to five.</p>
+
+    <figure>
+      <img src="img/supplier_counts.png" alt="Chart: number of qualified US suppliers per weapons segment, 1990 to 2025, falling in every segment" />
+      <figcaption>Suppliers per weapons segment since 1990. Tactical missiles went from 13 producers to 3, fixed-wing aircraft from 8 to 3, surface ships from 8 to 2. Chart from my own model scripts; the counts are the Pentagon's own, from the 2022 report linked below.</figcaption>
+    </figure>
+
+    <p>I fell down this rabbit hole watching the drone war in Ukraine and wondering why the country with the largest defense budget on earth kept showing up in the reporting as the one that couldn't make enough of anything. The answer kept tracing back to that dinner. What surprised me most is that the buyer itself admits the problem: the Pentagon's own <a href="https://media.defense.gov/2022/Feb/15/2002939087/-1/-1/1/STATE-OF-COMPETITION-WITHIN-THE-DEFENSE-INDUSTRIAL-BASE.PDF" target="_blank" rel="noopener noreferrer">2022 State of Competition report</a> counts the collapse segment by segment and concludes that the consolidation it once encouraged now works against it.</p>
+
+    <h3>What the five-company base does under stress</h3>
+
+    <p>Since 2022 the base has been through a live stress test, and the results are public.</p>
+
+    <p>The Army began 2022 making about 14,000 artillery shells a month and set out to reach 100,000. Three years and $5 billion later it makes about 40,000, and <a href="https://breakingdefense.com/2025/10/army-hitting-stride-with-155mm-production-but-key-general-worries-over-whats-needed-next/" target="_blank" rel="noopener noreferrer">every target date has slipped</a>, most recently to mid-2026. The centerpiece of the expansion, a $469 million automated shell-casing plant in Texas, had <a href="https://www.propublica.org/article/general-dynamics-artillery-factory-failed" target="_blank" rel="noopener noreferrer">produced no usable subcomponents</a> as of March 2026, more than two years in.</p>
+
+    <p>Precision didn't hold up either. The GPS-guided Excalibur shell went from a 55 percent hit rate in Ukraine in January 2023 to <a href="https://www.kyivpost.com/analysis/33448" target="_blank" rel="noopener noreferrer">6 percent by August</a>, once Russian jammers found it, and Ukraine simply stopped using the round. And when CSIS <a href="https://csis-website-prod.s3.amazonaws.com/s3fs-public/publication/230109_Cancian_FirstBattle_NextWar.pdf" target="_blank" rel="noopener noreferrer">wargamed a Chinese invasion of Taiwan</a> twenty-four times, the United States ran out of its most important anti-ship missile in the first week of every single iteration, against a production line building 88 a year.</p>
+
+    <figure>
+      <img src="img/shell_ramp.png" alt="Chart: US monthly 155mm shell production 2022 to 2026 against announced targets, every target slipping" />
+      <figcaption>The 155mm ramp against its own announced targets. Money moved fast; suppliers didn't.</figcaption>
+    </figure>
+
+    <h3>Run the math yourself</h3>
+
+    <p>The cheapest way to feel the problem is the exchange rate between drones and interceptors. A Shahed-class drone costs Russia <a href="https://en.defence-ua.com/industries/how_much_russia_pays_for_shahed_now_down_from_300000_per_drone_in_2022-15585.html" target="_blank" rel="noopener noreferrer">$20,000 to $70,000</a>. The missiles fired to stop it cost $1.8 million to <a href="https://www.twz.com/land/cheap-patriot-interceptor-costing-under-1-million-now-being-sought-by-army" target="_blank" rel="noopener noreferrer">$5.3 million each</a>, and doctrine often fires two per target. Set up a raid and see what the defense costs, and what happens when the raid outgrows the magazine.</p>
+
+    <div class="demo" id="demo">
+      <div class="demo-head">
+        <div class="demo-label">Presets</div>
+        <div class="chips" id="presets"></div>
+      </div>
+      <div class="demo-body">
+        <div class="ctl">
+          <label for="raid">Raid size (drones)</label>
+          <input type="range" id="raid" min="1" max="200" step="1" />
+          <span class="val" id="raidVal"></span>
+        </div>
+        <div class="ctl">
+          <label for="dcost">Drone unit cost</label>
+          <input type="range" id="dcost" min="10000" max="300000" step="5000" />
+          <span class="val" id="dcostVal"></span>
+        </div>
+        <div class="ctl">
+          <label for="icost">Interceptor unit cost</label>
+          <input type="range" id="icost" min="500000" max="6000000" step="100000" />
+          <span class="val" id="icostVal"></span>
+        </div>
+        <div class="ctl">
+          <label for="salvo">Interceptors fired per drone</label>
+          <input type="range" id="salvo" min="1" max="3" step="1" />
+          <span class="val" id="salvoVal"></span>
+        </div>
+        <div class="ctl">
+          <label for="mag">Magazine depth (interceptors)</label>
+          <input type="range" id="mag" min="10" max="500" step="2" />
+          <span class="val" id="magVal"></span>
+        </div>
+
+        <div class="outcome">
+          <div class="bars">
+            <div class="barrow"><span>Attacker spends</span><div class="bar attacker" id="barA"></div></div>
+            <div class="barrow"><span>Defender spends</span><div class="bar defender" id="barD"></div></div>
+          </div>
+          <p class="verdict" id="verdict"></p>
+        </div>
+      </div>
+    </div>
+
+    <p class="demo-note">A deliberately simple model: interceptors are assumed to work, and the raid only wins by emptying the magazine. Reality is messier in both directions. For scale, over fifteen months of Red Sea operations the Navy fired about 220 interceptors, near <a href="https://www.stripes.com/branches/navy/2025-01-16/houthis-navy-red-sea-missiles-drones-16500246.html" target="_blank" rel="noopener noreferrer">$1 billion worth</a>, against drones and missiles that cost a small fraction of that to build.</p>
+
+    <h3>The part the reforms didn't touch</h3>
+
+    <p>Washington noticed. The <a href="https://www.hklaw.com/en/insights/publications/2025/12/fy-2026-national-defense-authorization-act" target="_blank" rel="noopener noreferrer">fiscal 2026 defense bill</a> is the biggest acquisition reform in a generation: dozens of regulations repealed, contracting timelines compressed, new on-ramps for commercial firms. All of it makes the Pentagon a faster buyer. None of it changes how many sellers exist. Six of the seven weapons segments the Pentagon itself flagged in 2022 still have one or two qualified suppliers, and a faster contract awarded to the same monopolist is still a monopoly.</p>
+
+    <p>The historical record says structure is the lever that works. In the 1980s the Air Force forced Pratt &amp; Whitney and General Electric to compete year after year for fighter-engine buys, the Great Engine War, and got roughly <a href="https://www.rand.org/content/dam/rand/pubs/notes/2007/N3618.pdf" target="_blank" rel="noopener noreferrer">20 percent life-cycle savings</a> plus engines that stopped failing. The record is honest about the other side too: for some low-volume missiles, running a second production line cost more than it saved. Competition pays where volume is high enough to climb the learning curve, which is an argument for dual-sourcing chosen segment by segment, protecting the new entrants already arriving, and reserving breakups for where nothing else works, rather than either extreme.</p>
+
+    <p>Ukraine is the existence proof that a distributed base can out-produce a concentrated one under far worse conditions. Its domestic drone industry went from a handful of makers before the invasion to roughly 500 serious manufacturers, with about 2,500 registered on <a href="https://brave1.gov.ua/en" target="_blank" rel="noopener noreferrer">Brave1</a>, the state's procurement cluster, iterating against Russian jamming on a cycle of weeks. Nobody planned that industry. They let it exist.</p>
+
+    <h3>Where this is going</h3>
+
+    <p>I turned all of this into a full-length policy paper, with the models, figures, and about 120 primary sources behind everything above. It's under submission now, so the long version isn't posted here yet. If you work on defense industrial policy, or you think I'm wrong somewhere, <a href="mailto:aktanaazat@gmail.com">email me</a>.</p>
+  </div>
+
+  <script>
+    (function () {
+      var fmt = function (n) {
+        if (n >= 1e9) return "$" + (n / 1e9).toFixed(2) + "B";
+        if (n >= 1e6) return "$" + (n / 1e6).toFixed(1) + "M";
+        return "$" + Math.round(n / 1e3) + "k";
+      };
+
+      var presets = [
+        { name: "Shahed vs PAC-3", raid: 40, dcost: 50000, icost: 5300000, salvo: 2, mag: 96 },
+        { name: "Shahed vs ESSM", raid: 40, dcost: 50000, icost: 1800000, salvo: 2, mag: 96 },
+        { name: "Mass raid", raid: 150, dcost: 35000, icost: 5300000, salvo: 2, mag: 96 }
+      ];
+
+      var ids = ["raid", "dcost", "icost", "salvo", "mag"];
+      var el = {};
+      ids.forEach(function (id) {
+        el[id] = document.getElementById(id);
+        el[id + "Val"] = document.getElementById(id + "Val");
+      });
+      var barA = document.getElementById("barA");
+      var barD = document.getElementById("barD");
+      var verdict = document.getElementById("verdict");
+      var chipBox = document.getElementById("presets");
+
+      function render() {
+        var raid = +el.raid.value, dcost = +el.dcost.value, icost = +el.icost.value;
+        var salvo = +el.salvo.value, mag = +el.mag.value;
+
+        el.raidVal.textContent = raid + " drones";
+        el.dcostVal.textContent = fmt(dcost);
+        el.icostVal.textContent = fmt(icost);
+        el.salvoVal.textContent = salvo + " per drone";
+        el.magVal.textContent = mag + " missiles";
+
+        var stopped = Math.min(raid, Math.floor(mag / salvo));
+        var leakers = raid - stopped;
+        var attacker = raid * dcost;
+        var defender = stopped * salvo * icost;
+        var ratio = attacker > 0 ? defender / attacker : 0;
+
+        var maxSpend = Math.max(attacker, defender, 1);
+        barA.style.width = Math.max(100 * attacker / maxSpend, 0.5) + "%";
+        barD.style.width = Math.max(100 * defender / maxSpend, 0.5) + "%";
+        barA.title = fmt(attacker);
+        barD.title = fmt(defender);
+
+        var html = "The raid costs the attacker <b>" + fmt(attacker) + "</b>. " +
+          "Stopping " + stopped + " of " + raid + " drones costs you <b>" + fmt(defender) + "</b>" +
+          (ratio >= 2 ? ", about <b>" + Math.round(ratio) + "&times;</b> as much" : "") + ".";
+        if (leakers > 0) {
+          html += " The magazine runs dry and <span class=\"leak\">" + leakers +
+            " drone" + (leakers === 1 ? "" : "s") + " get" + (leakers === 1 ? "s" : "") + " through</span>.";
+        } else {
+          html += " Every drone is stopped, until the next raid: at this rate the magazine has " +
+            Math.floor((mag - stopped * salvo) / salvo) + " more intercepts left.";
+        }
+        verdict.innerHTML = html;
+      }
+
+      function applyPreset(p, btn) {
+        el.raid.value = p.raid; el.dcost.value = p.dcost; el.icost.value = p.icost;
+        el.salvo.value = p.salvo; el.mag.value = p.mag;
+        Array.prototype.forEach.call(chipBox.children, function (c) { c.setAttribute("aria-pressed", c === btn ? "true" : "false"); });
+        render();
+      }
+
+      presets.forEach(function (p, i) {
+        var b = document.createElement("button");
+        b.className = "chip";
+        b.type = "button";
+        b.textContent = p.name;
+        b.setAttribute("aria-pressed", i === 0 ? "true" : "false");
+        b.addEventListener("click", function () { applyPreset(p, b); });
+        chipBox.appendChild(b);
+      });
+
+      ids.forEach(function (id) {
+        el[id].addEventListener("input", function () {
+          Array.prototype.forEach.call(chipBox.children, function (c) { c.setAttribute("aria-pressed", "false"); });
+          render();
+        });
+      });
+
+      applyPreset(presets[0], chipBox.children[0]);
+    })();
+  </script>
+</body>
+</html>
