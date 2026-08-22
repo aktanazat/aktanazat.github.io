@@ -28,10 +28,9 @@
     .date { color: #444; font-style: italic; }
     h3 { margin: 1.4em 0 0.4em; }
     p { margin: 0.7em 0; }
-    code { font-family: monospace; background: #f4f4f4; padding: 0.1em 0.3em; }
 
-    figure { margin: 1em 0; }
-    figure img { width: 100%; height: auto; display: block; border: 1px solid #d9d9d9; }
+    figure { margin: 1.4em auto; max-width: 620px; }
+    figure img { width: 100%; height: auto; display: block; }
     figcaption { color: #444; font-style: italic; font-size: 0.9em; margin-top: 4px; }
 
     /* ---- live demo, plain style ---- */
@@ -86,11 +85,11 @@
     <h2>How Fifty-One Defense Companies Became Five</h2>
     <p class="date">August 2026</p>
 
-    <p>In the fall of 1993, Secretary of Defense Les Aspin and his deputy William Perry invited the chief executives of the biggest American defense contractors to <a href="https://www.wbur.org/onpoint/2023/03/01/the-last-supper-how-a-1993-pentagon-dinner-reshaped-the-defense-industry" target="_blank" rel="noopener noreferrer">dinner at the Pentagon</a> and told them, over what the industry still calls the Last Supper, that the post&ndash;Cold War budget could not keep them all alive. Perry put it plainly: "We expect defense companies to go out of business. We will stand by and watch." They did. Within a decade, fifty-one prime contractors merged down to five.</p>
+    <p>In the fall of 1993, Secretary of Defense Les Aspin and his deputy William Perry invited the chief executives of the biggest American defense contractors to <a href="https://www.wbur.org/onpoint/2023/03/01/the-last-supper-how-a-1993-pentagon-dinner-reshaped-the-defense-industry" target="_blank" rel="noopener noreferrer">dinner at the Pentagon</a> and told them, over what the industry still calls the Last Supper, that the post&ndash;Cold War budget could not keep them all alive. Perry told them: "We expect defense companies to go out of business. We will stand by and watch." They did. Within a decade, fifty-one prime contractors merged down to five.</p>
 
     <figure>
       <img src="img/supplier_counts.png" alt="Chart: number of qualified US suppliers per weapons segment, 1990 to 2025, falling in every segment" />
-      <figcaption>Suppliers per weapons segment since 1990. Tactical missiles went from 13 producers to 3, fixed-wing aircraft from 8 to 3, surface ships from 8 to 2. Chart from my own model scripts; the counts are the Pentagon's own, from the 2022 report linked below.</figcaption>
+      <figcaption>Suppliers per weapons segment, from the Pentagon's own 2022 count. Tactical missiles went from 13 producers to 3, fixed-wing aircraft from 8 to 3, surface ships from 8 to 2.</figcaption>
     </figure>
 
     <p>I fell down this rabbit hole watching the drone war in Ukraine and wondering why the country with the largest defense budget on earth kept showing up in the reporting as the one that couldn't make enough of anything. The answer kept tracing back to that dinner. What surprised me most is that the buyer itself admits the problem: the Pentagon's own <a href="https://media.defense.gov/2022/Feb/15/2002939087/-1/-1/1/STATE-OF-COMPETITION-WITHIN-THE-DEFENSE-INDUSTRIAL-BASE.PDF" target="_blank" rel="noopener noreferrer">2022 State of Competition report</a> counts the collapse segment by segment and concludes that the consolidation it once encouraged now works against it.</p>
@@ -101,11 +100,11 @@
 
     <p>The Army began 2022 making about 14,000 artillery shells a month and set out to reach 100,000. Three years and $5 billion later it makes about 40,000, and <a href="https://breakingdefense.com/2025/10/army-hitting-stride-with-155mm-production-but-key-general-worries-over-whats-needed-next/" target="_blank" rel="noopener noreferrer">every target date has slipped</a>, most recently to mid-2026. The centerpiece of the expansion, a $469 million automated shell-casing plant in Texas, had <a href="https://www.propublica.org/article/general-dynamics-artillery-factory-failed" target="_blank" rel="noopener noreferrer">produced no usable subcomponents</a> as of March 2026, more than two years in.</p>
 
-    <p>Precision didn't hold up either. The GPS-guided Excalibur shell went from a 55 percent hit rate in Ukraine in January 2023 to <a href="https://www.kyivpost.com/analysis/33448" target="_blank" rel="noopener noreferrer">6 percent by August</a>, once Russian jammers found it, and Ukraine simply stopped using the round. And when CSIS <a href="https://csis-website-prod.s3.amazonaws.com/s3fs-public/publication/230109_Cancian_FirstBattle_NextWar.pdf" target="_blank" rel="noopener noreferrer">wargamed a Chinese invasion of Taiwan</a> twenty-four times, the United States ran out of its most important anti-ship missile in the first week of every single iteration, against a production line building 88 a year.</p>
+    <p>Precision didn't hold up either. The GPS-guided Excalibur shell went from a 55 percent hit rate in Ukraine in January 2023 to <a href="https://www.kyivpost.com/analysis/33448" target="_blank" rel="noopener noreferrer">6 percent by August</a>, once Russian jammers found it, and Ukraine stopped using the round. And when CSIS <a href="https://csis-website-prod.s3.amazonaws.com/s3fs-public/publication/230109_Cancian_FirstBattle_NextWar.pdf" target="_blank" rel="noopener noreferrer">wargamed a Chinese invasion of Taiwan</a> twenty-four times, the United States ran out of its most important anti-ship missile in the first week of every iteration, against a production line building 88 a year.</p>
 
     <figure>
       <img src="img/shell_ramp.png" alt="Chart: US monthly 155mm shell production 2022 to 2026 against announced targets, every target slipping" />
-      <figcaption>The 155mm ramp against its own announced targets. Money moved fast; suppliers didn't.</figcaption>
+      <figcaption>Monthly output (blue) tripled to 40,000 rounds and then fell back to 36,000; each diamond is a target the Army or Pentagon announced, with the date it was set.</figcaption>
     </figure>
 
     <h3>Run the math yourself</h3>
@@ -158,11 +157,11 @@
 
     <h3>The part the reforms didn't touch</h3>
 
-    <p>Washington noticed. The <a href="https://www.hklaw.com/en/insights/publications/2025/12/fy-2026-national-defense-authorization-act" target="_blank" rel="noopener noreferrer">fiscal 2026 defense bill</a> is the biggest acquisition reform in a generation: dozens of regulations repealed, contracting timelines compressed, new on-ramps for commercial firms. All of it makes the Pentagon a faster buyer. None of it changes how many sellers exist. Six of the seven weapons segments the Pentagon itself flagged in 2022 still have one or two qualified suppliers, and a faster contract awarded to the same monopolist is still a monopoly.</p>
+    <p>Washington noticed. The <a href="https://www.hklaw.com/en/insights/publications/2025/12/fy-2026-national-defense-authorization-act" target="_blank" rel="noopener noreferrer">fiscal 2026 defense bill</a> is the biggest acquisition reform in a generation: dozens of regulations repealed, contracting timelines compressed, new on-ramps for commercial firms. All of it makes the Pentagon a faster buyer, and none of it changes how many sellers exist. Six of the seven weapons segments the Pentagon flagged in 2022 still have one or two qualified suppliers, and speeding up the paperwork does not add a second builder of solid rocket motors.</p>
 
-    <p>The historical record says structure is the lever that works. In the 1980s the Air Force forced Pratt &amp; Whitney and General Electric to compete year after year for fighter-engine buys, the Great Engine War, and got roughly <a href="https://www.rand.org/content/dam/rand/pubs/notes/2007/N3618.pdf" target="_blank" rel="noopener noreferrer">20 percent life-cycle savings</a> plus engines that stopped failing. The record is honest about the other side too: for some low-volume missiles, running a second production line cost more than it saved. Competition pays where volume is high enough to climb the learning curve, which is an argument for dual-sourcing chosen segment by segment, protecting the new entrants already arriving, and reserving breakups for where nothing else works, rather than either extreme.</p>
+    <p>The historical record says structure is the lever that works. In the 1980s the Air Force forced Pratt &amp; Whitney and General Electric to compete year after year for fighter-engine buys, the Great Engine War, and got roughly <a href="https://www.rand.org/content/dam/rand/pubs/notes/2007/N3618.pdf" target="_blank" rel="noopener noreferrer">20 percent life-cycle savings</a> plus a sharp drop in engine failures. The same record cuts the other way for some programs: for low-volume missiles, running a second production line cost more than it saved. Competition pays where volume is high enough to climb the learning curve. That argues for dual-sourcing chosen segment by segment, protection for the new entrants already arriving, and breakups only where nothing else works.</p>
 
-    <p>Ukraine is the existence proof that a distributed base can out-produce a concentrated one under far worse conditions. Its domestic drone industry went from a handful of makers before the invasion to roughly 500 serious manufacturers, with about 2,500 registered on <a href="https://brave1.gov.ua/en" target="_blank" rel="noopener noreferrer">Brave1</a>, the state's procurement cluster, iterating against Russian jamming on a cycle of weeks. Nobody planned that industry. They let it exist.</p>
+    <p>Ukraine is the existence proof that a distributed base can out-produce a concentrated one under far worse conditions. Its domestic drone industry went from a handful of makers before the invasion to roughly 500 serious manufacturers, with about 2,500 registered on <a href="https://brave1.gov.ua/en" target="_blank" rel="noopener noreferrer">Brave1</a>, the state's procurement cluster, iterating against Russian jamming on a cycle of weeks.</p>
 
     <h3>Where this is going</h3>
 
@@ -172,8 +171,8 @@
   <script>
     (function () {
       var fmt = function (n) {
-        if (n >= 1e9) return "$" + (n / 1e9).toFixed(2) + "B";
-        if (n >= 1e6) return "$" + (n / 1e6).toFixed(1) + "M";
+        if (n >= 1e9) return "$" + (n / 1e9).toFixed(2).replace(/\.?0+$/, "") + "B";
+        if (n >= 1e6) return "$" + (n / 1e6).toFixed(1).replace(/\.0$/, "") + "M";
         return "$" + Math.round(n / 1e3) + "k";
       };
 
@@ -208,11 +207,11 @@
         var leakers = raid - stopped;
         var attacker = raid * dcost;
         var defender = stopped * salvo * icost;
-        var ratio = attacker > 0 ? defender / attacker : 0;
+        var ratio = defender / attacker;
 
-        var maxSpend = Math.max(attacker, defender, 1);
-        barA.style.width = Math.max(100 * attacker / maxSpend, 0.5) + "%";
-        barD.style.width = Math.max(100 * defender / maxSpend, 0.5) + "%";
+        var maxSpend = Math.max(attacker, defender);
+        barA.style.width = (100 * attacker / maxSpend) + "%";
+        barD.style.width = (100 * defender / maxSpend) + "%";
         barA.title = fmt(attacker);
         barD.title = fmt(defender);
 
