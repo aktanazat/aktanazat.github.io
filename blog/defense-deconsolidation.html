@@ -96,6 +96,11 @@
 
     <p>In the fall of 1993, Secretary of Defense Les Aspin and his deputy William Perry invited the chief executives of the biggest American defense contractors to <a href="https://www.wbur.org/onpoint/2023/03/01/the-last-supper-how-a-1993-pentagon-dinner-reshaped-the-defense-industry" target="_blank" rel="noopener noreferrer">dinner at the Pentagon</a> and told them, over what the industry still calls the Last Supper, that the post&ndash;Cold War budget could not keep them all alive. Perry told them: "We expect defense companies to go out of business. We will stand by and watch." They did. Within a decade, fifty-one prime contractors merged down to five.</p>
 
+    <figure id="fig-procurement">
+      <img src="img/procurement_topline.png" alt="Chart: DoD procurement budget authority in constant dollars, 1985 to 2026, falling 64 percent to a 1997 trough and then recovering" />
+      <figcaption>Procurement budget authority, FY1985&ndash;FY2026, in constant FY2025 dollars, from the Pentagon comptroller's Green Book. The real buy fell 64 percent from FY1985 to FY1997, straddling the 1993 Last Supper, and even the FY2026 bill sits just under the 1985 peak.</figcaption>
+    </figure>
+
     <figure id="fig-suppliers">
       <img src="img/supplier_counts.svg" alt="Chart: number of qualified US suppliers per weapons segment, 1990 to 2020, falling in every segment" />
       <figcaption>Suppliers per weapons segment, from the Pentagon's own 2022 count. Tactical missiles went from 13 producers to 3, fixed-wing aircraft from 8 to 3, surface ships from 8 to 2.</figcaption>
@@ -178,7 +183,17 @@
 
     <p>Washington noticed. The <a href="https://www.hklaw.com/en/insights/publications/2025/12/fy-2026-national-defense-authorization-act" target="_blank" rel="noopener noreferrer">fiscal 2026 defense bill</a> is the biggest acquisition reform in a generation: dozens of regulations repealed, contracting timelines compressed, new on-ramps for commercial firms. All of it makes the Pentagon a faster buyer, and none of it changes how many sellers exist. Six of the seven weapons segments the Pentagon flagged in 2022 still have one or two qualified suppliers, and speeding up the paperwork does not add a second builder of solid rocket motors.</p>
 
+    <figure id="fig-hhi">
+      <img src="img/hhi_timeline.png" alt="Chart: market concentration by weapons segment, 1990 to 2025, every segment far above the highly concentrated antitrust thresholds" />
+      <figcaption>Concentration per segment as an equal-share HHI floor: 10,000 divided by the supplier count, a provable lower bound on true concentration. Every segment crossed both DOJ/FTC "highly concentrated" thresholds by the early 2000s and never came back.</figcaption>
+    </figure>
+
     <p>The historical record says structure is the lever that works. In the 1980s the Air Force forced Pratt &amp; Whitney and General Electric to compete year after year for fighter-engine buys, the Great Engine War, and got roughly <a href="https://www.rand.org/content/dam/rand/pubs/notes/2007/N3618.pdf" target="_blank" rel="noopener noreferrer">20 percent life-cycle savings</a> plus a sharp drop in engine failures. The same record cuts the other way for some programs: for low-volume missiles, running a second production line cost more than it saved. Competition pays where volume is high enough to climb the learning curve. That argues for dual-sourcing chosen segment by segment, protection for the new entrants already arriving, and breakups only where nothing else works.</p>
+
+    <figure id="fig-engines">
+      <img src="img/unit_cost_trajectories.png" alt="Chart: modeled missile unit-cost trajectories, sole source versus dual source, with the dual-source line about 21 percent cheaper at every volume" />
+      <figcaption>Wright's-law unit costs anchored to the real 1987 AMRAAM Lot-I average ($3.1M around unit 100), an 87.5 percent learning curve, and an illustrative 2,700 missiles a year. The dual-source line applies the 21 percent life-cycle saving GAO measured on the Great Engine War: roughly $7.4B over ten years on a $35B program.</figcaption>
+    </figure>
 
     <p>Ukraine is the existence proof that a distributed base can out-produce a concentrated one under far worse conditions. Its domestic drone industry went from a handful of makers before the invasion to roughly 500 serious manufacturers, with about 2,500 registered on <a href="https://brave1.gov.ua/en" target="_blank" rel="noopener noreferrer">Brave1</a>, the state's procurement cluster, iterating against Russian jamming on a cycle of weeks.</p>
 
@@ -607,6 +622,153 @@
         Plot.text([{ date: new Date(2024, 1, 15), rounds: 21000, text: 'achieved' }], { x: 'date', y: 'rounds', text: 'text', fill: BLUE, fontStyle: 'italic', fontSize: 10.5 }),
         Plot.text([{ date: new Date(2023, 10, 1), rounds: 77000, text: 'targets' }], { x: 'date', y: 'rounds', text: 'text', fill: BRICK, fontStyle: 'italic', fontSize: 10.5 }),
         Plot.tip([...achieved, ...targets], Plot.pointer({ x: 'date', y: 'rounds', title: 'title' })),
+      ],
+    }));
+
+    // ---- Figure 3: procurement topline, constant FY2025 dollars ----
+    // Green Book FY2025 ed. Table 6-1 constant-$ column ($B); FY2025 actual
+    // and FY2026 enacted from the FY2027 Budget Overview Book (Table A-1),
+    // FY2026 deflated by the Green Book's own implied FY2026 deflator.
+    const PROC_BUSD = [
+      [1985, 218.582], [1986, 205.429], [1987, 189.347], [1988, 179.854],
+      [1989, 167.921], [1990, 163.230], [1991, 142.365], [1992, 120.741],
+      [1993, 102.556], [1994, 82.209],  [1995, 79.684],  [1996, 79.232],
+      [1997, 77.789],  [1998, 80.019],  [1999, 89.260],  [2000, 96.146],
+      [2001, 107.376], [2002, 106.273], [2003, 130.731], [2004, 133.260],
+      [2005, 153.878], [2006, 160.623], [2007, 200.923], [2008, 242.422],
+      [2009, 195.670], [2010, 194.166], [2011, 184.790], [2012, 165.901],
+      [2013, 141.404], [2014, 135.570], [2015, 137.778], [2016, 155.814],
+      [2017, 160.162], [2018, 183.867], [2019, 179.065], [2020, 167.752],
+      [2021, 159.441], [2022, 166.981], [2023, 190.351], [2024, 167.338],
+      [2025, 174.060], [2026, 214.669],
+    ];
+    const PROC_NOTES = { 2024: 'CR-level estimate', 2025: 'actual, FY2027 Overview Book', 2026: 'enacted; constant-$ approximated' };
+    const proc = PROC_BUSD.map(([fy, busd]) => ({
+      fy, busd,
+      title: `FY${fy}: $${busd.toFixed(1)}B\n(constant FY2025 dollars${PROC_NOTES[fy] ? '; ' + PROC_NOTES[fy] : ''})\nGreen Book Table 6-1`,
+    }));
+    const procMarks = [
+      { fy: 1985, busd: 218.582, text: 'FY1985: $219B', anchor: 'start', dy: -10 },
+      { fy: 1997, busd: 77.789,  text: 'FY1997: $78B, \u221264%', anchor: 'middle', dy: 16 },
+      { fy: 2008, busd: 242.422, text: 'FY2008 wartime high: $242B', anchor: 'middle', dy: -10 },
+      { fy: 2026, busd: 214.669, text: '$215B', anchor: 'end', dy: -10 },
+    ];
+
+    swap('fig-procurement', Plot.plot({
+      width: 620, height: 300,
+      marginLeft: 45, marginRight: 20, marginTop: 20, marginBottom: 30,
+      style: { fontFamily: 'inherit', fontSize: '10px' },
+      x: { domain: [1984, 2027], tickFormat: d => String(d), tickSize: 0 },
+      y: { domain: [0, 262], ticks: [50, 100, 150, 200, 250], tickFormat: d => `$${d}B`, tickSize: 0, label: 'procurement, constant FY2025 $' },
+      marks: [
+        Plot.gridY({ ticks: [50, 100, 150, 200, 250], stroke: GRID, strokeOpacity: 1 }),
+        Plot.ruleX([1993.75], { stroke: GRAY, strokeDasharray: '4,3' }),
+        Plot.text([{ fy: 1993.75, busd: 252, text: 'Last Supper, fall 1993' }], { x: 'fy', y: 'busd', text: 'text', fill: GRAY, fontStyle: 'italic', fontSize: 9.5, textAnchor: 'start', dx: 5 }),
+        Plot.areaY(proc, { x: 'fy', y: 'busd', fill: BLUE, fillOpacity: 0.06 }),
+        Plot.line(proc, { x: 'fy', y: 'busd', stroke: BLUE, strokeWidth: 2.2 }),
+        Plot.dot(procMarks, { x: 'fy', y: 'busd', fill: BLUE, r: 3.5, stroke: '#fff', strokeWidth: 1.2 }),
+        Plot.text(procMarks.filter(d => d.anchor === 'start'),  { x: 'fy', y: 'busd', text: 'text', fill: BLUE, fontWeight: 700, fontSize: 9.5, textAnchor: 'start', dx: 4, dy: -10 }),
+        Plot.text(procMarks.filter(d => d.anchor === 'middle' && d.dy > 0), { x: 'fy', y: 'busd', text: 'text', fill: BLUE, fontWeight: 700, fontSize: 9.5, dy: 16 }),
+        Plot.text(procMarks.filter(d => d.anchor === 'middle' && d.dy < 0), { x: 'fy', y: 'busd', text: 'text', fill: BLUE, fontWeight: 700, fontSize: 9.5, dy: -10 }),
+        Plot.text(procMarks.filter(d => d.anchor === 'end'),    { x: 'fy', y: 'busd', text: 'text', fill: BLUE, fontWeight: 700, fontSize: 9.5, textAnchor: 'end', dx: -4, dy: -10 }),
+        Plot.tip(proc, Plot.pointerX({ x: 'fy', y: 'busd', title: 'title' })),
+      ],
+    }));
+
+    // ---- Figure 4: equal-share HHI floor per segment, 1990-2020 ----
+    const hhiOf = n => 10000 / n;
+    const fmtHHI = h => Math.round(h).toLocaleString('en-US');
+    const hhi = [
+      { segment: 'Tactical missiles',   color: BLUE,  counts: [13, 3, 3] },
+      { segment: 'Fixed-wing aircraft', color: BRICK, counts: [8, 3, 3] },
+      { segment: 'Surface ships',       color: GRAY,  counts: [8, 5, 2] },
+    ].flatMap(({ segment, color, counts }) => counts.map((n, i) => ({
+      segment, color, n,
+      year: YEARS[i],
+      hhi: hhiOf(n),
+      title: `${segment}\n${YEARS[i]}: HHI floor \u2248 ${fmtHHI(hhiOf(n))} (${n} suppliers)\nDoD State of Competition count (2022);\nequal-share floor \u2014 true concentration is at least this.`,
+    })));
+    const hhiSeriesLabels = [
+      { y: 769,  text: 'Tactical missiles',   color: BLUE },
+      { y: 1750, text: 'Fixed-wing aircraft', color: BRICK },
+      { y: 1000, text: 'Surface ships',       color: GRAY },
+    ];
+    const hhiValueTop = [
+      { year: '1998', hhi: 3333.3333333333335, text: '3,333', color: '#222' },
+      { year: '2020', hhi: 5000, text: '5,000', color: GRAY },
+    ];
+    const hhiValueBottom = [
+      { year: '1990', hhi: 769.2307692307693, text: '769', color: BLUE },
+      { year: '2020', hhi: 3333.3333333333335, text: '3,333', color: '#222' },
+    ];
+    // Wide labels that collide when centered on their point: anchored left.
+    const hhiValueLeft = [
+      { year: '1990', hhi: 1250, text: '1,250', color: '#222' },
+      { year: '1998', hhi: 2000, text: '2,000', color: GRAY },
+    ];
+
+    swap('fig-hhi', Plot.plot({
+      width: 620, height: 310,
+      marginLeft: 135, marginRight: 25, marginTop: 20,
+      style: { fontFamily: 'inherit', fontSize: '10.5px' },
+      x: { type: 'point', domain: YEARS, label: null, tickSize: 0 },
+      y: { domain: [0, 5600], axis: null },
+      marks: [
+        Plot.gridX({ stroke: GRID, strokeOpacity: 1 }),
+        Plot.ruleY([1800, 2500], { stroke: GRAY, strokeDasharray: '4,3', strokeOpacity: 0.8 }),
+        Plot.text([{ year: '2020', hhi: 1800, text: "1,800 \u2014 'highly concentrated,' 1992/1997 guidelines" }], { x: 'year', y: 'hhi', text: 'text', fill: GRAY, fontSize: 8.5, textAnchor: 'end', dx: 20, dy: 11 }),
+        Plot.text([{ year: '2020', hhi: 2500, text: '2,500 \u2014 2010 guidelines' }], { x: 'year', y: 'hhi', text: 'text', fill: GRAY, fontSize: 8.5, textAnchor: 'end', dx: 20, dy: 11 }),
+        Plot.line(hhi, { x: 'year', y: 'hhi', z: 'segment', stroke: 'color', strokeWidth: 2.2, strokeOpacity: 0.9 }),
+        Plot.dot(hhi, { x: 'year', y: 'hhi', fill: 'color', r: 3.5, stroke: '#fff', strokeWidth: 1.4 }),
+        Plot.text(hhiSeriesLabels, { x: () => '1990', y: 'y', text: 'text', fill: 'color', textAnchor: 'end', dx: -14, fontSize: 10.5 }),
+        Plot.text(hhiValueTop,    { x: 'year', y: 'hhi', text: 'text', fill: 'color', dy: -10, fontWeight: 700, fontSize: 10 }),
+        Plot.text(hhiValueBottom, { x: 'year', y: 'hhi', text: 'text', fill: 'color', dy: 15, fontWeight: 700, fontSize: 10 }),
+        Plot.text(hhiValueLeft,   { x: 'year', y: 'hhi', text: 'text', fill: 'color', textAnchor: 'end', dx: -8, dy: -2, fontWeight: 700, fontSize: 10 }),
+        Plot.text([{ year: '1998', hhi: 4300, text: 'missiles and fixed-wing overlap exactly from 1998' }], { x: 'year', y: 'hhi', text: 'text', fill: GRAY, fontStyle: 'italic', fontSize: 8.5 }),
+        Plot.tip(hhi, Plot.pointer({ x: 'year', y: 'hhi', title: 'title' })),
+      ],
+    }));
+
+    // ---- Figure 5: Wright's-law unit-cost trajectories, sole vs dual source ----
+    // Anchor: 1987 AMRAAM Lot-I average $3.1M at ~100 cumulative units
+    // (RAND N-3620-AF); 87.5% learning curve (CBO 1983 / CRS R41131 band
+    // midpoint); illustrative 2,700 missiles/yr; dual source applies GAO's
+    // retrospective 21% Great Engine War life-cycle saving.
+    const W_EXP = Math.log(0.875) / Math.LN2;
+    const W_T1 = 3.1e6 / Math.pow(100, W_EXP);
+    const cumUnits = t => 100 + 2700 * t;
+    const soleCost = t => W_T1 * Math.pow(cumUnits(t), W_EXP);
+    const DUAL = 1 - 0.21;
+    const fmtM = v => v >= 1e6 ? `$${(v / 1e6).toFixed(2)}M` : `$${Math.round(v / 1e3)}k`;
+
+    const curveLine = [];
+    for (let t = 0; t <= 10.0001; t += 0.1) curveLine.push({ t, sole: soleCost(t) });
+    const curveYears = [];
+    for (let t = 0; t <= 10; t++) {
+      curveYears.push({
+        t, sole: soleCost(t), dual: soleCost(t) * DUAL,
+        title: `Year ${t} \u2014 ${cumUnits(t).toLocaleString('en-US')} cumulative units\nSole source: ${fmtM(soleCost(t))}\nDual source: ${fmtM(soleCost(t) * DUAL)}`,
+      });
+    }
+
+    swap('fig-engines', Plot.plot({
+      width: 620, height: 300,
+      marginLeft: 45, marginRight: 55, marginTop: 20, marginBottom: 34,
+      style: { fontFamily: 'inherit', fontSize: '10px' },
+      x: { domain: [0, 10.4], ticks: [0, 2, 4, 6, 8, 10], tickSize: 0, label: 'years into full-rate production' },
+      y: { domain: [0, 3.4e6], ticks: [1e6, 2e6, 3e6], tickFormat: d => `$${d / 1e6}M`, tickSize: 0, label: 'unit cost' },
+      marks: [
+        Plot.gridY({ ticks: [1e6, 2e6, 3e6], stroke: GRID, strokeOpacity: 1 }),
+        Plot.line(curveLine, { x: 't', y: 'sole', stroke: BRICK, strokeWidth: 2.2 }),
+        Plot.line(curveLine.map(d => ({ t: d.t, dual: d.sole * DUAL })), { x: 't', y: 'dual', stroke: BLUE, strokeWidth: 2.2 }),
+        Plot.dot(curveYears, { x: 't', y: 'sole', fill: BRICK, r: 3, stroke: '#fff', strokeWidth: 1.2 }),
+        Plot.dot(curveYears, { x: 't', y: 'dual', fill: BLUE, r: 3, stroke: '#fff', strokeWidth: 1.2 }),
+        Plot.text([{ t: 1.6, y: 1.75e6, text: 'sole source' }], { x: 't', y: 'y', text: 'text', fill: BRICK, fontStyle: 'italic', fontSize: 10.5 }),
+        Plot.text([{ t: 3.6, y: 0.82e6, text: 'dual source' }], { x: 't', y: 'y', text: 'text', fill: BLUE, fontStyle: 'italic', fontSize: 10.5 }),
+        Plot.text([{ t: 6.8, y: 2.55e6, text: 'dual sourcing runs ~21% cheaper at every volume' }], { x: 't', y: 'y', text: 'text', fill: GRAY, fontStyle: 'italic', fontSize: 9 }),
+        Plot.text([{ t: 10, y: soleCost(10), text: '$1.05M' }], { x: 't', y: 'y', text: 'text', fill: BRICK, fontWeight: 700, fontSize: 9.5, textAnchor: 'start', dx: 8 }),
+        Plot.text([{ t: 10, y: soleCost(10) * DUAL, text: '$832k' }], { x: 't', y: 'y', text: 'text', fill: BLUE, fontWeight: 700, fontSize: 9.5, textAnchor: 'start', dx: 8 }),
+        Plot.tip([...curveYears.map(d => ({ ...d, y: d.sole })), ...curveYears.map(d => ({ ...d, y: d.dual }))], Plot.pointer({ x: 't', y: 'y', title: 'title' })),
       ],
     }));
   </script>
