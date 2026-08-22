@@ -571,7 +571,7 @@
       { date: new Date(2025, 11, 31), rounds: 40000,  label: '40k by 2025', set: 'set Dec 2022',
         src: 'Defense One, Feb 2024, citing Sec. Wormuth (Dec 2022)', side: 'right', drop: 38 },
       { date: new Date(2026, 5, 1),   rounds: 100000, label: '100k by mid-2026', set: 'slipped Jul 2025',
-        src: 'National Defense Magazine, Aug 2025 (Steve Warren)', side: 'right' },
+        src: 'National Defense Magazine, Aug 2025 (Steve Warren)', side: 'below' },
     ].map(d => ({ ...d, title: `Target: ${d.label}\n${d.set}\n${d.src}` }));
 
     // Label offsets are baked into y-values because Plot text dx/dy are
@@ -600,6 +600,8 @@
         Plot.text(targets.filter(d => d.side === 'left'),  { x: 'date', y: d => tLabel(d, 15), text: 'set',   fill: GRAY, fontSize: 8.5, textAnchor: 'end', dx: -11 }),
         Plot.text(targets.filter(d => d.side === 'right'), { x: 'date', y: d => tLabel(d, (d.drop ?? 0) + 3),  text: 'label', fill: BRICK, fontWeight: 700, fontSize: 9.5, textAnchor: 'start', dx: 11 }),
         Plot.text(targets.filter(d => d.side === 'right'), { x: 'date', y: d => tLabel(d, (d.drop ?? 0) + 15), text: 'set',   fill: GRAY, fontSize: 8.5, textAnchor: 'start', dx: 11 }),
+        Plot.text(targets.filter(d => d.side === 'below'), { x: 'date', y: d => tLabel(d, 16), text: 'label', fill: BRICK, fontWeight: 700, fontSize: 9.5 }),
+        Plot.text(targets.filter(d => d.side === 'below'), { x: 'date', y: d => tLabel(d, 28), text: 'set',   fill: GRAY, fontSize: 8.5 }),
         Plot.text(achievedLabels, { x: 'date', y: 'ly', text: 'text', fill: BLUE, fontWeight: 700, fontSize: 9.5 }),
         Plot.text([{ date: achieved[5].date, ly: 36000 + 3 * PX, text: '36k' }], { x: 'date', y: 'ly', text: 'text', fill: BLUE, fontWeight: 700, fontSize: 9.5, textAnchor: 'start', dx: 12 }),
         Plot.text([{ date: new Date(2024, 1, 15), rounds: 21000, text: 'achieved' }], { x: 'date', y: 'rounds', text: 'text', fill: BLUE, fontStyle: 'italic', fontSize: 10.5 }),
