@@ -11,409 +11,133 @@
 <meta property="og:image" content="https://aktan.us/blog/img/whole-widget/jobs-portrait.jpg">
 <meta property="og:url" content="https://aktan.us/blog/the-whole-widget.html">
 <link rel="canonical" href="https://aktan.us/blog/the-whole-widget.html">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#ffffff">
 <style>
-  :root {
-    --bg: #ffffff;
-    --ink: #1d1d1f;
-    --muted: #6e6e73;
-    --hairline: #d2d2d7;
-    --wash: #f5f5f7;
-    --accent: #0066cc;
-    --serif: "Charter", "Iowan Old Style", "Georgia", "Times New Roman", serif;
-    --sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", "Segoe UI", sans-serif;
-    --mono: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #000000;
-      --ink: #f5f5f7;
-      --muted: #86868b;
-      --hairline: #3a3a3c;
-      --wash: #161617;
-      --accent: #2997ff;
+    body {
+      padding: 0;
+      margin: 0;
+      background-color: #fff;
+      color: #000;
+      font-family: "Century Gothic", CenturyGothic, Geneva, AppleGothic, sans-serif;
     }
-  }
-  * { box-sizing: border-box; }
-  @media (prefers-reduced-motion: no-preference) {
-    html { scroll-behavior: smooth; }
-  }
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--ink);
-    font-family: var(--serif);
-    font-size: 19px;
-    line-height: 1.65;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-  }
-  ::selection { background: rgba(0,102,204,.18); }
 
-  a { color: var(--accent); text-decoration: none; }
-  a:hover { text-decoration: underline; }
-  a:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-    border-radius: 2px;
-  }
+    .prose, .wide {
+      max-width: 44em;
+      margin: 0 auto;
+      padding: 0 1.5em;
+    }
+    body > .prose:first-of-type { margin-top: 25px; }
 
-  .prose { max-width: 680px; margin: 0 auto; padding: 0 20px; }
-  .prose::after { content: ""; display: block; clear: both; }
-  .wide  { max-width: 1020px; margin: 0 auto; padding: 0 20px; }
+    a { color: #0645ad; }
+    a:hover { color: #0b0080; }
 
-  .site-back {
-    position: absolute;
-    top: 20px;
-    left: 22px;
-    margin: 0;
-    font: 500 14px/1 var(--sans);
-  }
-  .site-back a { color: var(--muted); }
-  header.hero {
-    min-height: 82vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 96px 20px 64px;
-  }
-  .hero .overline {
-    font: 600 13px/1 var(--sans);
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 28px;
-  }
-  .hero h1 {
-    font-family: var(--sans);
-    font-size: clamp(52px, 9.5vw, 108px);
-    font-weight: 700;
-    letter-spacing: -0.035em;
-    line-height: 1.0;
-    margin: 0 0 26px;
-    text-wrap: balance;
-  }
-  .hero .sub {
-    font-size: clamp(19px, 2.4vw, 24px);
-    line-height: 1.5;
-    color: var(--muted);
-    max-width: 34em;
-    margin: 0 auto;
-    text-wrap: pretty;
-  }
-  .hero .down {
-    margin-top: 56px;
-    font: 500 14px/1 var(--sans);
-    color: var(--muted);
-  }
+    .back { display: inline-block; margin: 0.4em 0 0.2em; }
+    h1 { font-size: 1.5em; margin: 0.4em 0 0.1em; }
+    .date { color: #444; font-style: italic; }
+    h2 { font-size: 1.17em; margin: 1.6em 0 0.4em; }
+    h3 { font-size: 1em; margin: 1.3em 0 0.3em; }
+    p { margin: 0.7em 0; }
+    code { font-family: monospace; background: #f4f4f4; padding: 0.1em 0.3em; }
+    section { margin: 0; }
 
-  section { margin-top: 120px; }
-  .kicker {
-    font: 600 13px/1 var(--sans);
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    color: var(--muted);
-    border-top: 1px solid var(--hairline);
-    padding-top: 18px;
-    margin: 0 0 14px;
-  }
-  h2 {
-    font-family: var(--sans);
-    font-size: clamp(34px, 5vw, 48px);
-    font-weight: 700;
-    letter-spacing: -0.025em;
-    line-height: 1.05;
-    margin: 0 0 28px;
-    text-wrap: balance;
-  }
-  h3 {
-    font-family: var(--sans);
-    font-size: 23px;
-    font-weight: 650;
-    letter-spacing: -0.015em;
-    line-height: 1.2;
-    margin: 46px 0 12px;
-    text-wrap: balance;
-  }
-  p { margin: 0 0 1.35em; text-wrap: pretty; }
-  .lede { font-size: 23px; line-height: 1.55; }
+    .kicker { color: #444; font-size: 0.8em; margin: 2.4em 0 0; }
+    .lede { margin-top: 1em; }
 
-  sup.cite { line-height: 0; }
-  sup.cite a {
-    font: 600 11px/1 var(--sans);
-    color: var(--accent);
-    text-decoration: none;
-    padding: 0 1px;
-  }
-  .flag {
-    display: inline-block;
-    font: 600 10.5px/1 var(--sans);
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    color: var(--muted);
-    border: 1px solid var(--hairline);
-    border-radius: 4px;
-    padding: 3px 6px;
-    vertical-align: 2px;
-    margin-left: 6px;
-    white-space: nowrap;
-  }
-  p.note {
-    font: 400 14.5px/1.6 var(--sans);
-    color: var(--muted);
-    border-top: 1px solid var(--hairline);
-    padding-top: 12px;
-  }
-  p.note a { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; }
+    sup.cite { line-height: 0; }
+    sup.cite a { font-size: 0.75em; text-decoration: none; padding: 0 1px; }
+    .flag {
+      font-size: 0.75em;
+      border: 1px solid #999;
+      padding: 1px 6px;
+      color: #444;
+      white-space: nowrap;
+    }
+    p.note { color: #444; font-style: italic; font-size: 0.9em; }
 
-  blockquote.pull {
-    margin: 54px 0;
-    padding: 0;
-    font-size: clamp(23px, 3vw, 29px);
-    line-height: 1.38;
-    letter-spacing: -0.01em;
-    text-wrap: pretty;
-  }
-  blockquote.pull p { margin: 0 0 .5em; }
-  blockquote.pull p:last-of-type { margin-bottom: 0; }
-  .attr {
-    display: block;
-    margin-top: 16px;
-    font: 500 14px/1.5 var(--sans);
-    color: var(--muted);
-  }
-  blockquote.inline {
-    margin: 28px 0;
-    padding: 4px 0 4px 26px;
-    border-left: 1px solid var(--hairline);
-    font-size: 18px;
-  }
-  blockquote.inline p { margin: 0 0 .6em; }
-  blockquote.inline p:last-of-type { margin-bottom: 0; }
-  blockquote.inline .attr { margin-top: 10px; font-size: 13px; }
+    blockquote.pull, blockquote.inline {
+      margin: 1em 0;
+      padding: 0 0 0 14px;
+      border-left: 3px solid #d9d9d9;
+    }
+    blockquote.pull p, blockquote.inline p { margin: 0 0 0.5em; }
+    .attr { display: block; color: #444; font-style: italic; font-size: 0.9em; margin-top: 4px; }
 
-  pre.verse {
-    font-family: var(--serif);
-    font-size: 17.5px;
-    line-height: 1.7;
-    white-space: pre-wrap;
-    margin: 44px 0;
-    padding: 0;
-  }
+    pre.verse {
+      font-family: inherit;
+      white-space: pre-wrap;
+      margin: 1em 0;
+      padding: 0 0 0 14px;
+      border-left: 3px solid #d9d9d9;
+    }
 
-  figure { margin: 52px auto; }
-  figure img {
-    display: block;
-    width: 100%;
-    height: auto;
-    border-radius: 14px;
-    outline: 1px solid rgba(128,128,128,.18);
-    outline-offset: -1px;
-    background: var(--wash);
-  }
-  figcaption {
-    max-width: 680px;
-    margin: 13px auto 0;
-    font: 400 13.5px/1.55 var(--sans);
-    color: var(--muted);
-  }
-  figcaption a { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; }
-  figure.inset {
-    float: right;
-    width: min(340px, 46%);
-    margin: 6px 0 18px 28px;
-  }
-  figure.inset figcaption { margin-top: 10px; }
-  @media (max-width: 560px) {
-    figure.inset { float: none; width: 100%; margin: 40px 0; }
-  }
-  figure.portrait { max-width: 440px; }
-  .duo-wrap { margin: 52px auto; }
-  .duo-wrap > figcaption { margin-top: 14px; }
-  .duo {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    align-items: start;
-  }
-  .duo figure { margin: 0; }
-  .duo figure figcaption { margin-top: 10px; }
-  @media (max-width: 640px) {
-    .duo { grid-template-columns: 1fr; gap: 40px; }
-  }
+    figure { margin: 1.4em auto; max-width: 620px; }
+    figure img { width: 100%; height: auto; display: block; }
+    figcaption { color: #444; font-style: italic; font-size: 0.9em; margin-top: 4px; }
+    figure.portrait { max-width: 300px; }
+    figure.inset { max-width: 330px; }
 
-  .browser {
-    border: 1px solid var(--hairline);
-    border-radius: 12px;
-    overflow: hidden;
-    background: var(--bg);
-  }
-  .browser-bar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 14px;
-    border-bottom: 1px solid var(--hairline);
-    background: var(--wash);
-  }
-  .browser-bar .dots { display: flex; gap: 5px; flex: none; }
-  .browser-bar .dots i {
-    width: 9px; height: 9px; border-radius: 50%;
-    background: var(--hairline); display: block;
-  }
-  .browser-bar .url {
-    font: 400 12.5px/1 var(--mono);
-    color: var(--muted);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .browser-body { padding: 28px 26px; font-family: var(--sans); min-height: 220px; }
+    .duo-wrap { margin: 1.4em auto; max-width: 620px; }
+    .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
+    .duo figure { margin: 0; }
+    @media (max-width: 619px) { .duo { grid-template-columns: 1fr; gap: 1.2em; } }
 
-  .mock-1996 .m-head {
-    font: 700 15px/1.2 var(--serif);
-    border-bottom: 2px solid currentColor;
-    padding-bottom: 6px;
-    margin-bottom: 12px;
-  }
-  .mock-1996 ul {
-    columns: 2; column-gap: 22px;
-    margin: 0; padding: 0;
-    list-style: none;
-    font: 400 11.5px/1.5 var(--sans);
-  }
-  .mock-1996 li { padding: 4px 0; border-bottom: 1px dotted var(--hairline); break-inside: avoid; }
-  .mock-1996 li b { font-weight: 650; }
+    .browser { border: 1px solid #000; margin: 0; }
+    .browser-bar { padding: 8px 14px; border-bottom: 1px solid #d9d9d9; }
+    .browser-bar .dots { display: none; }
+    .browser-bar .url { font-family: monospace; font-size: 0.8em; color: #444; }
+    .browser-body { padding: 14px; min-height: 150px; }
 
-  .mock-1998 { display: flex; flex-direction: column; justify-content: center; }
-  .mock-1998 .m-words {
-    display: flex; justify-content: space-around; align-items: baseline;
-    font: 700 clamp(28px, 4.5vw, 44px)/1 var(--sans);
-    letter-spacing: -0.02em;
-    padding: 40px 0 26px;
-  }
-  .mock-1998 .m-tag {
-    text-align: center;
-    font: 400 12px/1.5 var(--sans);
-    color: var(--muted);
-    margin: 0;
-  }
+    .mock-1996 .m-head { font-weight: 700; border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 8px; }
+    .mock-1996 ul { margin: 0; padding: 0; list-style: none; font-size: 0.78em; }
+    .mock-1996 li { padding: 3px 0; border-bottom: 1px dotted #d9d9d9; }
+    .mock-1996 li:last-child { border-bottom: 0; }
 
-  .mock-2007 { text-align: center; padding-top: 36px; }
-  .mock-2007 .m-kicker { font: 400 15px/1.4 var(--sans); color: var(--muted); margin: 0; }
-  .mock-2007 .m-big {
-    font: 700 clamp(24px, 3.6vw, 36px)/1.15 var(--sans);
-    letter-spacing: -0.02em;
-    margin: 8px 0 18px;
-  }
-  .mock-2007 .m-phone {
-    width: 82px; height: 148px; margin: 0 auto;
-    border: 2px solid var(--ink); border-radius: 12px;
-    position: relative;
-  }
-  .mock-2007 .m-phone::after {
-    content: ""; position: absolute; inset: 14px 6px 16px;
-    background: var(--wash); border-radius: 3px;
-  }
+    .mock-1998 .m-words { display: flex; justify-content: space-around; font-weight: 700; font-size: 1.5em; padding: 28px 0 14px; }
+    .mock-1998 .m-tag { text-align: center; color: #444; font-size: 0.8em; margin: 0; }
 
-  .browser.dark .browser-body { background: #000; color: #f5f5f7; }
-  .mock-2011 { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-  .mock-2011 .m-name {
-    font: 600 clamp(22px, 3.4vw, 32px)/1.2 var(--sans);
-    letter-spacing: -0.01em;
-    margin: 64px 0 0;
-  }
-  .mock-2011 .m-dates { font: 400 16px/1.4 var(--sans); color: #86868b; margin: 6px 0 0; }
+    .mock-2007 { text-align: center; padding-top: 18px; }
+    .mock-2007 .m-kicker { color: #444; font-size: 0.85em; margin: 0; }
+    .mock-2007 .m-big { font-weight: 700; font-size: 1.2em; margin: 4px 0 12px; }
+    .mock-2007 .m-phone { width: 54px; height: 96px; margin: 0 auto; border: 2px solid #000; position: relative; }
+    .mock-2007 .m-phone::after { content: ""; position: absolute; inset: 9px 4px 10px; background: #f4f4f4; }
 
-  .timeline { border-top: 1px solid var(--hairline); margin-top: 8px; }
-  .timeline .row {
-    display: grid;
-    grid-template-columns: 96px 1fr;
-    gap: 18px;
-    padding: 13px 0;
-    border-bottom: 1px solid var(--hairline);
-  }
-  .timeline .yr { font: 500 14px/1.7 var(--mono); color: var(--muted); }
-  .timeline .ev { font-size: 16.5px; line-height: 1.55; }
-  @media (max-width: 480px) {
-    .timeline .row { grid-template-columns: 58px 1fr; gap: 12px; }
-  }
+    .browser.dark .browser-body { background: #000; color: #fff; }
+    .mock-2011 { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+    .mock-2011 .m-name { font-weight: 700; font-size: 1.2em; margin: 34px 0 0; }
+    .mock-2011 .m-dates { color: #999; font-size: 0.9em; margin: 4px 0 0; }
 
-  nav.toc { margin: 56px 0 0; }
-  nav.toc ol {
-    list-style: none;
-    counter-reset: toc;
-    margin: 0; padding: 0;
-    columns: 2; column-gap: 40px;
-  }
-  nav.toc li { counter-increment: toc; break-inside: avoid; }
-  nav.toc a {
-    display: flex;
-    gap: 14px;
-    align-items: baseline;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--hairline);
-    color: var(--ink);
-    font: 500 15.5px/1.4 var(--sans);
-  }
-  nav.toc a::before {
-    content: counter(toc, decimal-leading-zero);
-    font: 500 13px/1 var(--mono);
-    color: var(--muted);
-  }
-  nav.toc a:hover { text-decoration: none; color: var(--accent); }
-  @media (max-width: 560px) { nav.toc ol { columns: 1; } }
+    .timeline { margin-top: 0.5em; }
+    .timeline .row { display: grid; grid-template-columns: 4.5em 1fr; gap: 12px; padding: 5px 0; border-bottom: 1px dotted #d9d9d9; }
+    .timeline .row:last-child { border-bottom: 0; }
+    .timeline .yr { font-family: monospace; font-size: 0.85em; color: #444; padding-top: 2px; }
+    .timeline .ev { font-size: 0.95em; }
 
-  ul.myths { list-style: none; margin: 0; padding: 0; }
-  ul.myths li {
-    padding: 16px 0;
-    border-bottom: 1px solid var(--hairline);
-    font-size: 17px;
-  }
-  ul.myths li b { font-family: var(--sans); font-size: 16px; font-weight: 650; display: block; margin-bottom: 4px; }
+    nav.toc ol { list-style: none; margin: 0.5em 0; padding: 0; }
+    nav.toc li { padding: 1px 0; }
 
-  .sources ol {
-    margin: 0; padding-left: 28px;
-    font-size: 14.5px; line-height: 1.65;
-    font-family: var(--sans);
-    color: var(--muted);
-  }
-  .sources li { margin-bottom: 8px; overflow-wrap: break-word; }
-  .sources li a { color: var(--accent); }
-  .sources li b { color: var(--ink); font-weight: 550; }
-  .credits { font: 400 13.5px/1.8 var(--sans); color: var(--muted); }
-  .credits a { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; }
+    ul.myths { list-style: none; margin: 0.5em 0; padding: 0; }
+    ul.myths li { padding: 8px 0; border-bottom: 1px dotted #d9d9d9; font-size: 0.95em; }
+    ul.myths li:last-child { border-bottom: 0; }
+    ul.myths li b { display: block; margin-bottom: 2px; }
 
-  footer {
-    margin: 120px 0 0;
-    padding: 40px 0 72px;
-    border-top: 1px solid var(--hairline);
-    font: 400 13.5px/1.7 var(--sans);
-    color: var(--muted);
-  }
-  footer a { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; }
+    .sources ol { padding-left: 1.6em; font-size: 0.9em; }
+    .sources li { margin-bottom: 6px; overflow-wrap: break-word; }
+    .credits { color: #444; font-size: 0.9em; }
 
-  @media print {
-    header.hero { min-height: auto; }
-    section { margin-top: 60px; }
-    h2 { break-after: avoid; }
-    figure { break-inside: avoid; }
-  }
-</style>
+    footer { border-top: 1px solid #d9d9d9; margin-top: 2.5em; padding: 0.4em 0 2em; color: #444; font-size: 0.9em; }
+
+    @media (max-width: 760px) { .prose, .wide { padding: 0 1em; } }
+  </style>
 </head>
 <body>
+<div class="prose">
+  <a href="/" class="back">&larr; Home</a>
 
-<p class="site-back"><a href="/">← Home</a></p>
+  <h1>The Whole Widget: Steve Jobs and the Design of Everything</h1>
+  <p class="date">An essay compiled from primary sources &middot; August 2026</p>
 
-<header class="hero">
-  <p class="overline">An essay compiled from primary sources · August 2026</p>
-  <h1>The Whole Widget</h1>
-  <p class="sub">Steve Jobs applied one design philosophy to everything he touched: his empty living room, his unmarked car, his hundred turtlenecks, and Apple, from the circuit board nobody sees to the glass staircase everybody climbs.</p>
-  <p class="down">Scroll ↓</p>
-</header>
+  <p>Steve Jobs applied one design philosophy to everything he touched: his empty living room, his unmarked car, his hundred turtlenecks, and Apple, from the circuit board nobody sees to the glass staircase everybody climbs.</p>
+</div>
 
 <div class="prose">
   <p class="lede">In June 1983 a 28-year-old Steve Jobs stood under Eero Saarinen's tent in Aspen and told a room full of designers what Apple was aiming at: "we're really shooting for Museum of Modern Art quality."<sup class="cite"><a href="#s15">15</a></sup> He got it. MoMA now holds the iMac, the iPod, and the G4 Cube; SFMOMA holds the 1984 Macintosh.<sup class="cite"><a href="#s47">47</a></sup><sup class="cite"><a href="#s49">49</a></sup></p>
@@ -422,7 +146,7 @@
 
   <figure class="portrait">
     <img src="img/whole-widget/jobs-portrait.jpg" alt="Steve Jobs in 2010, black turtleneck, rimless round glasses, gray beard, looking directly at the camera." width="1557" height="2489">
-    <figcaption>Steve Jobs, 2010. The uniform: Issey Miyake mock turtleneck, Lunor Classic Rund glasses. Photo: <a href="https://commons.wikimedia.org/wiki/File:Steve_Jobs_Headshot_2010-CROP2.jpg">Matt Yohe, crop by MetalGearLiquid</a>, CC BY-SA 3.0, via Wikimedia Commons.</figcaption>
+    <figcaption>Steve Jobs, 2010. The uniform: Issey Miyake mock turtleneck, Lunor Classic Rund glasses. Photo: <a href="https://commons.wikimedia.org/wiki/File:Steve_Jobs_Headshot_2010-CROP2.jpg" target="_blank" rel="noopener noreferrer">Matt Yohe, crop by MetalGearLiquid</a>, CC BY-SA 3.0, via Wikimedia Commons.</figcaption>
   </figure>
 
   <nav class="toc" aria-label="Contents">
@@ -493,7 +217,7 @@
     <p class="kicker">02 · Houses</p>
     <h2>The house with no furniture</h2>
 
-    <p>The clearest photograph of Jobs' design standard has almost nothing in it. On December 15, 1982, TIME photographer Diana Walker shot the 27-year-old multimillionaire sitting cross-legged on his living-room floor. The room contains a Tiffany lamp, a stack of records, and a stereo. His retrospective caption: "This was a very typical time. I was single. All you needed was a cup of tea, a light, and your stereo, you know, and that's what I had."<sup class="cite"><a href="#s21">21</a></sup> The photograph is copyrighted; see it at the <a href="https://stevejobsarchive.com/artifact/steve-at-home-sitting-under-his-tiffany-lamp">Steve Jobs Archive</a> or in Walker's <a href="http://web.archive.org/web/20200805071451/https://time.com/3781557/in-a-private-light-diana-walkers-photos-of-steve-jobs/">TIME retrospective</a>.<sup class="cite"><a href="#s19">19</a></sup><sup class="cite"><a href="#s20">20</a></sup></p>
+    <p>The clearest photograph of Jobs' design standard has almost nothing in it. On December 15, 1982, TIME photographer Diana Walker shot the 27-year-old multimillionaire sitting cross-legged on his living-room floor. The room contains a Tiffany lamp, a stack of records, and a stereo. His retrospective caption: "This was a very typical time. I was single. All you needed was a cup of tea, a light, and your stereo, you know, and that's what I had."<sup class="cite"><a href="#s21">21</a></sup> The photograph is copyrighted; see it at the <a href="https://stevejobsarchive.com/artifact/steve-at-home-sitting-under-his-tiffany-lamp" target="_blank" rel="noopener noreferrer">Steve Jobs Archive</a> or in Walker's <a href="http://web.archive.org/web/20200805071451/https://time.com/3781557/in-a-private-light-diana-walkers-photos-of-steve-jobs/" target="_blank" rel="noopener noreferrer">TIME retrospective</a>.<sup class="cite"><a href="#s19">19</a></sup><sup class="cite"><a href="#s20">20</a></sup></p>
 
     <p class="note">Where was it taken? Getty's caption and the Steve Jobs Archive say Woodside. But Jobs bought the Woodside mansion in 1984, two years after the shoot, and Isaacson places him in 1983 in a Los Gatos house containing exactly the photo's inventory: "a Tiffany lamp, an antique dining table, and a laser disc video attached to a Sony Trinitron, but foam cushions on the floor rather than sofas and chairs."<sup class="cite"><a href="#s15">15</a></sup><sup class="cite"><a href="#s22">22</a></sup> The chronology favors Los Gatos; the captions say Woodside. Treat the location as disputed.</p>
 
@@ -510,7 +234,7 @@
 
     <figure class="inset">
       <img src="img/whole-widget/jackling-house.jpg" alt="A large Spanish Colonial Revival mansion in visible disrepair, photographed through trees." width="330" height="229" loading="lazy">
-      <figcaption>The Jackling House in 2007, four years before demolition; the only freely licensed photo of it. Photo: <a href="https://commons.wikimedia.org/wiki/File:Jackling_House,_ca._2007.jpg">Jonathan Haeber</a>, CC BY-SA 3.0.</figcaption>
+      <figcaption>The Jackling House in 2007, four years before demolition; the only freely licensed photo of it. Photo: <a href="https://commons.wikimedia.org/wiki/File:Jackling_House,_ca._2007.jpg" target="_blank" rel="noopener noreferrer">Jonathan Haeber</a>, CC BY-SA 3.0.</figcaption>
     </figure>
 
     <p>In 1984, weeks after launching the Macintosh, Jobs paid a reported $2 million for six Woodside acres and a 17,000-square-foot, 14-bedroom Spanish Colonial Revival mansion built in 1926 for copper magnate Daniel Jackling by George Washington Smith, the architect who invented the California Mediterranean look.<sup class="cite"><a href="#s23">23</a></sup><sup class="cite"><a href="#s26">26</a></sup> He lived in it for about a decade and furnished almost none of it: a mattress, a chest of drawers, a card table, folding chairs. The kitchen was the one finished room.<sup class="cite"><a href="#s22">22</a></sup><sup class="cite"><a href="#s23">23</a></sup></p>
@@ -523,7 +247,7 @@
 
     <figure>
       <img src="img/whole-widget/eichler-home.jpg" alt="A low, flat-roofed midcentury modern tract house with floor-to-ceiling glass, in Granada Hills, Los Angeles." width="1600" height="1200" loading="lazy">
-      <figcaption>An Eichler home (Foster Residence, Granada Hills, Los Angeles). Illustrative of the style, not Jobs' street. Photo: <a href="https://commons.wikimedia.org/wiki/File:Eichler_Homes_-_Foster_Residence,_Granada_Hills.jpg">"Los Angeles"</a>, CC BY-SA 3.0, via Wikimedia Commons.</figcaption>
+      <figcaption>An Eichler home (Foster Residence, Granada Hills, Los Angeles). Illustrative of the style, not Jobs' street. Photo: <a href="https://commons.wikimedia.org/wiki/File:Eichler_Homes_-_Foster_Residence,_Granada_Hills.jpg" target="_blank" rel="noopener noreferrer">"Los Angeles"</a>, CC BY-SA 3.0, via Wikimedia Commons.</figcaption>
     </figure>
 
     <p>The origin story he told about houses needs one correction. Jobs credited Joseph Eichler's modernist tracts for his idea of good design at mass-market prices: "Eichler did a great thing. His houses were smart and cheap and good. They brought clean design and simple taste to lower-income people. […] I love it when you can bring really great design and simple capability to something that doesn't cost much. It was the original vision for Apple."<sup class="cite"><a href="#s15">15</a></sup><sup class="cite"><a href="#s16">16</a></sup> But his childhood house at 286 Diablo Avenue was a Mackay Homes "likeler," probably drawn by Eichler's own architects Anshen and Allen, on a conventional foundation with forced-air heat. Joseph Eichler's son Ned looked at photographs and ruled: "That house is not an Eichler."<sup class="cite"><a href="#s27">27</a></sup> A real Eichler tract sat three blocks away; the design lesson survives the correction.</p>
@@ -548,11 +272,11 @@
       <div class="duo">
         <figure>
           <img src="img/whole-widget/mercedes-sl55.jpg" alt="A silver Mercedes-Benz SL 55 AMG roadster, front three-quarter view." width="1280" height="771" loading="lazy">
-          <figcaption>A silver Mercedes-Benz SL 55 AMG (R230), the model Jobs leased in an endless six-month cycle. Not his car. Photo: <a href="https://commons.wikimedia.org/wiki/File:Mercedes_SL_55_AMG_front.jpg">JanST</a>, CC BY-SA 2.5.</figcaption>
+          <figcaption>A silver Mercedes-Benz SL 55 AMG (R230), the model Jobs leased in an endless six-month cycle. Not his car. Photo: <a href="https://commons.wikimedia.org/wiki/File:Mercedes_SL_55_AMG_front.jpg" target="_blank" rel="noopener noreferrer">JanST</a>, CC BY-SA 2.5.</figcaption>
         </figure>
         <figure>
           <img src="img/whole-widget/bmw-r60.jpg" alt="A black 1965 BMW R60/2 motorcycle with a large chrome-sided fuel tank." width="1600" height="1066" loading="lazy">
-          <figcaption>A 1965 BMW R60/2 (non-standard Hoske tank); Jobs rode a 1966. Photo: <a href="https://commons.wikimedia.org/wiki/File:BMW_R_60-2,_Bj._1965,_Hoske-Tank_(2014-09-13_7017).jpg">Lothar Spurzem</a>, CC BY-SA 2.0 DE.</figcaption>
+          <figcaption>A 1965 BMW R60/2 (non-standard Hoske tank); Jobs rode a 1966. Photo: <a href="https://commons.wikimedia.org/wiki/File:BMW_R_60-2,_Bj._1965,_Hoske-Tank_(2014-09-13_7017).jpg" target="_blank" rel="noopener noreferrer">Lothar Spurzem</a>, CC BY-SA 2.0 DE.</figcaption>
         </figure>
       </div>
     </div>
@@ -571,7 +295,7 @@
 
     <figure>
       <img src="img/whole-widget/venus-yacht.jpg" alt="A long, silver, minimalist superyacht with a glass superstructure and rows of rectangular windows, moored in a Mediterranean port." width="1600" height="1067" loading="lazy">
-      <figcaption>Venus, the 78.2-meter Feadship Jobs designed with Philippe Starck, at Port de Palma, Majorca, 2022. Photo: <a href="https://commons.wikimedia.org/wiki/File:Venus_(super_yacht_designed_by_Philippe_Starck),_Port_de_Palma,_Majorca,_Spain_-_2022-08-20.jpg">WestportWiki</a>, CC BY-SA 4.0.</figcaption>
+      <figcaption>Venus, the 78.2-meter Feadship Jobs designed with Philippe Starck, at Port de Palma, Majorca, 2022. Photo: <a href="https://commons.wikimedia.org/wiki/File:Venus_(super_yacht_designed_by_Philippe_Starck),_Port_de_Palma,_Majorca,_Spain_-_2022-08-20.jpg" target="_blank" rel="noopener noreferrer">WestportWiki</a>, CC BY-SA 4.0.</figcaption>
     </figure>
 
     <p>From 2007 Jobs met Philippe Starck roughly monthly, reportedly in day-long Sunday sessions in Palo Alto, designing a 78.2-meter aluminum yacht. When Starck presented the first concept, Jobs pushed it further: "I think you should make it <em>all</em> out of glass."<sup class="cite"><a href="#s40">40</a></sup> The main cabin got glass walls forty feet long and ten feet high, engineered by the same structural-glass specialists as the Apple Stores; because Lloyd's would not certify load-bearing glass at sea, a hidden ten-tonne aluminum frame carries fifteen tonnes of glass.<sup class="cite"><a href="#s15">15</a></sup><sup class="cite"><a href="#s40">40</a></sup> The wheelhouse was fitted with a row of 27-inch iMacs.<sup class="cite"><a href="#s39">39</a></sup> He kept designing it through his final illness and told Isaacson why:</p>
@@ -598,11 +322,11 @@
       <div class="duo">
         <figure>
           <img src="img/whole-widget/braun-t3.jpg" alt="Three small pocket radios by Dieter Rams for Braun, arranged in a row: T3, T4, and T41, each a plain rectangle with a circular dial." width="1280" height="462" loading="lazy">
-          <figcaption>Dieter Rams' Braun pocket radios: T3 (1958), T4 (1958), T41 (1959). MoMA holds the T3. Photo: <a href="https://commons.wikimedia.org/wiki/File:RadioT3-4-41.jpg">PeterAjtony</a>, CC BY-SA 4.0.</figcaption>
+          <figcaption>Dieter Rams' Braun pocket radios: T3 (1958), T4 (1958), T41 (1959). MoMA holds the T3. Photo: <a href="https://commons.wikimedia.org/wiki/File:RadioT3-4-41.jpg" target="_blank" rel="noopener noreferrer">PeterAjtony</a>, CC BY-SA 4.0.</figcaption>
         </figure>
         <figure>
           <img src="img/whole-widget/ipod-1g-alt.jpg" alt="An original white 2001 iPod with mechanical scroll wheel, next to a small black iPod nano." width="1600" height="1200" loading="lazy">
-          <figcaption>The 2001 iPod (beside a 2007 descendant). White rectangle, circular control. MoMA holds this too. Photo: <a href="https://commons.wikimedia.org/wiki/File:IPod_nano_3G_black_and_iPod_1G_5GB-2007-09-11.jpg">Gareth Wiscombe</a>, CC BY 2.0.</figcaption>
+          <figcaption>The 2001 iPod (beside a 2007 descendant). White rectangle, circular control. MoMA holds this too. Photo: <a href="https://commons.wikimedia.org/wiki/File:IPod_nano_3G_black_and_iPod_1G_5GB-2007-09-11.jpg" target="_blank" rel="noopener noreferrer">Gareth Wiscombe</a>, CC BY 2.0.</figcaption>
         </figure>
       </div>
       <figcaption>The T3-to-iPod lineage is a critics' argument, not an Apple admission; no Apple designer ever conceded the homage. The two objects sit in the same MoMA department.<sup class="cite"><a href="#s46">46</a></sup><sup class="cite"><a href="#s47">47</a></sup></figcaption>
@@ -610,7 +334,7 @@
 
     <figure>
       <img src="img/whole-widget/ryoanji.jpg" alt="The dry rock garden at Ryoan-ji in Kyoto: raked white gravel, dark rocks, an earthen wall, silhouettes of visitors on the wooden veranda." width="1600" height="1064" loading="lazy">
-      <figcaption>The rock garden at Ryōan-ji, Kyoto, illustrating Jobs' "the gardens around Kyoto." He named no specific garden; the one his family's documented 2010 trip singles out is Saihō-ji, the moss temple. Photo: <a href="https://commons.wikimedia.org/wiki/File:Ry%C5%8Dan-ji_rock_garden_with_silhouettes_of_tourists,_Kyoto,_2016.jpg">DimiTalen</a>, CC0.</figcaption>
+      <figcaption>The rock garden at Ryōan-ji, Kyoto, illustrating Jobs' "the gardens around Kyoto." He named no specific garden; the one his family's documented 2010 trip singles out is Saihō-ji, the moss temple. Photo: <a href="https://commons.wikimedia.org/wiki/File:Ry%C5%8Dan-ji_rock_garden_with_silhouettes_of_tourists,_Kyoto,_2016.jpg" target="_blank" rel="noopener noreferrer">DimiTalen</a>, CC0.</figcaption>
     </figure>
 
     <p>The rest of his collection was places and teachers rather than possessions. Kobun Chino Otogawa, the Zen teacher who later held the title Spiritual Director at NeXT and married Steve and Laurene at Yosemite in 1991.<sup class="cite"><a href="#s44">44</a></sup> Kyoto, which he gave each of his children as a coming-of-age trip; on the 2010 family visit they stayed at the Tawaraya ryokan and walked Saihō-ji's moss gardens.<sup class="cite"><a href="#s15">15</a></sup> Reed College's calligraphy room, where a Trappist-monk-turned-teacher, Robert Palladino, carried Lloyd Reynolds' fusion of Zen and William Morris craft into the class a dropout wandered into; Reed's own history traces the lineage forward to "the computer language interface initiated by Steve Jobs."<sup class="cite"><a href="#s43">43</a></sup> And the Whole Earth Catalog, whose farewell line he turned into a commencement benediction: "Stay hungry. Stay foolish."<sup class="cite"><a href="#s7">7</a></sup></p>
@@ -635,7 +359,7 @@
 
     <figure>
       <img src="img/whole-widget/apple-ii.jpg" alt="An Apple II computer in a beige plastic case with integrated keyboard, on display at a museum." width="1600" height="1066" loading="lazy">
-      <figcaption>Apple II (1977), Computer History Museum. Photo: <a href="https://commons.wikimedia.org/wiki/File:Apple_II,_1977,_Computer_History_Museum.jpg">The wub</a>, CC BY-SA 4.0.</figcaption>
+      <figcaption>Apple II (1977), Computer History Museum. Photo: <a href="https://commons.wikimedia.org/wiki/File:Apple_II,_1977,_Computer_History_Museum.jpg" target="_blank" rel="noopener noreferrer">The wub</a>, CC BY-SA 4.0.</figcaption>
     </figure>
 
     <p>For the Apple II, Jobs hired consultant Jerry Manock to wrap Wozniak's board in molded plastic instead of hobbyist sheet metal, and insisted the machine be silent, which pushed Rod Holt to a switching power supply that needed no fan.<sup class="cite"><a href="#s65">65</a></sup><sup class="cite"><a href="#s53">53</a></sup> The 1977 brochure carried the headline that became Apple's standing mantra: "Simplicity is the ultimate sophistication."<sup class="cite"><a href="#s52">52</a></sup> (Everyone says Leonardo da Vinci; quote researchers have found no trace of it in his work, and the earliest da Vinci attribution dates to 2000.<sup class="cite"><a href="#s51">51</a></sup> Its verified home is the brochure.)</p>
@@ -646,11 +370,11 @@
       <div class="duo">
         <figure>
           <img src="img/whole-widget/macintosh-128k.jpg" alt="An original beige Macintosh 128K with built-in screen, keyboard and one-button mouse." width="1600" height="1476" loading="lazy">
-          <figcaption>Macintosh 128K (1984). Photo: <a href="https://commons.wikimedia.org/wiki/File:Computer_macintosh_128k,_1984_(all_about_Apple_onlus).jpg">Sailko</a>, CC BY 3.0.</figcaption>
+          <figcaption>Macintosh 128K (1984). Photo: <a href="https://commons.wikimedia.org/wiki/File:Computer_macintosh_128k,_1984_(all_about_Apple_onlus).jpg" target="_blank" rel="noopener noreferrer">Sailko</a>, CC BY 3.0.</figcaption>
         </figure>
         <figure>
           <img src="img/whole-widget/mac-signatures.jpg" alt="The inside of a Macintosh rear case, showing raised molded signatures of the Macintosh team, including Steve Jobs." width="1280" height="720" loading="lazy">
-          <figcaption>Inside an original Mac case: the team's signatures, Jobs' among them, molded where only a repair tech would look. Photo: <a href="https://commons.wikimedia.org/wiki/File:SteveJobsSignatureInsideOriginalMacintoshCase-Villenero.jpg">Carlos Pérez Ruiz</a>, CC BY-SA 2.0.</figcaption>
+          <figcaption>Inside an original Mac case: the team's signatures, Jobs' among them, molded where only a repair tech would look. Photo: <a href="https://commons.wikimedia.org/wiki/File:SteveJobsSignatureInsideOriginalMacintoshCase-Villenero.jpg" target="_blank" rel="noopener noreferrer">Carlos Pérez Ruiz</a>, CC BY-SA 2.0.</figcaption>
         </figure>
       </div>
     </div>
@@ -664,11 +388,11 @@
       <div class="duo">
         <figure>
           <img src="img/whole-widget/apple-iic.jpg" alt="A compact cream-colored Apple IIc with its small monitor perched above it on a stand." width="1600" height="1600" loading="lazy">
-          <figcaption>Apple IIc (1984), the first Snow White product: zero-draft walls, fine ribbed lines, "Fog" white. Photo: <a href="https://commons.wikimedia.org/wiki/File:Apple_IIc_with_monitor.jpg">Bilby</a>, CC BY 3.0.</figcaption>
+          <figcaption>Apple IIc (1984), the first Snow White product: zero-draft walls, fine ribbed lines, "Fog" white. Photo: <a href="https://commons.wikimedia.org/wiki/File:Apple_IIc_with_monitor.jpg" target="_blank" rel="noopener noreferrer">Bilby</a>, CC BY 3.0.</figcaption>
         </figure>
         <figure>
           <img src="img/whole-widget/nextcube.jpg" alt="A matte black NeXTcube computer, a plain one-foot magnesium cube, beside its high-resolution monitor." width="1600" height="1066" loading="lazy">
-          <figcaption>NeXTcube (1990): a one-foot die-cast magnesium cube. Photo: <a href="https://commons.wikimedia.org/wiki/File:NeXTcube_computer_(1990)_-_Computer_History_Museum.jpg">Michael Hicks</a>, CC BY 2.0.</figcaption>
+          <figcaption>NeXTcube (1990): a one-foot die-cast magnesium cube. Photo: <a href="https://commons.wikimedia.org/wiki/File:NeXTcube_computer_(1990)_-_Computer_History_Museum.jpg" target="_blank" rel="noopener noreferrer">Michael Hicks</a>, CC BY 2.0.</figcaption>
         </figure>
       </div>
     </div>
@@ -681,11 +405,11 @@
       <div class="duo">
         <figure>
           <img src="img/whole-widget/imac-g3.png" alt="A translucent blue-green iMac G3 all-in-one computer, three-quarter front view." width="1600" height="1491" loading="lazy">
-          <figcaption>iMac G3 in Bondi Blue (1998). Image: <a href="https://commons.wikimedia.org/wiki/File:IMac_G3_Bondi_Blue,_three-quarters_view.png">David Fuchs / Rama</a>, CC BY-SA 4.0.</figcaption>
+          <figcaption>iMac G3 in Bondi Blue (1998). Image: <a href="https://commons.wikimedia.org/wiki/File:IMac_G3_Bondi_Blue,_three-quarters_view.png" target="_blank" rel="noopener noreferrer">David Fuchs / Rama</a>, CC BY-SA 4.0.</figcaption>
         </figure>
         <figure>
           <img src="img/whole-widget/imac-g3-back.jpg" alt="The rear of a Bondi Blue iMac G3, showing the translucent shell and the recessed carrying handle." width="1280" height="853" loading="lazy">
-          <figcaption>The back Jobs bragged about, handle included. Photo: <a href="https://commons.wikimedia.org/wiki/File:Imac_G3_Bondi_Blue_3q_back.jpg">Stephen Hackett</a>, CC BY-SA 4.0.</figcaption>
+          <figcaption>The back Jobs bragged about, handle included. Photo: <a href="https://commons.wikimedia.org/wiki/File:Imac_G3_Bondi_Blue_3q_back.jpg" target="_blank" rel="noopener noreferrer">Stephen Hackett</a>, CC BY-SA 4.0.</figcaption>
         </figure>
       </div>
     </div>
@@ -698,11 +422,11 @@
       <div class="duo">
         <figure>
           <img src="img/whole-widget/iphone-2007.jpg" alt="The original iPhone on display under glass at Macworld 2007." width="1600" height="1200" loading="lazy">
-          <figcaption>The original iPhone at Macworld, the week of its January 2007 unveiling. Photo: <a href="https://commons.wikimedia.org/wiki/File:First_iPhone_Macworld_2007_DSCF1286.agr.jpg">ArnoldReinhold</a>, CC BY-SA 4.0.</figcaption>
+          <figcaption>The original iPhone at Macworld, the week of its January 2007 unveiling. Photo: <a href="https://commons.wikimedia.org/wiki/File:First_iPhone_Macworld_2007_DSCF1286.agr.jpg" target="_blank" rel="noopener noreferrer">ArnoldReinhold</a>, CC BY-SA 4.0.</figcaption>
         </figure>
         <figure>
           <img src="img/whole-widget/macbook-air.jpg" alt="A first-generation MacBook Air, open, showing its thin wedge-shaped aluminum body." width="1600" height="1200" loading="lazy">
-          <figcaption>First-generation MacBook Air, February 2008, four weeks after it came out of the envelope. Photo: <a href="https://commons.wikimedia.org/wiki/File:MacBook_Air.jpg">Dan Taylor</a>, CC BY 2.0.</figcaption>
+          <figcaption>First-generation MacBook Air, February 2008, four weeks after it came out of the envelope. Photo: <a href="https://commons.wikimedia.org/wiki/File:MacBook_Air.jpg" target="_blank" rel="noopener noreferrer">Dan Taylor</a>, CC BY 2.0.</figcaption>
         </figure>
       </div>
     </div>
@@ -732,7 +456,7 @@
 
     <figure>
       <img src="img/whole-widget/mac-gui.png" alt="A black-and-white classic Mac OS System 6 desktop: menu bar with open Apple menu, a TeachText window reading Hello from TeachText, and MacPaint tool palettes." width="960" height="640" loading="lazy">
-      <figcaption>A System 6 Macintosh desktop under MultiFinder, with TeachText and MacPaint palettes: Kare's icons and the Chicago typeface in use. Emulator capture released CC0 by its uploader (<a href="https://commons.wikimedia.org/wiki/File:MultiFinder.png">Nikopol-h</a>); Apple retains rights in the underlying interface artwork.</figcaption>
+      <figcaption>A System 6 Macintosh desktop under MultiFinder, with TeachText and MacPaint palettes: Kare's icons and the Chicago typeface in use. Emulator capture released CC0 by its uploader (<a href="https://commons.wikimedia.org/wiki/File:MultiFinder.png" target="_blank" rel="noopener noreferrer">Nikopol-h</a>); Apple retains rights in the underlying interface artwork.</figcaption>
     </figure>
 
     <p>Kare drew the interface before tools existed to draw it with: pencil on graph paper, one square per pixel, hand-converted to hex.<sup class="cite"><a href="#s75">75</a></sup> "I loved the puzzle-like nature of working in sixteen-by-sixteen and thirty-two-by-thirty-two pixel icon grids, and the marriage of craft and metaphor," she said.<sup class="cite"><a href="#s76">76</a></sup> When Jobs banned the Apple logo from the shortcut menus ("We're taking the Apple logo in vain!"), Kare paged through a symbol dictionary and found a looped square used on Nordic signs for places of interest. It is on every Mac keyboard today; Unicode names it PLACE OF INTEREST SIGN, and the shape appears on a Gotland picture stone carved around 400-600 AD.<sup class="cite"><a href="#s68">68</a></sup><sup class="cite"><a href="#s69">69</a></sup> Her survival strategy in reviews became Apple folklore: "I learned to never just show Steve something and ask, 'Do you like this?' because he'd invariably say no. […] The workaround was to come up with several options and ask him which one he liked."<sup class="cite"><a href="#s75">75</a></sup></p>
@@ -746,7 +470,7 @@
 
     <figure>
       <img src="img/whole-widget/nextcube-cern-server.jpg" alt="Tim Berners-Lee's NeXTcube at CERN, with a hand-written label warning not to power it down, and a copy of the web proposal on the keyboard." width="1600" height="1200" loading="lazy">
-      <figcaption>The first web server: Tim Berners-Lee's NeXT machine at CERN, label still attached: "This machine is a server. DO NOT POWER IT DOWN!!" Photo: <a href="https://commons.wikimedia.org/wiki/File:First_Web_Server.jpg">Coolcaesar</a>, CC BY-SA 3.0.</figcaption>
+      <figcaption>The first web server: Tim Berners-Lee's NeXT machine at CERN, label still attached: "This machine is a server. DO NOT POWER IT DOWN!!" Photo: <a href="https://commons.wikimedia.org/wiki/File:First_Web_Server.jpg" target="_blank" rel="noopener noreferrer">Coolcaesar</a>, CC BY-SA 3.0.</figcaption>
     </figure>
 
     <p>NeXT applied the same taste to the developer's experience. Interface Builder let a programmer assemble a working interface by dragging objects and wiring connections before the program ever ran. The strongest testimonial is the web itself. Tim Berners-Lee, on building the first browser and server at CERN in 1990: "I could do in a couple of months what would take more like a year on other platforms, because on the NeXT, a lot of it was done for me already. […] I just had to add hypertext, (by subclassing the Text object)."<sup class="cite"><a href="#s78">78</a></sup><sup class="cite"><a href="#s77">77</a></sup> When Apple bought NeXT in 1996, that stack came home and became Mac OS X.</p>
@@ -789,7 +513,7 @@
               </ul>
             </div>
           </div>
-          <figcaption>Fourteen promo blurbs, two image-map navigation bars, eight subdomains. Reconstruction; <a href="https://web.archive.org/web/19961022105458/http://www.apple.com/">real capture</a>.<sup class="cite"><a href="#s85">85</a></sup></figcaption>
+          <figcaption>Fourteen promo blurbs, two image-map navigation bars, eight subdomains. Reconstruction; <a href="https://web.archive.org/web/19961022105458/http://www.apple.com/" target="_blank" rel="noopener noreferrer">real capture</a>.<sup class="cite"><a href="#s85">85</a></sup></figcaption>
         </figure>
         <figure>
           <div class="browser">
@@ -799,7 +523,7 @@
               <p class="m-tag">Three links. The third is the iMac. 2,206 bytes of HTML, down from 5,133.</p>
             </div>
           </div>
-          <figcaption>The post-return homepage: a logo, a date, three words, each linking into the Think Different campaign directory. Reconstruction; <a href="https://web.archive.org/web/19980509035420/http://www.apple.com/">real capture</a>.<sup class="cite"><a href="#s87">87</a></sup></figcaption>
+          <figcaption>The post-return homepage: a logo, a date, three words, each linking into the Think Different campaign directory. Reconstruction; <a href="https://web.archive.org/web/19980509035420/http://www.apple.com/" target="_blank" rel="noopener noreferrer">real capture</a>.<sup class="cite"><a href="#s87">87</a></sup></figcaption>
         </figure>
       </div>
     </div>
@@ -815,7 +539,7 @@
               <div class="m-phone" aria-hidden="true"></div>
             </div>
           </div>
-          <figcaption>The mature single-product takeover, the day after the keynote. Reconstruction; <a href="https://web.archive.org/web/20070110052128/http://www.apple.com/">real capture</a>.<sup class="cite"><a href="#s89">89</a></sup> (The iPod, in October 2001, only got a promo tile; the full-page takeover pattern belongs to the iMac and iPhone.<sup class="cite"><a href="#s88">88</a></sup>)</figcaption>
+          <figcaption>The mature single-product takeover, the day after the keynote. Reconstruction; <a href="https://web.archive.org/web/20070110052128/http://www.apple.com/" target="_blank" rel="noopener noreferrer">real capture</a>.<sup class="cite"><a href="#s89">89</a></sup> (The iPod, in October 2001, only got a promo tile; the full-page takeover pattern belongs to the iMac and iPhone.<sup class="cite"><a href="#s88">88</a></sup>)</figcaption>
         </figure>
         <figure>
           <div class="browser dark">
@@ -825,7 +549,7 @@
               <p class="m-dates">1955–2011</p>
             </div>
           </div>
-          <figcaption>The evening he died, the whole homepage became one photograph and one caption, linking to a page that asked only for memories by email. Reconstruction; <a href="https://web.archive.org/web/20111005235534/http://www.apple.com/">real capture</a>.<sup class="cite"><a href="#s90">90</a></sup><sup class="cite"><a href="#s91">91</a></sup></figcaption>
+          <figcaption>The evening he died, the whole homepage became one photograph and one caption, linking to a page that asked only for memories by email. Reconstruction; <a href="https://web.archive.org/web/20111005235534/http://www.apple.com/" target="_blank" rel="noopener noreferrer">real capture</a>.<sup class="cite"><a href="#s90">90</a></sup><sup class="cite"><a href="#s91">91</a></sup></figcaption>
         </figure>
       </div>
     </div>
@@ -877,7 +601,7 @@ they can change the world, are the ones who do.</pre>
 
     <figure>
       <img src="img/whole-widget/jobs-macworld.jpg" alt="Steve Jobs on a dark keynote stage in black turtleneck and jeans, mid-gesture, with a large screen behind him." width="1600" height="1065" loading="lazy">
-      <figcaption>The keynote as designed object: WWDC 2007. In the first three minutes of the iPhone introduction that January, Jobs used 19 words of on-screen text across about 12 slides. Photo: <a href="https://commons.wikimedia.org/wiki/File:Steve_Jobs_Speaks_At_WWDC07_(541334636).jpg">Ben Stanfield</a>, CC BY-SA 2.0.</figcaption>
+      <figcaption>The keynote as designed object: WWDC 2007. In the first three minutes of the iPhone introduction that January, Jobs used 19 words of on-screen text across about 12 slides. Photo: <a href="https://commons.wikimedia.org/wiki/File:Steve_Jobs_Speaks_At_WWDC07_(541334636).jpg" target="_blank" rel="noopener noreferrer">Ben Stanfield</a>, CC BY-SA 2.0.</figcaption>
     </figure>
 
     <p>The keynote itself was a designed product: black stage, one image per slide, a rehearsal regime staff called "the death march." The best-built bit of stagecraft he ever ran is the January 9, 2007 reveal:</p>
@@ -902,11 +626,11 @@ they can change the world, are the ones who do.</pre>
       <div class="duo">
         <figure>
           <img src="img/whole-widget/glass-staircase.jpg" alt="A spiral staircase made entirely of glass treads and glass balustrades inside the Fifth Avenue Apple Store." width="1600" height="1062" loading="lazy">
-          <figcaption>The glass staircase, Apple Fifth Avenue. Jobs is first-named inventor on US patent D478,999, "Staircase."<sup class="cite"><a href="#s107">107</a></sup> Photo: <a href="https://commons.wikimedia.org/wiki/File:Apple_Store_Fifth_Avenue,_showing_the_patented_glass-staircase_(7181853588).jpg">Jorge Láscar</a>, CC BY 2.0.</figcaption>
+          <figcaption>The glass staircase, Apple Fifth Avenue. Jobs is first-named inventor on US patent D478,999, "Staircase."<sup class="cite"><a href="#s107">107</a></sup> Photo: <a href="https://commons.wikimedia.org/wiki/File:Apple_Store_Fifth_Avenue,_showing_the_patented_glass-staircase_(7181853588).jpg" target="_blank" rel="noopener noreferrer">Jorge Láscar</a>, CC BY 2.0.</figcaption>
         </figure>
         <figure>
           <img src="img/whole-widget/fifth-avenue.jpg" alt="The Apple Fifth Avenue glass cube entrance glowing at dusk on the plaza in New York." width="1600" height="1062" loading="lazy">
-          <figcaption>The Fifth Avenue cube (2006), open 24 hours. The 2011 rebuild cut its 90 glass panes to 15; the patent on the building names Jobs, assigned two years after his death.<sup class="cite"><a href="#s106">106</a></sup><sup class="cite"><a href="#s108">108</a></sup> Photo: <a href="https://commons.wikimedia.org/wiki/File:Apple_Store_-_Fifth_Avenue_(7181848534).jpg">Jorge Láscar</a>, CC BY 2.0.</figcaption>
+          <figcaption>The Fifth Avenue cube (2006), open 24 hours. The 2011 rebuild cut its 90 glass panes to 15; the patent on the building names Jobs, assigned two years after his death.<sup class="cite"><a href="#s106">106</a></sup><sup class="cite"><a href="#s108">108</a></sup> Photo: <a href="https://commons.wikimedia.org/wiki/File:Apple_Store_-_Fifth_Avenue_(7181848534).jpg" target="_blank" rel="noopener noreferrer">Jorge Láscar</a>, CC BY 2.0.</figcaption>
         </figure>
       </div>
     </div>
@@ -915,7 +639,7 @@ they can change the world, are the ones who do.</pre>
 
     <figure>
       <img src="img/whole-widget/apple-park.jpg" alt="Aerial photograph of Apple Park: an enormous glass ring surrounded by thousands of trees in Cupertino." width="1600" height="1068" loading="lazy">
-      <figcaption>Apple Park, Cupertino. Photo: <a href="https://commons.wikimedia.org/wiki/File:Aerial_view_of_Apple_Park_dllu.jpg">Daniel L. Lu</a>, CC BY-SA 4.0.</figcaption>
+      <figcaption>Apple Park, Cupertino. Photo: <a href="https://commons.wikimedia.org/wiki/File:Aerial_view_of_Apple_Park_dllu.jpg" target="_blank" rel="noopener noreferrer">Daniel L. Lu</a>, CC BY-SA 4.0.</figcaption>
     </figure>
 
     <p>The last product was a building. Jobs quietly assembled 150 acres, much of it former HP land where his teenage summer job had been, hired Norman Foster's office, and made fifty architects restart the shapes for a year.<sup class="cite"><a href="#s15">15</a></sup> On June 7, 2011, the day after his final WWDC keynote, he presented the ring to Cupertino's city council alone, in the same black sweater. "There is not a straight piece of glass in this building, it's all curved," he told them, drawing directly on the retail stores' glass work.<sup class="cite"><a href="#s14">14</a></sup> To Isaacson: "It's like a spaceship has landed," and "I think we have a shot at building the best office building in the world."<sup class="cite"><a href="#s15">15</a></sup> He promised to push the site's tree count past six thousand with a senior arborist hired from Stanford, and asked for apricot orchards, "part of the legacy of this valley."<sup class="cite"><a href="#s15">15</a></sup> The stated goal: "I want to leave a signature campus that expresses the values of the company for generations." It was his last public appearance.<sup class="cite"><a href="#s112">112</a></sup></p>
@@ -995,121 +719,121 @@ they can change the world, are the ones who do.</pre>
     <h2>Sources</h2>
     <p>Numbered as cited above. Isaacson quotations were checked against the book text and cross-checked against published excerpts; folklore.org stories are first-person accounts by Macintosh team members, mostly Andy Hertzfeld.</p>
     <ol>
-      <li id="s1"><b>Playboy</b>, interview by David Sheff, February 1985. <a href="https://allaboutstevejobs.com/verbatim/interviews/playboy_1985">Full text</a>.</li>
-      <li id="s2"><b>Wired 4.02</b>, "Steve Jobs: The Next Insanely Great Thing," interview by Gary Wolf, February 1, 1996. <a href="https://www.wired.com/1996/02/jobs-2/">wired.com</a>.</li>
-      <li id="s3"><b>BusinessWeek</b>, "Steve Jobs: 'There's Sanity Returning,'" interview by Andy Reinhardt, May 25, 1998. <a href="https://web.archive.org/web/20080413190746/http://www.businessweek.com/1998/21/b3579165.htm">Archived</a>.</li>
-      <li id="s4"><b>Fortune</b>, "Apple's One-Dollar-a-Year Man," Brent Schlender, January 24, 2000. <a href="https://web.archive.org/web/20130101010900/http://money.cnn.com/magazines/fortune/fortune_archive/2000/01/24/272277/index.htm">Archived</a>.</li>
-      <li id="s5"><b>Fortune</b>, "Steve Jobs' Apple Gets Way Cooler," Brent Schlender, January 24, 2000. <a href="https://web.archive.org/web/20130308223008/http://money.cnn.com/magazines/fortune/fortune_archive/2000/01/24/272281/index.htm">Archived</a>.</li>
-      <li id="s6"><b>The New York Times Magazine</b>, "The Guts of a New Machine," Rob Walker, November 30, 2003. <a href="https://web.archive.org/web/20160114102340/http://www.nytimes.com/2003/11/30/magazine/the-guts-of-a-new-machine.html">Archived</a>.</li>
-      <li id="s7"><b>Stanford University</b>, Commencement address, June 12, 2005, prepared text. <a href="https://news.stanford.edu/stories/2005/06/youve-got-find-love-jobs-says">news.stanford.edu</a>.</li>
-      <li id="s8"><b>WWDC 1997</b> closing fireside chat, May 13, 1997. <a href="https://allaboutstevejobs.com/videos/keynotes/wwdc_1997_closing_chat">Video</a>; <a href="https://archive.org/details/wwdc-1997-fireside-chat-steve-jobs">VHS-sourced copy</a>. No official transcript exists; wording follows two converging independent transcriptions.</li>
-      <li id="s9"><b>Macworld keynote</b>, January 9, 2007, timestamped transcript. <a href="http://www.european-rhetoric.com/analyses/ikeynote-analysis-iphone/transcript-2007/">European Rhetoric</a>.</li>
-      <li id="s10"><b>D8 conference</b>, June 1, 2010, transcript by Jeff Richardson. <a href="https://www.iphonejd.com/iphone_jd/2010/06/steve-jobs-at-d8.html">iPhone J.D.</a> Accounts differ on two words; see the myths section's neighbor notes.</li>
-      <li id="s11"><b>International Design Conference in Aspen, 1983</b>, audio digitized by Marcel Brown from John Celuch's cassette. <a href="https://archive.org/details/Talk-by-Steven-Jobs-IDCA-1983">Internet Archive</a>.</li>
-      <li id="s12"><b>Steve Jobs Archive</b>, "The Objects of Our Life," July 18, 2024, with introduction by Jony Ive. <a href="https://stevejobsarchive.com/stories/objects-of-our-life">stevejobsarchive.com</a>.</li>
-      <li id="s13"><b>Triumph of the Nerds</b>, Part III, PBS, 1996 (interview shot 1995). <a href="https://www.pbs.org/nerds/part3.html">Transcript</a>.</li>
-      <li id="s14"><b>9to5Mac</b>, "Steve Jobs presents ideas for new Apple 'super campus' to Cupertino City Council," Seth Weintraub, June 7, 2011. <a href="https://9to5mac.com/2011/06/07/steve-jobs-presents-ideas-for-new-apple-super-campus-to-cupertino-city-council/">Link</a>.</li>
+      <li id="s1"><b>Playboy</b>, interview by David Sheff, February 1985. <a href="https://allaboutstevejobs.com/verbatim/interviews/playboy_1985" target="_blank" rel="noopener noreferrer">Full text</a>.</li>
+      <li id="s2"><b>Wired 4.02</b>, "Steve Jobs: The Next Insanely Great Thing," interview by Gary Wolf, February 1, 1996. <a href="https://www.wired.com/1996/02/jobs-2/" target="_blank" rel="noopener noreferrer">wired.com</a>.</li>
+      <li id="s3"><b>BusinessWeek</b>, "Steve Jobs: 'There's Sanity Returning,'" interview by Andy Reinhardt, May 25, 1998. <a href="https://web.archive.org/web/20080413190746/http://www.businessweek.com/1998/21/b3579165.htm" target="_blank" rel="noopener noreferrer">Archived</a>.</li>
+      <li id="s4"><b>Fortune</b>, "Apple's One-Dollar-a-Year Man," Brent Schlender, January 24, 2000. <a href="https://web.archive.org/web/20130101010900/http://money.cnn.com/magazines/fortune/fortune_archive/2000/01/24/272277/index.htm" target="_blank" rel="noopener noreferrer">Archived</a>.</li>
+      <li id="s5"><b>Fortune</b>, "Steve Jobs' Apple Gets Way Cooler," Brent Schlender, January 24, 2000. <a href="https://web.archive.org/web/20130308223008/http://money.cnn.com/magazines/fortune/fortune_archive/2000/01/24/272281/index.htm" target="_blank" rel="noopener noreferrer">Archived</a>.</li>
+      <li id="s6"><b>The New York Times Magazine</b>, "The Guts of a New Machine," Rob Walker, November 30, 2003. <a href="https://web.archive.org/web/20160114102340/http://www.nytimes.com/2003/11/30/magazine/the-guts-of-a-new-machine.html" target="_blank" rel="noopener noreferrer">Archived</a>.</li>
+      <li id="s7"><b>Stanford University</b>, Commencement address, June 12, 2005, prepared text. <a href="https://news.stanford.edu/stories/2005/06/youve-got-find-love-jobs-says" target="_blank" rel="noopener noreferrer">news.stanford.edu</a>.</li>
+      <li id="s8"><b>WWDC 1997</b> closing fireside chat, May 13, 1997. <a href="https://allaboutstevejobs.com/videos/keynotes/wwdc_1997_closing_chat" target="_blank" rel="noopener noreferrer">Video</a>; <a href="https://archive.org/details/wwdc-1997-fireside-chat-steve-jobs" target="_blank" rel="noopener noreferrer">VHS-sourced copy</a>. No official transcript exists; wording follows two converging independent transcriptions.</li>
+      <li id="s9"><b>Macworld keynote</b>, January 9, 2007, timestamped transcript. <a href="http://www.european-rhetoric.com/analyses/ikeynote-analysis-iphone/transcript-2007/" target="_blank" rel="noopener noreferrer">European Rhetoric</a>.</li>
+      <li id="s10"><b>D8 conference</b>, June 1, 2010, transcript by Jeff Richardson. <a href="https://www.iphonejd.com/iphone_jd/2010/06/steve-jobs-at-d8.html" target="_blank" rel="noopener noreferrer">iPhone J.D.</a> Accounts differ on two words; see the myths section's neighbor notes.</li>
+      <li id="s11"><b>International Design Conference in Aspen, 1983</b>, audio digitized by Marcel Brown from John Celuch's cassette. <a href="https://archive.org/details/Talk-by-Steven-Jobs-IDCA-1983" target="_blank" rel="noopener noreferrer">Internet Archive</a>.</li>
+      <li id="s12"><b>Steve Jobs Archive</b>, "The Objects of Our Life," July 18, 2024, with introduction by Jony Ive. <a href="https://stevejobsarchive.com/stories/objects-of-our-life" target="_blank" rel="noopener noreferrer">stevejobsarchive.com</a>.</li>
+      <li id="s13"><b>Triumph of the Nerds</b>, Part III, PBS, 1996 (interview shot 1995). <a href="https://www.pbs.org/nerds/part3.html" target="_blank" rel="noopener noreferrer">Transcript</a>.</li>
+      <li id="s14"><b>9to5Mac</b>, "Steve Jobs presents ideas for new Apple 'super campus' to Cupertino City Council," Seth Weintraub, June 7, 2011. <a href="https://9to5mac.com/2011/06/07/steve-jobs-presents-ideas-for-new-apple-super-campus-to-cupertino-city-council/" target="_blank" rel="noopener noreferrer">Link</a>.</li>
       <li id="s15"><b>Walter Isaacson, Steve Jobs</b>, Simon &amp; Schuster, 2011. Quotations verified against the book text and cross-checked against published excerpts.</li>
-      <li id="s16"><b>Smithsonian Magazine</b>, "How Steve Jobs' Love of Simplicity Fueled a Design Revolution," Walter Isaacson, September 2012. <a href="https://www.smithsonianmag.com/arts-culture/how-steve-jobs-love-of-simplicity-fueled-a-design-revolution-23868877/">Link</a>.</li>
-      <li id="s17"><b>Isaacson excerpt</b> on the Miyake turtlenecks, via 9to5Mac, October 11, 2011. <a href="https://9to5mac.com/2011/10/11/steve-jobs-book-excerpt-why-he-wore-the-black-mock-turtleneck-uniform/">Link</a>.</li>
-      <li id="s18"><b>Mona Simpson</b>, "A Sister's Eulogy for Steve Jobs," The New York Times, October 30, 2011. <a href="https://www.nytimes.com/2011/10/30/opinion/mona-simpsons-eulogy-for-steve-jobs.html">Link</a>.</li>
-      <li id="s19"><b>Steve Jobs Archive</b>, artifact: "Steve at Home, Sitting Under His Tiffany Lamp" (Diana Walker, 1982). <a href="https://stevejobsarchive.com/artifact/steve-at-home-sitting-under-his-tiffany-lamp">Link</a>.</li>
-      <li id="s20"><b>TIME</b>, "In a Private Light: Diana Walker's Photos of Steve Jobs." <a href="http://web.archive.org/web/20200805071451/https://time.com/3781557/in-a-private-light-diana-walkers-photos-of-steve-jobs/">Archived</a>.</li>
-      <li id="s21"><b>Stereophile</b>, "A Cup of Tea, a Light, and Your Stereo," October 6, 2011. <a href="https://www.stereophile.com/content/cup-tea-light-and-your-stereo">Link</a>. The quote circulates as the photo's caption; no primary interview publication was located, so this page presents it as a caption quote.</li>
-      <li id="s22"><b>allaboutstevejobs.com</b>, "Steve at home." <a href="https://allaboutstevejobs.com/persona/steve_at_home">Link</a>.</li>
-      <li id="s23"><b>Architectural Record</b>, "Steve Jobs, the Demo Man," Sarah Amelar, April 4, 2011. <a href="https://www.architecturalrecord.com/articles/2168-steve-jobs-the-demo-man">Link</a>.</li>
-      <li id="s24"><b>AppleInsider</b>, "Steve Jobs to give away historic mansion," October 5, 2004, reporting the This Old House column. <a href="https://appleinsider.com/articles/04/10/05/steve_jobs_to_give_away_historic_mansion">Link</a>.</li>
-      <li id="s25"><b>The Almanac</b>, "Jackling house settles into dust and debris," Dave Boyce, February 15, 2011. <a href="https://www.almanacnews.com/news/2011/02/15/jackling-house-settles-into-dust-and-debris/">Link</a>.</li>
-      <li id="s26"><b>Wikipedia</b>, "Jackling House." <a href="https://en.wikipedia.org/wiki/Jackling_House">Link</a>.</li>
-      <li id="s27"><b>Eichler Network</b>, "Jobs' 'Likeler' No Eichler" and "Steve Jobs Grew Up in an Eichler (or did he?)". <a href="https://www.eichlernetwork.com/article/jobs-likeler-no-eichler">Link</a>.</li>
-      <li id="s28"><b>AppleInsider</b>, "Halloween tradition continues at Steve Jobs' home in Palo Alto," November 2, 2011. <a href="https://appleinsider.com/articles/11/11/02/halloween_tradition_continues_at_steve_jobs_home_in_palo_alto">Link</a>.</li>
-      <li id="s29"><b>Wikipedia</b>, "The San Remo"; CooperatorNews, "Celebrity Appeal." <a href="https://en.wikipedia.org/wiki/The_San_Remo">Link</a>; <a href="https://cooperatornews.com/article/celebrity-appeal">Link</a>.</li>
-      <li id="s30"><b>iTWire</b>, "The truth about Steve Jobs' number plate," David Heath, October 26, 2011, from an interview with Jon Callas. <a href="https://web.archive.org/web/20130131163254/http://www.itwire.com/it-people-news/enterprise/50649-the-truth-about-steve-jobs-number-plate">Archived</a>.</li>
-      <li id="s31"><b>ABC News</b>, "Steve Jobs' Car: Why the Apple CEO Drove Without License Plates," October 2011, quoting DMV spokesman Jaime Garza and CVC 4456. <a href="https://abcnews.com/Technology/steve-jobs-car-apple-ceo-license-plates/story?id=14834608">Link</a>.</li>
-      <li id="s32"><b>The Hollywood Reporter</b>, "Steve Jobs License Plate Mystery Solved," October 2011. <a href="https://www.hollywoodreporter.com/news/general-news/steve-jobs-california-license-mercedes-benz-254875/">Link</a>.</li>
-      <li id="s33"><b>California AB 516</b> (2015-2016), temporary license plates. <a href="https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=201520160AB516">Bill text</a>; The News Wheel, "California Ends 'Steve Jobs Loophole.'" <a href="https://thenewswheel.com/california-ends-steve-jobs-loophole-for-license-plates/">Link</a>.</li>
-      <li id="s34"><b>Cult of Mac</b>, Charles O'Rear on the 1982 National Geographic motorcycle photograph. <a href="https://www.cultofmac.com/news/photographer-behind-steve-jobs-national-portrait-gallery-photo-recalls-meeting-jobs-gallery">Link</a>.</li>
-      <li id="s35"><b>Wired</b>, "We Pieced Together Steve Jobs' Long-Lost Stereo System," Rene Chun, April 29, 2014. <a href="https://www.wired.com/2014/04/steve-jobs-stereo-system/">Link</a>.</li>
-      <li id="s36"><b>Levi Strauss &amp; Co.</b>, "The Jean-ius Style of Steve Jobs," October 14, 2016. <a href="https://www.levistrauss.com/2016/10/14/the-jean-ius-style-of-steve-jobs/">Link</a>.</li>
-      <li id="s37"><b>MacRumors</b>, "Steve Jobs' Wristwatch Sells for $42,500 at Auction," February 22, 2016; Professional Watches on the 2017 Seiko × Nano Universe reissue. <a href="https://www.macrumors.com/2016/02/22/steve-jobs-wristwatch-42500-auction/">Link</a>; <a href="https://professionalwatches.com/seiko-chariot-steve-jobs-re-edition/">Link</a>.</li>
-      <li id="s38"><b>Lunor / SunglassesID</b>, the Classic Rund PP identification. <a href="https://www.sunglassesid.com/sightings/lunor-classic-rund-steve-jobs">Link</a>.</li>
-      <li id="s39"><b>AppleInsider</b>, "Steve Jobs' Apple-inspired super-yacht revealed in Netherlands," October 28, 2012. <a href="https://appleinsider.com/articles/12/10/28/steve-jobs-apple-inspired-super-yacht-revealed-in-netherlands">Link</a>.</li>
-      <li id="s40"><b>Boat International</b>, "9 facts about Steve Jobs' superyacht Venus" and "Iconic yachts: Venus." <a href="https://www.boatinternational.com/yachts/news/facts-steve-jobs-superyacht-venus">Link</a>; <a href="https://www.boatinternational.com/yachts/editorial-features/iconic-yachts-venus">Link</a>.</li>
-      <li id="s41"><b>Wikipedia</b>, "Venus (yacht)." <a href="https://en.wikipedia.org/wiki/Venus_(yacht)">Link</a>.</li>
-      <li id="s42"><b>National Gallery of Art / Wikipedia</b>, "Winter Sunrise, Sierra Nevada, from Lone Pine, California" (Ansel Adams, 1944). <a href="https://www.nga.gov/artworks/66683-winter-sunrise-sierra-nevada-lone-pine-california">Link</a>; <a href="https://en.wikipedia.org/wiki/Winter_Sunrise,_Sierra_Nevada,_from_Lone_Pine,_California">Link</a>.</li>
-      <li id="s43"><b>Reed College</b>, "A Brief History of Calligraphy at Reed" and the Robert Palladino obituary. <a href="https://www.reed.edu/calligraphy/history.html">Link</a>; <a href="https://www.reed.edu/reed-magazine/in-memoriam/obituaries/june2016/prof.-robert-joseph-palladino%201969-84.html">Link</a>.</li>
-      <li id="s44"><b>Wikipedia / Jikoji Zen Center</b>, Kōbun Chino Otogawa. <a href="https://en.wikipedia.org/wiki/K%C5%8Dbun_Chino_Otogawa">Link</a>; <a href="https://www.jikoji.org/biography">Link</a>.</li>
-      <li id="s45"><b>The Daily Telegraph</b>, "Dieter Rams: Apple has achieved something I never did," June 2011. <a href="https://www.telegraph.co.uk/technology/apple/8555503/Dieter-Rams-Apple-has-achieved-something-I-never-did.html">Link</a>; <a href="https://bokardo.com/archives/dieter-rams-apple-has-achieved-something-i-never-did/">reproduction</a>.</li>
-      <li id="s46"><b>MoMA</b>, Dieter Rams, Pocket Radio (model T3), 1958, object 595.1965. <a href="https://www.moma.org/collection/works/4134">Link</a>.</li>
-      <li id="s47"><b>MoMA</b>, iPod (2001), object 89465; iMac (1998), object 82133. <a href="https://www.moma.org/collection/works/89465">Link</a>; <a href="https://www.moma.org/collection/works/82133">Link</a>.</li>
-      <li id="s48"><b>MoMA</b>, Susan Kare, Apple Macintosh OS icon sketchbook (1982), object 112.2015, jointly owned with SFMOMA. <a href="https://www.moma.org/collection/works/188382">Link</a>.</li>
-      <li id="s49"><b>SFMOMA</b>, Macintosh personal computer (Jerry Manock, 1984), 2015.743; Macintosh 512k, 2010.84.A-C. <a href="https://www.sfmoma.org/artwork/2015.743/">Link</a>; <a href="https://www.sfmoma.org/artwork/2010.84.A-C/">Link</a>.</li>
-      <li id="s50"><b>Hi-Fi Hall of Fame</b>, "Steve Jobs" celebrity system entry (component corroboration). <a href="https://hifihalloffame.com/celebrity-systems/steve-jobs/">Link</a>.</li>
-      <li id="s51"><b>Quote Investigator</b>, "Simplicity is the Ultimate Sophistication," April 2, 2015, and "Good Artists Copy; Great Artists Steal," March 6, 2013. <a href="https://quoteinvestigator.com/2015/04/02/simple/">Link</a>; <a href="https://quoteinvestigator.com/2013/03/06/artists-steal/">Link</a>.</li>
-      <li id="s52"><b>Computer History Museum</b>, Apple II brochure, 1977, accession 102637933. <a href="https://www.computerhistory.org/brochures/doc-43729572aadaf/">Catalog</a>; <a href="http://s3data.computerhistory.org/brochures/apple.ii.1977.102637933.pdf">Scan</a>.</li>
-      <li id="s53"><b>Ken Shirriff</b>, "Apple didn't revolutionize power supplies," righto.com, February 2012. <a href="https://www.righto.com/2012/02/apple-didnt-revolutionize-power.html">Link</a>.</li>
-      <li id="s54"><b>folklore.org</b>, "More Like A Porsche," Andy Hertzfeld. <a href="https://www.folklore.org/More_Like_A_Porsche.html">Link</a>.</li>
-      <li id="s55"><b>folklore.org</b>, "Signing Party," Andy Hertzfeld. <a href="https://www.folklore.org/Signing_Party.html">Link</a>.</li>
-      <li id="s56"><b>folklore.org</b>, "PC Board Esthetics," Andy Hertzfeld. <a href="https://www.folklore.org/PC_Board_Esthetics.html">Link</a>.</li>
-      <li id="s57"><b>Wikipedia</b>, "Snow White design language." <a href="https://en.wikipedia.org/wiki/Snow_White_design_language">Link</a>.</li>
-      <li id="s58"><b>Wikipedia</b>, "NeXTcube." <a href="https://en.wikipedia.org/wiki/NeXTcube">Link</a>.</li>
-      <li id="s59"><b>Logo Design Love</b>, "Paul Rand and the NeXT logo," including Rand's presentation book. <a href="https://www.logodesignlove.com/next-logo-paul-rand">Link</a>.</li>
-      <li id="s60"><b>Apple</b>, press release, "Apple Presents iPod," October 23, 2001. <a href="https://www.apple.com/newsroom/2001/10/23Apple-Presents-iPod/">Link</a>.</li>
+      <li id="s16"><b>Smithsonian Magazine</b>, "How Steve Jobs' Love of Simplicity Fueled a Design Revolution," Walter Isaacson, September 2012. <a href="https://www.smithsonianmag.com/arts-culture/how-steve-jobs-love-of-simplicity-fueled-a-design-revolution-23868877/" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s17"><b>Isaacson excerpt</b> on the Miyake turtlenecks, via 9to5Mac, October 11, 2011. <a href="https://9to5mac.com/2011/10/11/steve-jobs-book-excerpt-why-he-wore-the-black-mock-turtleneck-uniform/" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s18"><b>Mona Simpson</b>, "A Sister's Eulogy for Steve Jobs," The New York Times, October 30, 2011. <a href="https://www.nytimes.com/2011/10/30/opinion/mona-simpsons-eulogy-for-steve-jobs.html" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s19"><b>Steve Jobs Archive</b>, artifact: "Steve at Home, Sitting Under His Tiffany Lamp" (Diana Walker, 1982). <a href="https://stevejobsarchive.com/artifact/steve-at-home-sitting-under-his-tiffany-lamp" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s20"><b>TIME</b>, "In a Private Light: Diana Walker's Photos of Steve Jobs." <a href="http://web.archive.org/web/20200805071451/https://time.com/3781557/in-a-private-light-diana-walkers-photos-of-steve-jobs/" target="_blank" rel="noopener noreferrer">Archived</a>.</li>
+      <li id="s21"><b>Stereophile</b>, "A Cup of Tea, a Light, and Your Stereo," October 6, 2011. <a href="https://www.stereophile.com/content/cup-tea-light-and-your-stereo" target="_blank" rel="noopener noreferrer">Link</a>. The quote circulates as the photo's caption; no primary interview publication was located, so this page presents it as a caption quote.</li>
+      <li id="s22"><b>allaboutstevejobs.com</b>, "Steve at home." <a href="https://allaboutstevejobs.com/persona/steve_at_home" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s23"><b>Architectural Record</b>, "Steve Jobs, the Demo Man," Sarah Amelar, April 4, 2011. <a href="https://www.architecturalrecord.com/articles/2168-steve-jobs-the-demo-man" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s24"><b>AppleInsider</b>, "Steve Jobs to give away historic mansion," October 5, 2004, reporting the This Old House column. <a href="https://appleinsider.com/articles/04/10/05/steve_jobs_to_give_away_historic_mansion" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s25"><b>The Almanac</b>, "Jackling house settles into dust and debris," Dave Boyce, February 15, 2011. <a href="https://www.almanacnews.com/news/2011/02/15/jackling-house-settles-into-dust-and-debris/" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s26"><b>Wikipedia</b>, "Jackling House." <a href="https://en.wikipedia.org/wiki/Jackling_House" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s27"><b>Eichler Network</b>, "Jobs' 'Likeler' No Eichler" and "Steve Jobs Grew Up in an Eichler (or did he?)". <a href="https://www.eichlernetwork.com/article/jobs-likeler-no-eichler" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s28"><b>AppleInsider</b>, "Halloween tradition continues at Steve Jobs' home in Palo Alto," November 2, 2011. <a href="https://appleinsider.com/articles/11/11/02/halloween_tradition_continues_at_steve_jobs_home_in_palo_alto" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s29"><b>Wikipedia</b>, "The San Remo"; CooperatorNews, "Celebrity Appeal." <a href="https://en.wikipedia.org/wiki/The_San_Remo" target="_blank" rel="noopener noreferrer">Link</a>; <a href="https://cooperatornews.com/article/celebrity-appeal" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s30"><b>iTWire</b>, "The truth about Steve Jobs' number plate," David Heath, October 26, 2011, from an interview with Jon Callas. <a href="https://web.archive.org/web/20130131163254/http://www.itwire.com/it-people-news/enterprise/50649-the-truth-about-steve-jobs-number-plate" target="_blank" rel="noopener noreferrer">Archived</a>.</li>
+      <li id="s31"><b>ABC News</b>, "Steve Jobs' Car: Why the Apple CEO Drove Without License Plates," October 2011, quoting DMV spokesman Jaime Garza and CVC 4456. <a href="https://abcnews.com/Technology/steve-jobs-car-apple-ceo-license-plates/story?id=14834608" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s32"><b>The Hollywood Reporter</b>, "Steve Jobs License Plate Mystery Solved," October 2011. <a href="https://www.hollywoodreporter.com/news/general-news/steve-jobs-california-license-mercedes-benz-254875/" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s33"><b>California AB 516</b> (2015-2016), temporary license plates. <a href="https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=201520160AB516" target="_blank" rel="noopener noreferrer">Bill text</a>; The News Wheel, "California Ends 'Steve Jobs Loophole.'" <a href="https://thenewswheel.com/california-ends-steve-jobs-loophole-for-license-plates/" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s34"><b>Cult of Mac</b>, Charles O'Rear on the 1982 National Geographic motorcycle photograph. <a href="https://www.cultofmac.com/news/photographer-behind-steve-jobs-national-portrait-gallery-photo-recalls-meeting-jobs-gallery" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s35"><b>Wired</b>, "We Pieced Together Steve Jobs' Long-Lost Stereo System," Rene Chun, April 29, 2014. <a href="https://www.wired.com/2014/04/steve-jobs-stereo-system/" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s36"><b>Levi Strauss &amp; Co.</b>, "The Jean-ius Style of Steve Jobs," October 14, 2016. <a href="https://www.levistrauss.com/2016/10/14/the-jean-ius-style-of-steve-jobs/" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s37"><b>MacRumors</b>, "Steve Jobs' Wristwatch Sells for $42,500 at Auction," February 22, 2016; Professional Watches on the 2017 Seiko × Nano Universe reissue. <a href="https://www.macrumors.com/2016/02/22/steve-jobs-wristwatch-42500-auction/" target="_blank" rel="noopener noreferrer">Link</a>; <a href="https://professionalwatches.com/seiko-chariot-steve-jobs-re-edition/" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s38"><b>Lunor / SunglassesID</b>, the Classic Rund PP identification. <a href="https://www.sunglassesid.com/sightings/lunor-classic-rund-steve-jobs" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s39"><b>AppleInsider</b>, "Steve Jobs' Apple-inspired super-yacht revealed in Netherlands," October 28, 2012. <a href="https://appleinsider.com/articles/12/10/28/steve-jobs-apple-inspired-super-yacht-revealed-in-netherlands" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s40"><b>Boat International</b>, "9 facts about Steve Jobs' superyacht Venus" and "Iconic yachts: Venus." <a href="https://www.boatinternational.com/yachts/news/facts-steve-jobs-superyacht-venus" target="_blank" rel="noopener noreferrer">Link</a>; <a href="https://www.boatinternational.com/yachts/editorial-features/iconic-yachts-venus" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s41"><b>Wikipedia</b>, "Venus (yacht)." <a href="https://en.wikipedia.org/wiki/Venus_(yacht)" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s42"><b>National Gallery of Art / Wikipedia</b>, "Winter Sunrise, Sierra Nevada, from Lone Pine, California" (Ansel Adams, 1944). <a href="https://www.nga.gov/artworks/66683-winter-sunrise-sierra-nevada-lone-pine-california" target="_blank" rel="noopener noreferrer">Link</a>; <a href="https://en.wikipedia.org/wiki/Winter_Sunrise,_Sierra_Nevada,_from_Lone_Pine,_California" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s43"><b>Reed College</b>, "A Brief History of Calligraphy at Reed" and the Robert Palladino obituary. <a href="https://www.reed.edu/calligraphy/history.html" target="_blank" rel="noopener noreferrer">Link</a>; <a href="https://www.reed.edu/reed-magazine/in-memoriam/obituaries/june2016/prof.-robert-joseph-palladino%201969-84.html" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s44"><b>Wikipedia / Jikoji Zen Center</b>, Kōbun Chino Otogawa. <a href="https://en.wikipedia.org/wiki/K%C5%8Dbun_Chino_Otogawa" target="_blank" rel="noopener noreferrer">Link</a>; <a href="https://www.jikoji.org/biography" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s45"><b>The Daily Telegraph</b>, "Dieter Rams: Apple has achieved something I never did," June 2011. <a href="https://www.telegraph.co.uk/technology/apple/8555503/Dieter-Rams-Apple-has-achieved-something-I-never-did.html" target="_blank" rel="noopener noreferrer">Link</a>; <a href="https://bokardo.com/archives/dieter-rams-apple-has-achieved-something-i-never-did/" target="_blank" rel="noopener noreferrer">reproduction</a>.</li>
+      <li id="s46"><b>MoMA</b>, Dieter Rams, Pocket Radio (model T3), 1958, object 595.1965. <a href="https://www.moma.org/collection/works/4134" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s47"><b>MoMA</b>, iPod (2001), object 89465; iMac (1998), object 82133. <a href="https://www.moma.org/collection/works/89465" target="_blank" rel="noopener noreferrer">Link</a>; <a href="https://www.moma.org/collection/works/82133" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s48"><b>MoMA</b>, Susan Kare, Apple Macintosh OS icon sketchbook (1982), object 112.2015, jointly owned with SFMOMA. <a href="https://www.moma.org/collection/works/188382" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s49"><b>SFMOMA</b>, Macintosh personal computer (Jerry Manock, 1984), 2015.743; Macintosh 512k, 2010.84.A-C. <a href="https://www.sfmoma.org/artwork/2015.743/" target="_blank" rel="noopener noreferrer">Link</a>; <a href="https://www.sfmoma.org/artwork/2010.84.A-C/" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s50"><b>Hi-Fi Hall of Fame</b>, "Steve Jobs" celebrity system entry (component corroboration). <a href="https://hifihalloffame.com/celebrity-systems/steve-jobs/" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s51"><b>Quote Investigator</b>, "Simplicity is the Ultimate Sophistication," April 2, 2015, and "Good Artists Copy; Great Artists Steal," March 6, 2013. <a href="https://quoteinvestigator.com/2015/04/02/simple/" target="_blank" rel="noopener noreferrer">Link</a>; <a href="https://quoteinvestigator.com/2013/03/06/artists-steal/" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s52"><b>Computer History Museum</b>, Apple II brochure, 1977, accession 102637933. <a href="https://www.computerhistory.org/brochures/doc-43729572aadaf/" target="_blank" rel="noopener noreferrer">Catalog</a>; <a href="http://s3data.computerhistory.org/brochures/apple.ii.1977.102637933.pdf" target="_blank" rel="noopener noreferrer">Scan</a>.</li>
+      <li id="s53"><b>Ken Shirriff</b>, "Apple didn't revolutionize power supplies," righto.com, February 2012. <a href="https://www.righto.com/2012/02/apple-didnt-revolutionize-power.html" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s54"><b>folklore.org</b>, "More Like A Porsche," Andy Hertzfeld. <a href="https://www.folklore.org/More_Like_A_Porsche.html" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s55"><b>folklore.org</b>, "Signing Party," Andy Hertzfeld. <a href="https://www.folklore.org/Signing_Party.html" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s56"><b>folklore.org</b>, "PC Board Esthetics," Andy Hertzfeld. <a href="https://www.folklore.org/PC_Board_Esthetics.html" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s57"><b>Wikipedia</b>, "Snow White design language." <a href="https://en.wikipedia.org/wiki/Snow_White_design_language" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s58"><b>Wikipedia</b>, "NeXTcube." <a href="https://en.wikipedia.org/wiki/NeXTcube" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s59"><b>Logo Design Love</b>, "Paul Rand and the NeXT logo," including Rand's presentation book. <a href="https://www.logodesignlove.com/next-logo-paul-rand" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s60"><b>Apple</b>, press release, "Apple Presents iPod," October 23, 2001. <a href="https://www.apple.com/newsroom/2001/10/23Apple-Presents-iPod/" target="_blank" rel="noopener noreferrer">Link</a>.</li>
     </ol>
     <ol start="61">
-      <li id="s61"><b>Macworld</b>, "The birth of the iPod," Steven Levy adaptation, on Schiller's scroll wheel. <a href="https://www.macworld.com/article/214911/the-birth-of-the-ipod.html">Link</a>.</li>
-      <li id="s62"><b>Fortune</b>, "Steve Jobs pressured Corning's Wendell Weeks…," Leadership Next podcast, October 23, 2025. <a href="https://fortune.com/2025/10/23/steve-jobs-pressured-corning-wendell-weeks-first-apple-iphone-screens-youre-afraid/">Link</a>.</li>
-      <li id="s63"><b>Apple</b>, press release, "Apple Introduces MacBook Air — The World's Thinnest Notebook," January 15, 2008. <a href="https://www.apple.com/newsroom/2008/01/15Apple-Introduces-MacBook-Air-The-Worlds-Thinnest-Notebook/">Link</a>.</li>
-      <li id="s64"><b>AppleInsider</b>, "Apple details new MacBook manufacturing process," October 14, 2008. <a href="https://appleinsider.com/articles/08/10/14/apple_details_new_macbook_manufacturing_process">Link</a>.</li>
-      <li id="s65"><b>Seven Days</b>, Jerry Manock auction interview (the signed Apple II contract), 2020. <a href="https://www.sevendaysvt.com/news/apple-design-engineer-jerry-manock-auctions-off-his-mac-mementos-29876202/">Link</a>.</li>
-      <li id="s66"><b>Stanford, Making the Macintosh project</b>, "Apple visits PARC" (the two 1979 visits, the Xerox investment, the pre-existing bitmap specs). <a href="https://web.stanford.edu/dept/SUL/sites/mac/parc.html">Link</a>.</li>
-      <li id="s67"><b>folklore.org</b>, "World Class Cities," Susan Kare. <a href="https://www.folklore.org/World_Class_Cities.html">Link</a>.</li>
-      <li id="s68"><b>folklore.org</b>, "Swedish Campground," Andy Hertzfeld. <a href="https://www.folklore.org/Swedish_Campground.html">Link</a>.</li>
-      <li id="s69"><b>Wikipedia</b>, "Looped square"; Core77, "Debunking a Myth: Apple's Command Key Icon…". <a href="https://en.wikipedia.org/wiki/Looped_square">Link</a>; <a href="https://www.core77.com/posts/97914/Debunking-a-Myth-Apples-Command-Key-Icon-is-Not-a-Stylized-Top-View-of-a-Castle">Link</a>.</li>
-      <li id="s70"><b>folklore.org</b>, "Round Rects Are Everywhere!", Andy Hertzfeld. <a href="https://www.folklore.org/Round_Rects_Are_Everywhere.html">Link</a>.</li>
-      <li id="s71"><b>folklore.org</b>, "Calculator Construction Set," Andy Hertzfeld. <a href="https://www.folklore.org/Calculator_Construction_Set.html">Link</a>.</li>
-      <li id="s72"><b>folklore.org</b>, "Saving Lives," Andy Hertzfeld. <a href="https://www.folklore.org/Saving_Lives.html">Link</a>.</li>
-      <li id="s73"><b>folklore.org</b>, "Pirate Flag" (the January 1983 "Sayings from Chairman Jobs"). <a href="https://www.folklore.org/Pirate_Flag.html">Link</a>.</li>
-      <li id="s74"><b>folklore.org</b>, "Real Artists Ship," Andy Hertzfeld. <a href="https://www.folklore.org/Real_Artists_Ship.html">Link</a>.</li>
-      <li id="s75"><b>Susan Kare</b>, oral history, Stanford, September 8, 2000; Priceonomics, "The Woman Behind Apple's First Icons," April 3, 2014. <a href="https://web.stanford.edu/dept/SUL/sites/mac/primary/interviews/kare/trans.html">Link</a>; <a href="https://priceonomics.com/the-woman-behind-apples-first-icons/">Link</a>.</li>
-      <li id="s76"><b>The New Yorker</b>, "The Woman Who Gave the Macintosh a Smile," Alexandra Lange, April 19, 2018. <a href="https://www.newyorker.com/culture/cultural-comment/the-woman-who-gave-the-macintosh-a-smile">Link</a>.</li>
-      <li id="s77"><b>W3C / CERN</b>, "A Little History of the World Wide Web"; the WorldWideWeb project history. <a href="https://www.w3.org/History.html">Link</a>; <a href="https://worldwideweb.cern.ch/history/">Link</a>.</li>
-      <li id="s78"><b>Tim Berners-Lee</b>, "The WorldWideWeb browser," w3.org. <a href="https://www.w3.org/People/Berners-Lee/WorldWideWeb.html">Link</a>.</li>
-      <li id="s79"><b>Apple</b>, press release, "Apple Unveils Mac OS X," January 5, 2000. <a href="https://www.apple.com/newsroom/2000/01/05Apple-Unveils-Mac-OS-X/">Link</a>.</li>
-      <li id="s80"><b>Google Patents</b>, US 7,469,381 (Bas Ording, list scrolling / rubber-banding); Fortune and AppleInsider on the USPTO's 2012 tentative invalidation. <a href="https://patents.google.com/patent/US7469381B2/en">Patent</a>; <a href="https://fortune.com/2012/10/23/patent-office-tosses-out-one-of-steve-jobs-favorite-inventions/">Fortune</a>.</li>
-      <li id="s81"><b>Google Patents</b>, US 7,479,949, "Touch screen device… heuristics," Steven P. Jobs first of 25 inventors. <a href="https://patents.google.com/patent/US7479949B2/en">Link</a>.</li>
-      <li id="s82"><b>Apple Human Interface Guidelines</b> (Mac OS X era), the metaphor doctrine. <a href="https://leopard-adc.pepas.com/documentation/UserExperience/Conceptual/AppleHIGuidelines/XHIGHIDesign/XHIGHIDesign.html">Mirror</a>.</li>
-      <li id="s83"><b>9to5Mac</b>, Scott Forstall at the Computer History Museum, June 21, 2017. <a href="https://9to5mac.com/2017/06/21/scott-forstall-design-debate/">Link</a>.</li>
-      <li id="s84"><b>Apple</b>, press release, "Apple Unveils iOS 7," June 10, 2013 (Ive's simplicity statement). <a href="https://www.apple.com/newsroom/2013/06/10Apple-Unveils-iOS-7/">Link</a>.</li>
-      <li id="s85"><b>Wayback Machine</b>, apple.com, October 22, 1996. <a href="https://web.archive.org/web/19961022105458/http://www.apple.com/">Capture</a>.</li>
-      <li id="s86"><b>Wayback Machine</b>, apple.com, October 13, 1997 (clutter grid under a "Think different." masthead). <a href="https://web.archive.org/web/19971013114837/http://www4.apple.com/">Capture</a>.</li>
-      <li id="s87"><b>Wayback Machine</b>, apple.com, May 8, 1998 ("Pro. / Go. / Whoa."); apple.com/imac same week. <a href="https://web.archive.org/web/19980509035420/http://www.apple.com/">Capture</a>; <a href="https://web.archive.org/web/19980509042513/http://www.apple.com/imac/">iMac page</a>.</li>
-      <li id="s88"><b>Wayback Machine</b>, apple.com, October 23, 2001 (iPod week: promo tile, not takeover). <a href="https://web.archive.org/web/20011023204537/http://www.apple.com/">Capture</a>.</li>
-      <li id="s89"><b>Wayback Machine</b>, apple.com, January 10, 2007 ("Apple reinvents the phone"). <a href="https://web.archive.org/web/20070110052128/http://www.apple.com/">Capture</a>.</li>
-      <li id="s90"><b>Wayback Machine</b>, apple.com, October 5, 2011, 23:55 UTC. <a href="https://web.archive.org/web/20111005235534/http://www.apple.com/">Capture</a>.</li>
-      <li id="s91"><b>Wayback Machine</b>, apple.com/stevejobs, October 5, 2011, with Apple's statement. <a href="https://web.archive.org/web/20111005235641/http://www.apple.com/stevejobs/">Capture</a>.</li>
-      <li id="s92"><b>Wayback Machine</b>, apple.com/thinkdifferent, 2004 capture carrying the full print manifesto. <a href="https://web.archive.org/web/20041009193042/http://www.apple.com/thinkdifferent/">Capture</a>.</li>
-      <li id="s93"><b>Internet Archive</b>, Apple internal tape: Jobs introducing the Think Different campaign to employees, September 23, 1997. <a href="https://archive.org/details/introducing-campaign-to-apple-internal">Recording</a>.</li>
-      <li id="s94"><b>Forbes</b>, "The Real Story Behind Apple's 'Think Different' Campaign," Rob Siltanen, December 14, 2011. <a href="https://www.forbes.com/sites/onmarketing/2011/12/14/the-real-story-behind-apples-think-different-campaign/">Link</a>.</li>
-      <li id="s95"><b>Forbes</b>, "Meet The Man Who Saved Apple" (Craig Tanimoto), Patrick Hanlon, December 6, 2015. <a href="https://www.forbes.com/sites/patrickhanlon/2015/12/06/meet-the-man-who-saved-apple/">Link</a>.</li>
-      <li id="s96"><b>Steve Jobs Archive</b>, artifact: "The Apple Marketing Philosophy," facsimile courtesy of Apple, signed January 3, 1977. <a href="https://stevejobsarchive.com/artifact/the-apple-marketing-philosophy">Link</a>.</li>
-      <li id="s97"><b>Wikipedia</b>, "1984 (advertisement)." <a href="https://en.wikipedia.org/wiki/1984_(advertisement)">Link</a>.</li>
-      <li id="s98"><b>folklore.org</b>, "1984," Andy Hertzfeld; Steve Hayden, "'1984': As Good as It Gets," Adweek, January 30, 2011. <a href="https://www.folklore.org/1984.html">Link</a>; <a href="https://web.archive.org/web/20110201011651/http://www.adweek.com/aw/content_display/news/digital/e3i543ab57159cb298a4d8c4c408b7a539d">Archived</a>.</li>
-      <li id="s99"><b>Fortune</b>, "The man who put the 'i' in iMac" (Ken Segall), November 4, 2009. <a href="https://fortune.com/2009/11/04/the-man-who-put-the-i-in-imac/">Link</a>.</li>
-      <li id="s100"><b>AppleInsider</b>, "How Steve Jobs saved Apple with the online Apple Store," November 10, 2019, with the surviving event video. <a href="https://appleinsider.com/articles/19/11/10/how-steve-jobs-saved-apple-with-the-online-apple-store">Link</a>.</li>
-      <li id="s101"><b>Wikipedia</b>, "Typography of Apple Inc." (Apple Garamond, Myriad, San Francisco). <a href="https://en.wikipedia.org/wiki/Typography_of_Apple_Inc.">Link</a>.</li>
-      <li id="s102"><b>CBS News</b>, excerpt from David Pogue, "Apple: The First 50 Years," March 8, 2026 (the Dreyfuss-vs-Jobs narration decision). <a href="https://www.cbsnews.com/news/book-excerpt-apple-the-first-50-years-by-david-pogue/">Link</a>.</li>
-      <li id="s103"><b>AppleInsider / WWD</b>, Ron Johnson on the prototype store and the restart; Isaacson, "The Real Leadership Lessons of Steve Jobs," HBR, April 2012. <a href="https://appleinsider.com/articles/18/12/05/steve-jobs-took-weekly-hands-on-role-in-first-apple-store-design-says-former-retail-head-ron-johnson">Link</a>; <a href="https://tuck.dartmouth.edu/uploads/cib/documents/The_Real_Leadership_Lessons_of_Steve_Job.pdf">HBR PDF</a>.</li>
-      <li id="s104"><b>MacRumors</b>, "Steve Jobs Called the Genius Bar 'Idiotic'…," Ron Johnson interview, March 6, 2017. <a href="https://www.macrumors.com/2017/03/06/steve-jobs-genius-bar-idiotic-itll-never-work/">Link</a>.</li>
-      <li id="s105"><b>Status-Q</b>, quoting Isaacson on the Pietra Serena floors and Ron Johnson's 3% figure, April 10, 2012. <a href="https://statusq.org/archives/2012/04/10/4007/">Link</a>.</li>
-      <li id="s106"><b>Apple</b>, press release, "The Apple Store Fifth Avenue to Open on Friday, May 19 [2006]"; Dezeen on the 2019 reopening and pane counts. <a href="https://www.apple.com/newsroom/2006/05/18The-Apple-Store-Fifth-Avenue-to-Open-on-Friday-May-19/">Link</a>; <a href="https://www.dezeen.com/2019/09/26/apple-fifith-avenue-foster-partners-new-york/">Link</a>.</li>
-      <li id="s107"><b>Google Patents</b>, US D478,999, "Staircase," Steve Jobs first-named inventor, granted August 26, 2003. <a href="https://patents.google.com/patent/USD478999S1/en">Link</a>.</li>
-      <li id="s108"><b>Google Patents</b>, US D712,067, "Building" (Fifth Avenue cube), naming Steve P. Jobs, granted 2014. <a href="https://patents.google.com/patent/USD712067S1/en">Link</a>.</li>
-      <li id="s109"><b>Google Patents</b>, US 7,878,326, "Packaging," inventors including Jobs and Ive, granted 2011. <a href="https://patents.google.com/patent/US7878326B2/en">Link</a>.</li>
-      <li id="s110"><b>The New York Times</b>, interactive: "Steve Jobs's Patents," August 24, 2011 (updated November 23, 2011; 300+ patents). <a href="https://archive.nytimes.com/www.nytimes.com/interactive/2011/08/24/technology/steve-jobs-patents.html">Link</a>.</li>
-      <li id="s111"><b>AppleInsider</b>, on Adam Lashinsky's "Inside Apple" and the secret packaging room, January 24, 2012. <a href="https://appleinsider.com/articles/12/01/24/book_details_apples_packaging_room_interests_in_advanced_cameras_">Link</a>.</li>
-      <li id="s112"><b>MacDailyNews</b>, council-meeting report with video, June 8, 2011. <a href="https://macdailynews.com/2011/06/08/apple-ceo-steve-jobs-presents-new-apple-campus-proposal-to-cupertino-city-council-with-video/">Link</a>.</li>
-      <li id="s113"><b>512 Pixels / allaboutstevejobs.com</b>, iMac introduction keynote, May 6, 1998, transcriptions. <a href="https://512pixels.net/2012/12/imac/">Link</a>; <a href="https://allaboutstevejobs.com/videos/keynotes/imac_introduction_1998">Video</a>.</li>
+      <li id="s61"><b>Macworld</b>, "The birth of the iPod," Steven Levy adaptation, on Schiller's scroll wheel. <a href="https://www.macworld.com/article/214911/the-birth-of-the-ipod.html" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s62"><b>Fortune</b>, "Steve Jobs pressured Corning's Wendell Weeks…," Leadership Next podcast, October 23, 2025. <a href="https://fortune.com/2025/10/23/steve-jobs-pressured-corning-wendell-weeks-first-apple-iphone-screens-youre-afraid/" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s63"><b>Apple</b>, press release, "Apple Introduces MacBook Air — The World's Thinnest Notebook," January 15, 2008. <a href="https://www.apple.com/newsroom/2008/01/15Apple-Introduces-MacBook-Air-The-Worlds-Thinnest-Notebook/" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s64"><b>AppleInsider</b>, "Apple details new MacBook manufacturing process," October 14, 2008. <a href="https://appleinsider.com/articles/08/10/14/apple_details_new_macbook_manufacturing_process" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s65"><b>Seven Days</b>, Jerry Manock auction interview (the signed Apple II contract), 2020. <a href="https://www.sevendaysvt.com/news/apple-design-engineer-jerry-manock-auctions-off-his-mac-mementos-29876202/" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s66"><b>Stanford, Making the Macintosh project</b>, "Apple visits PARC" (the two 1979 visits, the Xerox investment, the pre-existing bitmap specs). <a href="https://web.stanford.edu/dept/SUL/sites/mac/parc.html" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s67"><b>folklore.org</b>, "World Class Cities," Susan Kare. <a href="https://www.folklore.org/World_Class_Cities.html" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s68"><b>folklore.org</b>, "Swedish Campground," Andy Hertzfeld. <a href="https://www.folklore.org/Swedish_Campground.html" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s69"><b>Wikipedia</b>, "Looped square"; Core77, "Debunking a Myth: Apple's Command Key Icon…". <a href="https://en.wikipedia.org/wiki/Looped_square" target="_blank" rel="noopener noreferrer">Link</a>; <a href="https://www.core77.com/posts/97914/Debunking-a-Myth-Apples-Command-Key-Icon-is-Not-a-Stylized-Top-View-of-a-Castle" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s70"><b>folklore.org</b>, "Round Rects Are Everywhere!", Andy Hertzfeld. <a href="https://www.folklore.org/Round_Rects_Are_Everywhere.html" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s71"><b>folklore.org</b>, "Calculator Construction Set," Andy Hertzfeld. <a href="https://www.folklore.org/Calculator_Construction_Set.html" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s72"><b>folklore.org</b>, "Saving Lives," Andy Hertzfeld. <a href="https://www.folklore.org/Saving_Lives.html" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s73"><b>folklore.org</b>, "Pirate Flag" (the January 1983 "Sayings from Chairman Jobs"). <a href="https://www.folklore.org/Pirate_Flag.html" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s74"><b>folklore.org</b>, "Real Artists Ship," Andy Hertzfeld. <a href="https://www.folklore.org/Real_Artists_Ship.html" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s75"><b>Susan Kare</b>, oral history, Stanford, September 8, 2000; Priceonomics, "The Woman Behind Apple's First Icons," April 3, 2014. <a href="https://web.stanford.edu/dept/SUL/sites/mac/primary/interviews/kare/trans.html" target="_blank" rel="noopener noreferrer">Link</a>; <a href="https://priceonomics.com/the-woman-behind-apples-first-icons/" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s76"><b>The New Yorker</b>, "The Woman Who Gave the Macintosh a Smile," Alexandra Lange, April 19, 2018. <a href="https://www.newyorker.com/culture/cultural-comment/the-woman-who-gave-the-macintosh-a-smile" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s77"><b>W3C / CERN</b>, "A Little History of the World Wide Web"; the WorldWideWeb project history. <a href="https://www.w3.org/History.html" target="_blank" rel="noopener noreferrer">Link</a>; <a href="https://worldwideweb.cern.ch/history/" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s78"><b>Tim Berners-Lee</b>, "The WorldWideWeb browser," w3.org. <a href="https://www.w3.org/People/Berners-Lee/WorldWideWeb.html" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s79"><b>Apple</b>, press release, "Apple Unveils Mac OS X," January 5, 2000. <a href="https://www.apple.com/newsroom/2000/01/05Apple-Unveils-Mac-OS-X/" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s80"><b>Google Patents</b>, US 7,469,381 (Bas Ording, list scrolling / rubber-banding); Fortune and AppleInsider on the USPTO's 2012 tentative invalidation. <a href="https://patents.google.com/patent/US7469381B2/en" target="_blank" rel="noopener noreferrer">Patent</a>; <a href="https://fortune.com/2012/10/23/patent-office-tosses-out-one-of-steve-jobs-favorite-inventions/" target="_blank" rel="noopener noreferrer">Fortune</a>.</li>
+      <li id="s81"><b>Google Patents</b>, US 7,479,949, "Touch screen device… heuristics," Steven P. Jobs first of 25 inventors. <a href="https://patents.google.com/patent/US7479949B2/en" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s82"><b>Apple Human Interface Guidelines</b> (Mac OS X era), the metaphor doctrine. <a href="https://leopard-adc.pepas.com/documentation/UserExperience/Conceptual/AppleHIGuidelines/XHIGHIDesign/XHIGHIDesign.html" target="_blank" rel="noopener noreferrer">Mirror</a>.</li>
+      <li id="s83"><b>9to5Mac</b>, Scott Forstall at the Computer History Museum, June 21, 2017. <a href="https://9to5mac.com/2017/06/21/scott-forstall-design-debate/" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s84"><b>Apple</b>, press release, "Apple Unveils iOS 7," June 10, 2013 (Ive's simplicity statement). <a href="https://www.apple.com/newsroom/2013/06/10Apple-Unveils-iOS-7/" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s85"><b>Wayback Machine</b>, apple.com, October 22, 1996. <a href="https://web.archive.org/web/19961022105458/http://www.apple.com/" target="_blank" rel="noopener noreferrer">Capture</a>.</li>
+      <li id="s86"><b>Wayback Machine</b>, apple.com, October 13, 1997 (clutter grid under a "Think different." masthead). <a href="https://web.archive.org/web/19971013114837/http://www4.apple.com/" target="_blank" rel="noopener noreferrer">Capture</a>.</li>
+      <li id="s87"><b>Wayback Machine</b>, apple.com, May 8, 1998 ("Pro. / Go. / Whoa."); apple.com/imac same week. <a href="https://web.archive.org/web/19980509035420/http://www.apple.com/" target="_blank" rel="noopener noreferrer">Capture</a>; <a href="https://web.archive.org/web/19980509042513/http://www.apple.com/imac/" target="_blank" rel="noopener noreferrer">iMac page</a>.</li>
+      <li id="s88"><b>Wayback Machine</b>, apple.com, October 23, 2001 (iPod week: promo tile, not takeover). <a href="https://web.archive.org/web/20011023204537/http://www.apple.com/" target="_blank" rel="noopener noreferrer">Capture</a>.</li>
+      <li id="s89"><b>Wayback Machine</b>, apple.com, January 10, 2007 ("Apple reinvents the phone"). <a href="https://web.archive.org/web/20070110052128/http://www.apple.com/" target="_blank" rel="noopener noreferrer">Capture</a>.</li>
+      <li id="s90"><b>Wayback Machine</b>, apple.com, October 5, 2011, 23:55 UTC. <a href="https://web.archive.org/web/20111005235534/http://www.apple.com/" target="_blank" rel="noopener noreferrer">Capture</a>.</li>
+      <li id="s91"><b>Wayback Machine</b>, apple.com/stevejobs, October 5, 2011, with Apple's statement. <a href="https://web.archive.org/web/20111005235641/http://www.apple.com/stevejobs/" target="_blank" rel="noopener noreferrer">Capture</a>.</li>
+      <li id="s92"><b>Wayback Machine</b>, apple.com/thinkdifferent, 2004 capture carrying the full print manifesto. <a href="https://web.archive.org/web/20041009193042/http://www.apple.com/thinkdifferent/" target="_blank" rel="noopener noreferrer">Capture</a>.</li>
+      <li id="s93"><b>Internet Archive</b>, Apple internal tape: Jobs introducing the Think Different campaign to employees, September 23, 1997. <a href="https://archive.org/details/introducing-campaign-to-apple-internal" target="_blank" rel="noopener noreferrer">Recording</a>.</li>
+      <li id="s94"><b>Forbes</b>, "The Real Story Behind Apple's 'Think Different' Campaign," Rob Siltanen, December 14, 2011. <a href="https://www.forbes.com/sites/onmarketing/2011/12/14/the-real-story-behind-apples-think-different-campaign/" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s95"><b>Forbes</b>, "Meet The Man Who Saved Apple" (Craig Tanimoto), Patrick Hanlon, December 6, 2015. <a href="https://www.forbes.com/sites/patrickhanlon/2015/12/06/meet-the-man-who-saved-apple/" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s96"><b>Steve Jobs Archive</b>, artifact: "The Apple Marketing Philosophy," facsimile courtesy of Apple, signed January 3, 1977. <a href="https://stevejobsarchive.com/artifact/the-apple-marketing-philosophy" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s97"><b>Wikipedia</b>, "1984 (advertisement)." <a href="https://en.wikipedia.org/wiki/1984_(advertisement)" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s98"><b>folklore.org</b>, "1984," Andy Hertzfeld; Steve Hayden, "'1984': As Good as It Gets," Adweek, January 30, 2011. <a href="https://www.folklore.org/1984.html" target="_blank" rel="noopener noreferrer">Link</a>; <a href="https://web.archive.org/web/20110201011651/http://www.adweek.com/aw/content_display/news/digital/e3i543ab57159cb298a4d8c4c408b7a539d" target="_blank" rel="noopener noreferrer">Archived</a>.</li>
+      <li id="s99"><b>Fortune</b>, "The man who put the 'i' in iMac" (Ken Segall), November 4, 2009. <a href="https://fortune.com/2009/11/04/the-man-who-put-the-i-in-imac/" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s100"><b>AppleInsider</b>, "How Steve Jobs saved Apple with the online Apple Store," November 10, 2019, with the surviving event video. <a href="https://appleinsider.com/articles/19/11/10/how-steve-jobs-saved-apple-with-the-online-apple-store" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s101"><b>Wikipedia</b>, "Typography of Apple Inc." (Apple Garamond, Myriad, San Francisco). <a href="https://en.wikipedia.org/wiki/Typography_of_Apple_Inc." target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s102"><b>CBS News</b>, excerpt from David Pogue, "Apple: The First 50 Years," March 8, 2026 (the Dreyfuss-vs-Jobs narration decision). <a href="https://www.cbsnews.com/news/book-excerpt-apple-the-first-50-years-by-david-pogue/" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s103"><b>AppleInsider / WWD</b>, Ron Johnson on the prototype store and the restart; Isaacson, "The Real Leadership Lessons of Steve Jobs," HBR, April 2012. <a href="https://appleinsider.com/articles/18/12/05/steve-jobs-took-weekly-hands-on-role-in-first-apple-store-design-says-former-retail-head-ron-johnson" target="_blank" rel="noopener noreferrer">Link</a>; <a href="https://tuck.dartmouth.edu/uploads/cib/documents/The_Real_Leadership_Lessons_of_Steve_Job.pdf" target="_blank" rel="noopener noreferrer">HBR PDF</a>.</li>
+      <li id="s104"><b>MacRumors</b>, "Steve Jobs Called the Genius Bar 'Idiotic'…," Ron Johnson interview, March 6, 2017. <a href="https://www.macrumors.com/2017/03/06/steve-jobs-genius-bar-idiotic-itll-never-work/" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s105"><b>Status-Q</b>, quoting Isaacson on the Pietra Serena floors and Ron Johnson's 3% figure, April 10, 2012. <a href="https://statusq.org/archives/2012/04/10/4007/" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s106"><b>Apple</b>, press release, "The Apple Store Fifth Avenue to Open on Friday, May 19 [2006]"; Dezeen on the 2019 reopening and pane counts. <a href="https://www.apple.com/newsroom/2006/05/18The-Apple-Store-Fifth-Avenue-to-Open-on-Friday-May-19/" target="_blank" rel="noopener noreferrer">Link</a>; <a href="https://www.dezeen.com/2019/09/26/apple-fifith-avenue-foster-partners-new-york/" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s107"><b>Google Patents</b>, US D478,999, "Staircase," Steve Jobs first-named inventor, granted August 26, 2003. <a href="https://patents.google.com/patent/USD478999S1/en" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s108"><b>Google Patents</b>, US D712,067, "Building" (Fifth Avenue cube), naming Steve P. Jobs, granted 2014. <a href="https://patents.google.com/patent/USD712067S1/en" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s109"><b>Google Patents</b>, US 7,878,326, "Packaging," inventors including Jobs and Ive, granted 2011. <a href="https://patents.google.com/patent/US7878326B2/en" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s110"><b>The New York Times</b>, interactive: "Steve Jobs's Patents," August 24, 2011 (updated November 23, 2011; 300+ patents). <a href="https://archive.nytimes.com/www.nytimes.com/interactive/2011/08/24/technology/steve-jobs-patents.html" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s111"><b>AppleInsider</b>, on Adam Lashinsky's "Inside Apple" and the secret packaging room, January 24, 2012. <a href="https://appleinsider.com/articles/12/01/24/book_details_apples_packaging_room_interests_in_advanced_cameras_" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s112"><b>MacDailyNews</b>, council-meeting report with video, June 8, 2011. <a href="https://macdailynews.com/2011/06/08/apple-ceo-steve-jobs-presents-new-apple-campus-proposal-to-cupertino-city-council-with-video/" target="_blank" rel="noopener noreferrer">Link</a>.</li>
+      <li id="s113"><b>512 Pixels / allaboutstevejobs.com</b>, iMac introduction keynote, May 6, 1998, transcriptions. <a href="https://512pixels.net/2012/12/imac/" target="_blank" rel="noopener noreferrer">Link</a>; <a href="https://allaboutstevejobs.com/videos/keynotes/imac_introduction_1998" target="_blank" rel="noopener noreferrer">Video</a>.</li>
     </ol>
 
     <h3>Image credits</h3>
@@ -1120,7 +844,7 @@ they can change the world, are the ones who do.</pre>
 <footer>
   <div class="prose">
     <p>Compiled August 30, 2026, from the primary and secondary sources listed above; six research passes covered homes, personal objects, art and influences, hardware, software, and marketing, and every quotation was checked against the cited text. Disputed claims are flagged inline rather than resolved by fiat. This is an independent fan essay; it is not affiliated with, or endorsed by, Apple, the Jobs family, or the Steve Jobs Archive.</p>
-    <p>Set in your system's own faces: the display sans is the machine's UI type, the text serif is Charter or Georgia. No JavaScript, no tracking, one HTML file. The images live beside it in <code>img/whole-widget/</code>.</p>
+    <p>No JavaScript, no tracking, one HTML file. The images live beside it in <code>img/whole-widget/</code>.</p>
   </div>
 </footer>
 
