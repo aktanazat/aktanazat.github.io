@@ -29,8 +29,8 @@
     p  { margin: 0.6em 0; }
     ul li { margin-top: 4px; }
 
-    /* Pulsar — floated right where a photo would sit. */
-    .pulsar {
+    /* Galaxy — floated right where a photo would sit. */
+    .galaxy {
       float: right;
       width: 150px;
       height: 150px;
@@ -38,8 +38,8 @@
       cursor: grab;
       touch-action: none;
     }
-    .pulsar:active { cursor: grabbing; }
-    .pulsar canvas {
+    .galaxy:active { cursor: grabbing; }
+    .galaxy canvas {
       width: 100%;
       height: 100%;
       display: block;
@@ -48,14 +48,14 @@
 
     @media (max-width: 760px) {
       #contents { padding: 0 1em; }
-      .pulsar { width: 110px; height: 110px; }
+      .galaxy { width: 110px; height: 110px; }
     }
   </style>
 </head>
 <body>
   <div id="contents">
-    <div class="pulsar" id="pulsar" aria-hidden="true">
-      <canvas id="pulsarCanvas"></canvas>
+    <div class="galaxy" id="galaxy" aria-hidden="true">
+      <canvas id="galaxyCanvas"></canvas>
     </div>
 
     <h2>Aktan Azat</h2>
@@ -101,369 +101,247 @@
   <script type="module">
     import * as THREE from 'three';
 
-    const stage = document.getElementById('pulsar');
-    const canvas = document.getElementById('pulsarCanvas');
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 20);
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    const stage = document.getElementById('galaxy');
+    const canvas = document.getElementById('galaxyCanvas');
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const STAR_RADIUS = 0.62;
-    const MAGNETIC_TILT = 0.61;
-    const SPIN_FRAME_TILT = Math.PI / 2 - MAGNETIC_TILT;
-    const SPIN_OFFSET = 1.0;
-    const SPIN_RATE = Math.PI * 2 / 3.2;
-    const BEAM_WIDTH = 0.12;
-    const ORBITAL_INNER_RADIUS = 0.73;
-    const ORBITAL_RATE = 1.35;
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 30);
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
 
-    camera.position.set(0, 0, 6.2);
+    camera.position.set(0, 2.8, 7.4);
     camera.lookAt(0, 0, 0);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.setClearColor(0x000000, 0);
 
-    const system = new THREE.Group();
-    const spinFrame = new THREE.Group();
-    const diskLayer = new THREE.Group();
-    const spinRoot = new THREE.Group();
-    const magneticAxis = new THREE.Group();
-    scene.add(system);
-    system.add(spinFrame);
-    spinFrame.add(diskLayer, spinRoot);
-    spinRoot.add(magneticAxis);
-    spinFrame.rotation.x = SPIN_FRAME_TILT;
-    diskLayer.position.z = -0.14;
-    diskLayer.rotation.z = 0.08;
-    magneticAxis.rotation.z = MAGNETIC_TILT;
+    const POINT_COUNT = 12000;
+    const positions = new Float32Array(POINT_COUNT * 3);
+    const colors = new Float32Array(POINT_COUNT * 3);
+    const sizes = new Float32Array(POINT_COUNT);
+    const opacities = new Float32Array(POINT_COUNT);
+    const radialSequence = 0.7548776662466927;
+    const angularSequence = 0.5698402909980532;
+    const heightSequence = 0.4385790211123723;
+    const detailSequence = 0.3281734586496826;
+    const sparkleSequence = 0.2718281828459045;
+    const fract = (value) => value - Math.floor(value);
 
-    const northPulseUniform = { value: 0 };
-    const southPulseUniform = { value: 0 };
-    const observedPulseUniform = { value: 0 };
-    const spinUniform = { value: SPIN_OFFSET };
+    for (let index = 0; index < POINT_COUNT; index += 1) {
+      const offset = index * 3;
+      const radial = fract((index + 1) * radialSequence);
+      const angular = fract((index + 1) * angularSequence);
+      const height = fract((index + 1) * heightSequence);
+      const detail = fract((index + 1) * detailSequence);
+      const sparkle = fract((index + 1) * sparkleSequence);
+      let x;
+      let y;
+      let z;
+      let red;
+      let green;
+      let blue;
+      let size;
+      let opacity;
 
-    const starMaterial = new THREE.ShaderMaterial({
-      uniforms: {
-        uNorthPulse: northPulseUniform,
-        uSouthPulse: southPulseUniform,
-        uMagneticTilt: { value: MAGNETIC_TILT },
-        uSpin: spinUniform
-      },
-      vertexShader: /* glsl */`
-        varying vec3 vLocalNormal;
-        varying vec3 vViewNormal;
-        varying vec3 vViewPosition;
+      if (index < 8800) {
+        const radius = 0.12 + Math.pow(radial, 0.74) * 2.13;
+        const arm = Math.floor(detail * 4);
+        const armDetail = fract(detail * 4);
+        const scatterSeed = (angular + height + sparkle - 1.5) / 1.5;
+        const feather = armDetail > 0.78 ? 1.65 : 1;
+        const scatter = scatterSeed * (0.21 + radius * 0.17) * feather;
+        const angle = arm * Math.PI / 2 + radius * 2.40 + scatter;
+        x = Math.cos(angle) * radius;
+        z = Math.sin(angle) * radius;
+        y = (height + sparkle - 1) * (0.035 + radius * 0.022);
 
-        void main() {
-          vLocalNormal = normalize(normal);
-          vViewNormal = normalize(normalMatrix * normal);
-          vec4 viewPosition = modelViewMatrix * vec4(position, 1.0);
-          vViewPosition = viewPosition.xyz;
-          gl_Position = projectionMatrix * viewPosition;
+        const warmth = 1 - Math.min(radius / 2.25, 1);
+        const copperMix = 0.28 + warmth * 0.45;
+        red = 0.21 + copperMix * 0.54;
+        green = 0.18 + copperMix * 0.25;
+        blue = 0.16 + copperMix * 0.09;
+        const coreHeat = Math.pow(warmth, 4);
+        red += coreHeat * 0.19;
+        green += coreHeat * 0.29;
+        blue += coreHeat * 0.27;
+        size = 1.0 + sparkle * 1.25;
+        opacity = 0.09 + angular * 0.18 + coreHeat * 0.10;
+        if (sparkle > 0.992) {
+          size *= 2.25;
+          opacity = 0.68;
         }
-      `,
-      fragmentShader: /* glsl */`
-        uniform float uNorthPulse;
-        uniform float uSouthPulse;
-        uniform float uMagneticTilt;
-        uniform float uSpin;
-        varying vec3 vLocalNormal;
-        varying vec3 vViewNormal;
-        varying vec3 vViewPosition;
+      } else if (index < 10800) {
+        const radius = 0.05 + Math.pow(radial, 2.15) * 0.76;
+        const cosine = angular * 2 - 1;
+        const sine = Math.sqrt(Math.max(0, 1 - cosine * cosine));
+        const angle = height * Math.PI * 2;
+        x = radius * sine * Math.cos(angle);
+        y = radius * cosine * 0.72;
+        z = radius * sine * Math.sin(angle);
+        const glow = 1 - radius / 0.81;
+        red = 0.70 + glow * 0.30;
+        green = 0.34 + glow * 0.46;
+        blue = 0.13 + glow * 0.38;
+        size = 1.3 + sparkle * 2.5;
+        opacity = 0.18 + angular * 0.30;
+      } else {
+        const radius = 0.58 + Math.sqrt(radial) * 1.82;
+        const angle = angular * Math.PI * 2;
+        x = Math.cos(angle) * radius;
+        z = Math.sin(angle) * radius;
+        y = (height * 2 - 1) * (0.24 + radius * 0.11);
+        red = 0.20 + detail * 0.20;
+        green = 0.19 + detail * 0.10;
+        blue = 0.18 + detail * 0.05;
+        size = 0.9 + sparkle * 1.4;
+        opacity = 0.035 + angular * 0.075;
+      }
 
-        void main() {
-          vec3 localNormal = normalize(vLocalNormal);
-          vec3 viewNormal = normalize(vViewNormal);
-          vec3 viewDirection = normalize(-vViewPosition);
-          float illumination = 0.32 + 0.68 * max(dot(viewNormal, normalize(vec3(-0.42, 0.58, 0.70))), 0.0);
-          float longitude = atan(localNormal.z, localNormal.x);
-          float latitude = asin(clamp(localNormal.y, -1.0, 1.0));
-          float brush = 0.5 + 0.5 * sin(longitude * 84.0 + localNormal.y * 18.0 + uSpin * 5.0);
-          float scuff = 0.5 + 0.5 * sin(longitude * 21.0 - latitude * 47.0);
-          vec3 graphite = mix(vec3(0.086, 0.098, 0.102), vec3(0.19, 0.18, 0.16), brush * 0.30 + scuff * 0.10);
-          graphite *= illumination;
-          graphite += vec3(0.06, 0.055, 0.05) * pow(1.0 - max(dot(viewNormal, viewDirection), 0.0), 3.0);
-
-          vec3 pole = normalize(vec3(
-            -sin(uMagneticTilt) * cos(uSpin),
-            cos(uMagneticTilt),
-            sin(uMagneticTilt) * sin(uSpin)
-          ));
-          float northHotSpot = pow(max(dot(localNormal, pole), 0.0), 55.0);
-          float southHotSpot = pow(max(dot(localNormal, -pole), 0.0), 55.0);
-          float heatLevel = northHotSpot * (0.18 + 1.25 * uNorthPulse)
-            + southHotSpot * (0.18 + 1.25 * uSouthPulse);
-          vec3 heat = vec3(0.639, 0.149, 0.125) * heatLevel;
-          gl_FragColor = vec4(graphite + heat, 1.0);
-        }
-      `
-    });
-    const star = new THREE.Mesh(new THREE.SphereGeometry(STAR_RADIUS, 48, 32), starMaterial);
-    spinFrame.add(star);
-
-    const haloMaterial = new THREE.ShaderMaterial({
-      uniforms: { uPulse: observedPulseUniform },
-      transparent: true,
-      depthWrite: false,
-      vertexShader: /* glsl */`
-        varying vec2 vUv;
-
-        void main() {
-          vUv = uv;
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-        }
-      `,
-      fragmentShader: /* glsl */`
-        uniform float uPulse;
-        varying vec2 vUv;
-
-        void main() {
-          vec2 point = vUv * 2.0 - 1.0;
-          float glow = exp(-dot(point, point) * 15.0);
-          gl_FragColor = vec4(vec3(0.639, 0.149, 0.125), glow * (0.014 + 0.22 * uPulse));
-        }
-      `
-    });
-    const halo = new THREE.Mesh(new THREE.PlaneGeometry(1.72, 1.72), haloMaterial);
-    halo.position.z = -0.04;
-    halo.renderOrder = -1;
-    scene.add(halo);
-
-    const particleCount = 260;
-    const particlePositions = new Float32Array(particleCount * 3);
-    const radii = new Float32Array(particleCount);
-    const phases = new Float32Array(particleCount);
-    const speeds = new Float32Array(particleCount);
-    const heights = new Float32Array(particleCount);
-    const sizes = new Float32Array(particleCount);
-    const tones = new Float32Array(particleCount);
-    const innerRadiusSquared = ORBITAL_INNER_RADIUS ** 2;
-    const radiusRangeSquared = 1.68 ** 2 - innerRadiusSquared;
-    for (let i = 0; i < particleCount; i += 1) {
-      const radialSequence = (0.5 + i * 0.7548776662466927) % 1;
-      const angularSequence = (0.5 + i * 0.5698402909980532) % 1;
-      const radius = Math.sqrt(innerRadiusSquared + radiusRangeSquared * radialSequence);
-      radii[i] = radius;
-      phases[i] = angularSequence * Math.PI * 2;
-      speeds[i] = ORBITAL_RATE * Math.pow(ORBITAL_INNER_RADIUS / radius, 1.5);
-      heights[i] = ((i % 9) - 4) * 0.016 + Math.sin(i * 1.7) * 0.008;
-      sizes[i] = 0.72 + ((i * 11) % 13) * 0.085;
-      tones[i] = ((i * 73) % 101) / 100;
+      positions[offset] = x;
+      positions[offset + 1] = y;
+      positions[offset + 2] = z;
+      colors[offset] = red;
+      colors[offset + 1] = green;
+      colors[offset + 2] = blue;
+      sizes[index] = size;
+      opacities[index] = opacity;
     }
-    const particles = new THREE.BufferGeometry();
-    particles.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
-    particles.setAttribute('radius', new THREE.BufferAttribute(radii, 1));
-    particles.setAttribute('phase', new THREE.BufferAttribute(phases, 1));
-    particles.setAttribute('speed', new THREE.BufferAttribute(speeds, 1));
-    particles.setAttribute('height', new THREE.BufferAttribute(heights, 1));
-    particles.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
-    particles.setAttribute('tone', new THREE.BufferAttribute(tones, 1));
-    const particleMaterial = new THREE.ShaderMaterial({
-      uniforms: {
-        uTime: { value: 0 },
-        uPixelRatio: { value: 1 }
-      },
+
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute('aColor', new THREE.BufferAttribute(colors, 3));
+    geometry.setAttribute('aSize', new THREE.BufferAttribute(sizes, 1));
+    geometry.setAttribute('aOpacity', new THREE.BufferAttribute(opacities, 1));
+
+    const pointUniforms = {
+      uTime: { value: 0 },
+      uPixelRatio: { value: 1 },
+      uPulse: { value: 1 },
+    };
+    const pointMaterial = new THREE.ShaderMaterial({
+      uniforms: pointUniforms,
       transparent: true,
+      depthTest: false,
       depthWrite: false,
-      vertexShader: /* glsl */`
+      vertexShader: `
         uniform float uTime;
         uniform float uPixelRatio;
-        attribute float radius;
-        attribute float phase;
-        attribute float speed;
-        attribute float height;
-        attribute float size;
-        attribute float tone;
-        varying float vSignal;
+        attribute vec3 aColor;
+        attribute float aSize;
+        attribute float aOpacity;
+        varying vec3 vColor;
+        varying float vOpacity;
 
         void main() {
-          float orbit = phase + uTime * speed;
-          vec3 orbitalPosition = vec3(
-            cos(orbit) * radius,
-            height,
-            sin(orbit) * radius
-          );
-          vec4 viewPosition = modelViewMatrix * vec4(orbitalPosition, 1.0);
+          float radius = length(position.xz);
+          float differential = sin(uTime * 0.38 + radius * 2.2) * 0.045 / (0.7 + radius);
+          float angle = uTime * 0.13 + differential;
+          float sine = sin(angle);
+          float cosine = cos(angle);
+          vec3 transformed = position;
+          transformed.xz = mat2(cosine, -sine, sine, cosine) * transformed.xz;
+          vec4 viewPosition = modelViewMatrix * vec4(transformed, 1.0);
           gl_Position = projectionMatrix * viewPosition;
-          gl_PointSize = clamp(size * uPixelRatio * 12.0 / max(1.0, -viewPosition.z), 1.0, 4.0);
-          vSignal = step(0.86, tone);
+          gl_PointSize = max(1.0, aSize * uPixelRatio * 11.5 / -viewPosition.z);
+          vColor = aColor;
+          vOpacity = aOpacity * (0.94 + 0.06
+            * sin(uTime * 0.72 + position.x * 3.7 + position.z * 2.9));
         }
       `,
-      fragmentShader: /* glsl */`
-        varying float vSignal;
+      fragmentShader: `
+        precision highp float;
 
-        void main() {
-          vec2 point = gl_PointCoord * 2.0 - 1.0;
-          float radius = dot(point, point);
-          if (radius > 1.0) discard;
-          float edge = 1.0 - smoothstep(0.42, 1.0, radius);
-          vec3 color = mix(vec3(0.086, 0.098, 0.102), vec3(0.639, 0.149, 0.125), vSignal);
-          gl_FragColor = vec4(color, edge * mix(0.40, 0.92, vSignal));
-        }
-      `
-    });
-    const particleCloud = new THREE.Points(particles, particleMaterial);
-    particleCloud.frustumCulled = false;
-    diskLayer.add(particleCloud);
-
-    const fieldCount = 8;
-    const fieldSegments = 36;
-    const fieldPositions = new Float32Array(fieldCount * (fieldSegments - fieldSegments / 6) * 6);
-    let fieldIndex = 0;
-    for (let line = 0; line < fieldCount; line += 1) {
-      const loopRadius = 0.98 + (line % 4) * 0.15 + Math.floor(line / 4) * 0.06;
-      const thetaStart = Math.asin(Math.sqrt(STAR_RADIUS / loopRadius));
-      const thetaRange = Math.PI - thetaStart * 2;
-      const azimuth = line * Math.PI * 2 / fieldCount + (line % 3) * 0.08;
-      const cosine = Math.cos(azimuth);
-      const sine = Math.sin(azimuth);
-      for (let segment = 0; segment < fieldSegments; segment += 1) {
-        if ((segment + line) % 6 === 0) continue;
-        const thetaA = thetaStart + thetaRange * segment / fieldSegments;
-        const thetaB = thetaStart + thetaRange * (segment + 1) / fieldSegments;
-        const sinA = Math.sin(thetaA);
-        const sinB = Math.sin(thetaB);
-        const radiusA = loopRadius * sinA * sinA;
-        const radiusB = loopRadius * sinB * sinB;
-        fieldPositions[fieldIndex++] = radiusA * sinA * cosine;
-        fieldPositions[fieldIndex++] = radiusA * Math.cos(thetaA);
-        fieldPositions[fieldIndex++] = radiusA * sinA * sine;
-        fieldPositions[fieldIndex++] = radiusB * sinB * cosine;
-        fieldPositions[fieldIndex++] = radiusB * Math.cos(thetaB);
-        fieldPositions[fieldIndex++] = radiusB * sinB * sine;
-      }
-    }
-    const fieldGeometry = new THREE.BufferGeometry();
-    fieldGeometry.setAttribute('position', new THREE.BufferAttribute(fieldPositions, 3));
-    const fieldLines = new THREE.LineSegments(fieldGeometry, new THREE.LineBasicMaterial({
-      color: 0x16191a,
-      transparent: true,
-      opacity: 0.36,
-      depthWrite: false
-    }));
-    fieldLines.renderOrder = 1;
-    magneticAxis.add(fieldLines);
-
-    const beamVertexShader = /* glsl */`
-      varying vec2 vUv;
-
-      void main() {
-        vUv = uv;
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-      }
-    `;
-    const beamMaterial = new THREE.ShaderMaterial({
-      uniforms: { uPulse: northPulseUniform },
-      transparent: true,
-      depthWrite: false,
-      side: THREE.DoubleSide,
-      vertexShader: beamVertexShader,
-      fragmentShader: /* glsl */`
         uniform float uPulse;
-        varying vec2 vUv;
+        varying vec3 vColor;
+        varying float vOpacity;
 
         void main() {
-          float crossSection = pow(1.0 - abs(vUv.x * 2.0 - 1.0), 0.65);
-          float lengthFade = smoothstep(0.0, 0.13, vUv.y) * (1.0 - smoothstep(0.62, 1.0, vUv.y));
-          float opacity = (0.025 + 0.26 * uPulse) * crossSection * lengthFade;
-          gl_FragColor = vec4(vec3(0.639, 0.149, 0.125), opacity);
+          vec2 point = gl_PointCoord - 0.5;
+          float radiusSquared = dot(point, point);
+          if (radiusSquared > 0.25) discard;
+          float gaussian = exp(-radiusSquared * 10.0);
+          float edge = 1.0 - smoothstep(0.16, 0.25, radiusSquared);
+          float opacity = gaussian * edge * vOpacity * uPulse;
+          vec3 color = mix(vColor, vec3(1.0, 0.86, 0.62), gaussian * 0.13);
+          gl_FragColor = vec4(color, opacity);
         }
-      `
+      `,
     });
-    const coreMaterial = new THREE.ShaderMaterial({
-      uniforms: { uPulse: northPulseUniform },
+
+    const coreCanvas = document.createElement('canvas');
+    coreCanvas.width = 128;
+    coreCanvas.height = 128;
+    const context = coreCanvas.getContext('2d');
+    const coreGradient = context.createRadialGradient(64, 64, 1, 64, 64, 64);
+    coreGradient.addColorStop(0, 'rgba(255, 239, 197, 0.96)');
+    coreGradient.addColorStop(0.07, 'rgba(224, 151, 84, 0.82)');
+    coreGradient.addColorStop(0.24, 'rgba(166, 67, 36, 0.30)');
+    coreGradient.addColorStop(0.58, 'rgba(76, 43, 31, 0.08)');
+    coreGradient.addColorStop(1, 'rgba(38, 31, 27, 0)');
+    context.fillStyle = coreGradient;
+    context.fillRect(0, 0, 128, 128);
+    const coreTexture = new THREE.CanvasTexture(coreCanvas);
+    coreTexture.colorSpace = THREE.SRGBColorSpace;
+    const coreMaterial = new THREE.SpriteMaterial({
+      map: coreTexture,
       transparent: true,
+      depthTest: false,
       depthWrite: false,
-      side: THREE.DoubleSide,
-      vertexShader: beamVertexShader,
-      fragmentShader: /* glsl */`
-        uniform float uPulse;
-        varying vec2 vUv;
-
-        void main() {
-          float crossSection = 1.0 - abs(vUv.x * 2.0 - 1.0);
-          float lengthFade = smoothstep(0.0, 0.08, vUv.y) * (1.0 - smoothstep(0.70, 1.0, vUv.y));
-          float emission = 0.10 + 0.90 * uPulse;
-          vec3 color = mix(vec3(0.28, 0.02, 0.008), vec3(0.86, 0.12, 0.055), uPulse);
-          gl_FragColor = vec4(color, emission * crossSection * lengthFade);
-        }
-      `
+      opacity: 0.78,
     });
-    const beam = new THREE.CylinderGeometry(0.23, 0.035, 1.66, 16, 1, true);
-    const beamCore = new THREE.CylinderGeometry(0.055, 0.01, 1.68, 12, 1, true);
-    for (const direction of [-1, 1]) {
-      const polePulse = direction > 0 ? northPulseUniform : southPulseUniform;
-      const jetMaterial = beamMaterial.clone();
-      const beamCoreMaterial = coreMaterial.clone();
-      jetMaterial.uniforms.uPulse = polePulse;
-      beamCoreMaterial.uniforms.uPulse = polePulse;
-      const jet = new THREE.Mesh(beam, jetMaterial);
-      const core = new THREE.Mesh(beamCore, beamCoreMaterial);
-      jet.position.y = direction * (STAR_RADIUS + 0.83);
-      core.position.y = direction * (STAR_RADIUS + 0.84);
-      if (direction < 0) {
-        jet.rotation.x = Math.PI;
-        core.rotation.x = Math.PI;
-      }
-      magneticAxis.add(jet, core);
-    }
 
-    const localBeamDirection = new THREE.Vector3(0, 1, 0);
-    const beamWorldQuaternion = new THREE.Quaternion();
-    const beamDirection = new THREE.Vector3();
-    const cameraDirection = new THREE.Vector3();
-    camera.getWorldDirection(cameraDirection).multiplyScalar(-1);
+    const galaxy = new THREE.Group();
+    const stars = new THREE.Points(geometry, pointMaterial);
+    const core = new THREE.Sprite(coreMaterial);
+    core.scale.set(1.25, 1.25, 1);
+    core.renderOrder = 0;
+    stars.renderOrder = 1;
+    galaxy.add(core, stars);
+    galaxy.rotation.set(0.12, -0.20, -0.13);
+    scene.add(galaxy);
 
-    let rotationX = 0;
-    let rotationY = 0;
+    let targetPitch = 0.12;
+    let targetYaw = -0.20;
+    let pitch = targetPitch;
+    let yaw = targetYaw;
+    let pitchVelocity = 0;
+    let yawVelocity = 0;
     let dragging = false;
     let lastX = 0;
     let lastY = 0;
-    let frame = 0;
-    const clock = new THREE.Clock();
+    let elapsed = 0;
+    let lastFrame = performance.now();
 
-    const beamGain = (alignment) => {
-      if (alignment <= 0) return 0;
-      const angle = Math.acos(Math.min(1, alignment));
-      return Math.exp(-0.5 * (angle / BEAM_WIDTH) ** 2);
-    };
-    const pose = (time) => {
-      system.rotation.set(rotationX, rotationY, 0);
-      const spin = SPIN_OFFSET + time * SPIN_RATE;
-      spinRoot.rotation.y = spin;
-      spinUniform.value = spin;
-      particleMaterial.uniforms.uTime.value = time;
-      magneticAxis.getWorldQuaternion(beamWorldQuaternion);
-      beamDirection.copy(localBeamDirection).applyQuaternion(beamWorldQuaternion);
-      const alignment = beamDirection.dot(cameraDirection);
-      const northPulse = beamGain(alignment);
-      const southPulse = beamGain(-alignment);
-      northPulseUniform.value = northPulse;
-      southPulseUniform.value = southPulse;
-      observedPulseUniform.value = Math.max(northPulse, southPulse);
-    };
-    const pulseWithoutMotion = (time) => {
-      const pulse = beamGain(Math.cos(time * SPIN_RATE));
-      northPulseUniform.value = pulse;
-      southPulseUniform.value = 0;
-      observedPulseUniform.value = pulse;
-    };
     const render = () => renderer.render(scene, camera);
-    const animate = () => {
-      const time = clock.getElapsedTime();
-      if (motion.matches) pulseWithoutMotion(time);
-      else pose(time);
+    const animate = (now) => {
+      const delta = Math.min((now - lastFrame) / 1000, 1 / 30);
+      lastFrame = now;
+
+      if (motion.matches) {
+        const cycle = now * Math.PI * 2 / 5600;
+        const pulse = 0.68 + 0.32 * (0.5 + 0.5 * Math.cos(cycle));
+        pointUniforms.uPulse.value = pulse;
+        coreMaterial.opacity = pulse * 0.78;
+      } else {
+        elapsed += delta;
+        pointUniforms.uTime.value = elapsed;
+        pointUniforms.uPulse.value = 1;
+        coreMaterial.opacity = 0.78;
+        pitchVelocity += (targetPitch - pitch) * 44 * delta;
+        yawVelocity += (targetYaw - yaw) * 44 * delta;
+        const drag = Math.exp(-8.5 * delta);
+        pitchVelocity *= drag;
+        yawVelocity *= drag;
+        pitch += pitchVelocity * delta;
+        yaw += yawVelocity * delta;
+        galaxy.rotation.x = pitch;
+        galaxy.rotation.y = yaw;
+      }
+
       render();
-      frame = requestAnimationFrame(animate);
-    };
-    const updateMotion = () => {
-      if (frame) cancelAnimationFrame(frame);
-      frame = 0;
-      clock.stop();
-      if (motion.matches) pose(0);
-      clock.start();
-      frame = requestAnimationFrame(animate);
+      requestAnimationFrame(animate);
     };
 
     stage.addEventListener('pointerdown', (event) => {
+      if (motion.matches) return;
       dragging = true;
       lastX = event.clientX;
       lastY = event.clientY;
@@ -471,14 +349,18 @@
     });
     stage.addEventListener('pointermove', (event) => {
       if (!dragging) return;
-      rotationY += (lastX - event.clientX) * 0.008;
-      rotationX += (lastY - event.clientY) * 0.008;
+      targetYaw = THREE.MathUtils.clamp(
+        targetYaw + (event.clientX - lastX) * 0.009,
+        -0.72,
+        0.72,
+      );
+      targetPitch = THREE.MathUtils.clamp(
+        targetPitch + (event.clientY - lastY) * 0.007,
+        -0.38,
+        0.52,
+      );
       lastX = event.clientX;
       lastY = event.clientY;
-      if (motion.matches) {
-        pose(0);
-        render();
-      }
     }, { passive: true });
     const release = () => { dragging = false; };
     stage.addEventListener('pointerup', release);
@@ -488,19 +370,27 @@
       const bounds = stage.getBoundingClientRect();
       const width = Math.max(1, Math.round(bounds.width));
       const height = Math.max(1, Math.round(bounds.height));
+      const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
-      const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
       renderer.setPixelRatio(pixelRatio);
-      particleMaterial.uniforms.uPixelRatio.value = pixelRatio;
       renderer.setSize(width, height, false);
+      pointUniforms.uPixelRatio.value = pixelRatio;
       render();
     };
     window.addEventListener('resize', resize, { passive: true });
-    motion.addEventListener('change', updateMotion);
-    pose(0);
+    const updateMotionPreference = () => {
+      dragging = false;
+      pitchVelocity = 0;
+      yawVelocity = 0;
+      stage.style.cursor = motion.matches ? 'default' : '';
+      lastFrame = performance.now();
+    };
+    motion.addEventListener('change', updateMotionPreference);
+    updateMotionPreference();
+
     resize();
-    updateMotion();
+    requestAnimationFrame(animate);
   </script>
 </body>
 </html>
