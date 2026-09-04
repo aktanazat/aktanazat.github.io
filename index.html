@@ -440,9 +440,17 @@
       southPulseUniform.value = southPulse;
       observedPulseUniform.value = Math.max(northPulse, southPulse);
     };
+    const pulseWithoutMotion = (time) => {
+      const pulse = beamGain(Math.cos(time * SPIN_RATE));
+      northPulseUniform.value = pulse;
+      southPulseUniform.value = 0;
+      observedPulseUniform.value = pulse;
+    };
     const render = () => renderer.render(scene, camera);
     const animate = () => {
-      pose(clock.getElapsedTime());
+      const time = clock.getElapsedTime();
+      if (motion.matches) pulseWithoutMotion(time);
+      else pose(time);
       render();
       frame = requestAnimationFrame(animate);
     };
@@ -450,11 +458,7 @@
       if (frame) cancelAnimationFrame(frame);
       frame = 0;
       clock.stop();
-      if (motion.matches) {
-        pose(0);
-        render();
-        return;
-      }
+      if (motion.matches) pose(0);
       clock.start();
       frame = requestAnimationFrame(animate);
     };
