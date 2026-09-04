@@ -29,37 +29,33 @@
     p  { margin: 0.6em 0; }
     ul li { margin-top: 4px; }
 
-    /* draggable metallic blob — floated right where a photo would sit */
-    .blob-stage {
+    /* Pulsar — floated right where a photo would sit. */
+    .pulsar {
       float: right;
       width: 150px;
       height: 150px;
       margin: 4px 0 10px 20px;
-      position: relative;
       cursor: grab;
       touch-action: none;
     }
-    .blob-stage:active { cursor: grabbing; }
-    .blob-canvas {
-      position: absolute;
-      inset: 0;
+    .pulsar:active { cursor: grabbing; }
+    .pulsar canvas {
       width: 100%;
       height: 100%;
       display: block;
-      filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.14));
       contain: strict;
     }
 
     @media (max-width: 760px) {
       #contents { padding: 0 1em; }
-      .blob-stage { width: 110px; height: 110px; }
+      .pulsar { width: 110px; height: 110px; }
     }
   </style>
 </head>
 <body>
   <div id="contents">
-    <div class="blob-stage" id="blobStage" aria-hidden="true">
-      <canvas class="blob-canvas" id="blobCanvas"></canvas>
+    <div class="pulsar" id="pulsar" aria-hidden="true">
+      <canvas id="pulsarCanvas"></canvas>
     </div>
 
     <h2>Aktan Azat</h2>
@@ -100,147 +96,407 @@
   </div>
 
   <script type="importmap">
-    {
-      "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js",
-        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/"
-      }
-    }
+    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js" } }
   </script>
   <script type="module">
     import * as THREE from 'three';
-    import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
-    import { mergeVertices } from 'three/addons/utils/BufferGeometryUtils.js';
 
-    const HDR_URL = 'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/venice_sunset_1k.hdr';
-
-    const stage = document.getElementById('blobStage');
-    const canvas = document.getElementById('blobCanvas');
-
+    const stage = document.getElementById('pulsar');
+    const canvas = document.getElementById('pulsarCanvas');
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
-    camera.position.set(0, 0, 5.5);
+    const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 20);
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const STAR_RADIUS = 0.62;
+    const MAGNETIC_TILT = 0.61;
+    const SPIN_FRAME_TILT = Math.PI / 2 - MAGNETIC_TILT;
+    const SPIN_OFFSET = 1.0;
+    const SPIN_RATE = Math.PI * 2 / 3.2;
+    const BEAM_WIDTH = 0.12;
+    const ORBITAL_INNER_RADIUS = 0.73;
+    const ORBITAL_RATE = 1.35;
 
-    const renderer = new THREE.WebGLRenderer({
-      canvas,
-      alpha: true,
-      antialias: true,
-      powerPreference: 'high-performance'
-    });
+    camera.position.set(0, 0, 6.2);
+    camera.lookAt(0, 0, 0);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.setClearColor(0x000000, 0);
 
-    const pmrem = new THREE.PMREMGenerator(renderer);
-    new RGBELoader().load(HDR_URL, (hdr) => {
-      hdr.mapping = THREE.EquirectangularReflectionMapping;
-      scene.environment = pmrem.fromEquirectangular(hdr).texture;
-      hdr.dispose();
-      pmrem.dispose();
+    const system = new THREE.Group();
+    const spinFrame = new THREE.Group();
+    const diskLayer = new THREE.Group();
+    const spinRoot = new THREE.Group();
+    const magneticAxis = new THREE.Group();
+    scene.add(system);
+    system.add(spinFrame);
+    spinFrame.add(diskLayer, spinRoot);
+    spinRoot.add(magneticAxis);
+    spinFrame.rotation.x = SPIN_FRAME_TILT;
+    diskLayer.position.z = -0.14;
+    diskLayer.rotation.z = 0.08;
+    magneticAxis.rotation.z = MAGNETIC_TILT;
+
+    const northPulseUniform = { value: 0 };
+    const southPulseUniform = { value: 0 };
+    const observedPulseUniform = { value: 0 };
+    const spinUniform = { value: SPIN_OFFSET };
+
+    const starMaterial = new THREE.ShaderMaterial({
+      uniforms: {
+        uNorthPulse: northPulseUniform,
+        uSouthPulse: southPulseUniform,
+        uMagneticTilt: { value: MAGNETIC_TILT },
+        uSpin: spinUniform
+      },
+      vertexShader: /* glsl */`
+        varying vec3 vLocalNormal;
+        varying vec3 vViewNormal;
+        varying vec3 vViewPosition;
+
+        void main() {
+          vLocalNormal = normalize(normal);
+          vViewNormal = normalize(normalMatrix * normal);
+          vec4 viewPosition = modelViewMatrix * vec4(position, 1.0);
+          vViewPosition = viewPosition.xyz;
+          gl_Position = projectionMatrix * viewPosition;
+        }
+      `,
+      fragmentShader: /* glsl */`
+        uniform float uNorthPulse;
+        uniform float uSouthPulse;
+        uniform float uMagneticTilt;
+        uniform float uSpin;
+        varying vec3 vLocalNormal;
+        varying vec3 vViewNormal;
+        varying vec3 vViewPosition;
+
+        void main() {
+          vec3 localNormal = normalize(vLocalNormal);
+          vec3 viewNormal = normalize(vViewNormal);
+          vec3 viewDirection = normalize(-vViewPosition);
+          float illumination = 0.32 + 0.68 * max(dot(viewNormal, normalize(vec3(-0.42, 0.58, 0.70))), 0.0);
+          float longitude = atan(localNormal.z, localNormal.x);
+          float latitude = asin(clamp(localNormal.y, -1.0, 1.0));
+          float brush = 0.5 + 0.5 * sin(longitude * 84.0 + localNormal.y * 18.0 + uSpin * 5.0);
+          float scuff = 0.5 + 0.5 * sin(longitude * 21.0 - latitude * 47.0);
+          vec3 graphite = mix(vec3(0.086, 0.098, 0.102), vec3(0.19, 0.18, 0.16), brush * 0.30 + scuff * 0.10);
+          graphite *= illumination;
+          graphite += vec3(0.06, 0.055, 0.05) * pow(1.0 - max(dot(viewNormal, viewDirection), 0.0), 3.0);
+
+          vec3 pole = normalize(vec3(
+            -sin(uMagneticTilt) * cos(uSpin),
+            cos(uMagneticTilt),
+            sin(uMagneticTilt) * sin(uSpin)
+          ));
+          float northHotSpot = pow(max(dot(localNormal, pole), 0.0), 55.0);
+          float southHotSpot = pow(max(dot(localNormal, -pole), 0.0), 55.0);
+          float heatLevel = northHotSpot * (0.18 + 1.25 * uNorthPulse)
+            + southHotSpot * (0.18 + 1.25 * uSouthPulse);
+          vec3 heat = vec3(0.639, 0.149, 0.125) * heatLevel;
+          gl_FragColor = vec4(graphite + heat, 1.0);
+        }
+      `
     });
+    const star = new THREE.Mesh(new THREE.SphereGeometry(STAR_RADIUS, 48, 32), starMaterial);
+    spinFrame.add(star);
 
-    const geometry = mergeVertices(
-      new THREE.SphereGeometry(1.4, 64, 64).deleteAttribute('uv')
-    );
-    const positions = geometry.attributes.position;
-    const rest = positions.array.slice();
+    const haloMaterial = new THREE.ShaderMaterial({
+      uniforms: { uPulse: observedPulseUniform },
+      transparent: true,
+      depthWrite: false,
+      vertexShader: /* glsl */`
+        varying vec2 vUv;
 
-    const material = new THREE.MeshPhysicalMaterial({
-      color: '#f8f9fa',
-      roughness: 0.01,
-      metalness: 0.98,
-      reflectivity: 0.95,
-      envMapIntensity: 2,
-      clearcoat: 1,
-      clearcoatRoughness: 0,
-      transmission: 0.1,
-      thickness: 0.5,
-      ior: 2.4,
-      specularIntensity: 1,
-      specularColor: '#ffffff'
+        void main() {
+          vUv = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: /* glsl */`
+        uniform float uPulse;
+        varying vec2 vUv;
+
+        void main() {
+          vec2 point = vUv * 2.0 - 1.0;
+          float glow = exp(-dot(point, point) * 15.0);
+          gl_FragColor = vec4(vec3(0.639, 0.149, 0.125), glow * (0.014 + 0.22 * uPulse));
+        }
+      `
     });
+    const halo = new THREE.Mesh(new THREE.PlaneGeometry(1.72, 1.72), haloMaterial);
+    halo.position.z = -0.04;
+    halo.renderOrder = -1;
+    scene.add(halo);
 
-    const blob = new THREE.Mesh(geometry, material);
-    blob.scale.setScalar(0.01);
-    scene.add(blob);
+    const particleCount = 260;
+    const particlePositions = new Float32Array(particleCount * 3);
+    const radii = new Float32Array(particleCount);
+    const phases = new Float32Array(particleCount);
+    const speeds = new Float32Array(particleCount);
+    const heights = new Float32Array(particleCount);
+    const sizes = new Float32Array(particleCount);
+    const tones = new Float32Array(particleCount);
+    const innerRadiusSquared = ORBITAL_INNER_RADIUS ** 2;
+    const radiusRangeSquared = 1.68 ** 2 - innerRadiusSquared;
+    for (let i = 0; i < particleCount; i += 1) {
+      const radialSequence = (0.5 + i * 0.7548776662466927) % 1;
+      const angularSequence = (0.5 + i * 0.5698402909980532) % 1;
+      const radius = Math.sqrt(innerRadiusSquared + radiusRangeSquared * radialSequence);
+      radii[i] = radius;
+      phases[i] = angularSequence * Math.PI * 2;
+      speeds[i] = ORBITAL_RATE * Math.pow(ORBITAL_INNER_RADIUS / radius, 1.5);
+      heights[i] = ((i % 9) - 4) * 0.016 + Math.sin(i * 1.7) * 0.008;
+      sizes[i] = 0.72 + ((i * 11) % 13) * 0.085;
+      tones[i] = ((i * 73) % 101) / 100;
+    }
+    const particles = new THREE.BufferGeometry();
+    particles.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+    particles.setAttribute('radius', new THREE.BufferAttribute(radii, 1));
+    particles.setAttribute('phase', new THREE.BufferAttribute(phases, 1));
+    particles.setAttribute('speed', new THREE.BufferAttribute(speeds, 1));
+    particles.setAttribute('height', new THREE.BufferAttribute(heights, 1));
+    particles.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+    particles.setAttribute('tone', new THREE.BufferAttribute(tones, 1));
+    const particleMaterial = new THREE.ShaderMaterial({
+      uniforms: {
+        uTime: { value: 0 },
+        uPixelRatio: { value: 1 }
+      },
+      transparent: true,
+      depthWrite: false,
+      vertexShader: /* glsl */`
+        uniform float uTime;
+        uniform float uPixelRatio;
+        attribute float radius;
+        attribute float phase;
+        attribute float speed;
+        attribute float height;
+        attribute float size;
+        attribute float tone;
+        varying float vSignal;
 
-    const noise = (x, y, z, t) =>
-      Math.sin(x * 2 + t) * Math.cos(y * 3 + t * 0.5) * Math.sin(z * 1.5 + t * 0.8);
+        void main() {
+          float orbit = phase + uTime * speed;
+          vec3 orbitalPosition = vec3(
+            cos(orbit) * radius,
+            height,
+            sin(orbit) * radius
+          );
+          vec4 viewPosition = modelViewMatrix * vec4(orbitalPosition, 1.0);
+          gl_Position = projectionMatrix * viewPosition;
+          gl_PointSize = clamp(size * uPixelRatio * 12.0 / max(1.0, -viewPosition.z), 1.0, 4.0);
+          vSignal = step(0.86, tone);
+        }
+      `,
+      fragmentShader: /* glsl */`
+        varying float vSignal;
 
+        void main() {
+          vec2 point = gl_PointCoord * 2.0 - 1.0;
+          float radius = dot(point, point);
+          if (radius > 1.0) discard;
+          float edge = 1.0 - smoothstep(0.42, 1.0, radius);
+          vec3 color = mix(vec3(0.086, 0.098, 0.102), vec3(0.639, 0.149, 0.125), vSignal);
+          gl_FragColor = vec4(color, edge * mix(0.40, 0.92, vSignal));
+        }
+      `
+    });
+    const particleCloud = new THREE.Points(particles, particleMaterial);
+    particleCloud.frustumCulled = false;
+    diskLayer.add(particleCloud);
+
+    const fieldCount = 8;
+    const fieldSegments = 36;
+    const fieldPositions = new Float32Array(fieldCount * (fieldSegments - fieldSegments / 6) * 6);
+    let fieldIndex = 0;
+    for (let line = 0; line < fieldCount; line += 1) {
+      const loopRadius = 0.98 + (line % 4) * 0.15 + Math.floor(line / 4) * 0.06;
+      const thetaStart = Math.asin(Math.sqrt(STAR_RADIUS / loopRadius));
+      const thetaRange = Math.PI - thetaStart * 2;
+      const azimuth = line * Math.PI * 2 / fieldCount + (line % 3) * 0.08;
+      const cosine = Math.cos(azimuth);
+      const sine = Math.sin(azimuth);
+      for (let segment = 0; segment < fieldSegments; segment += 1) {
+        if ((segment + line) % 6 === 0) continue;
+        const thetaA = thetaStart + thetaRange * segment / fieldSegments;
+        const thetaB = thetaStart + thetaRange * (segment + 1) / fieldSegments;
+        const sinA = Math.sin(thetaA);
+        const sinB = Math.sin(thetaB);
+        const radiusA = loopRadius * sinA * sinA;
+        const radiusB = loopRadius * sinB * sinB;
+        fieldPositions[fieldIndex++] = radiusA * sinA * cosine;
+        fieldPositions[fieldIndex++] = radiusA * Math.cos(thetaA);
+        fieldPositions[fieldIndex++] = radiusA * sinA * sine;
+        fieldPositions[fieldIndex++] = radiusB * sinB * cosine;
+        fieldPositions[fieldIndex++] = radiusB * Math.cos(thetaB);
+        fieldPositions[fieldIndex++] = radiusB * sinB * sine;
+      }
+    }
+    const fieldGeometry = new THREE.BufferGeometry();
+    fieldGeometry.setAttribute('position', new THREE.BufferAttribute(fieldPositions, 3));
+    const fieldLines = new THREE.LineSegments(fieldGeometry, new THREE.LineBasicMaterial({
+      color: 0x16191a,
+      transparent: true,
+      opacity: 0.36,
+      depthWrite: false
+    }));
+    fieldLines.renderOrder = 1;
+    magneticAxis.add(fieldLines);
+
+    const beamVertexShader = /* glsl */`
+      varying vec2 vUv;
+
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `;
+    const beamMaterial = new THREE.ShaderMaterial({
+      uniforms: { uPulse: northPulseUniform },
+      transparent: true,
+      depthWrite: false,
+      side: THREE.DoubleSide,
+      vertexShader: beamVertexShader,
+      fragmentShader: /* glsl */`
+        uniform float uPulse;
+        varying vec2 vUv;
+
+        void main() {
+          float crossSection = pow(1.0 - abs(vUv.x * 2.0 - 1.0), 0.65);
+          float lengthFade = smoothstep(0.0, 0.13, vUv.y) * (1.0 - smoothstep(0.62, 1.0, vUv.y));
+          float opacity = (0.025 + 0.26 * uPulse) * crossSection * lengthFade;
+          gl_FragColor = vec4(vec3(0.639, 0.149, 0.125), opacity);
+        }
+      `
+    });
+    const coreMaterial = new THREE.ShaderMaterial({
+      uniforms: { uPulse: northPulseUniform },
+      transparent: true,
+      depthWrite: false,
+      side: THREE.DoubleSide,
+      vertexShader: beamVertexShader,
+      fragmentShader: /* glsl */`
+        uniform float uPulse;
+        varying vec2 vUv;
+
+        void main() {
+          float crossSection = 1.0 - abs(vUv.x * 2.0 - 1.0);
+          float lengthFade = smoothstep(0.0, 0.08, vUv.y) * (1.0 - smoothstep(0.70, 1.0, vUv.y));
+          float emission = 0.10 + 0.90 * uPulse;
+          vec3 color = mix(vec3(0.28, 0.02, 0.008), vec3(0.86, 0.12, 0.055), uPulse);
+          gl_FragColor = vec4(color, emission * crossSection * lengthFade);
+        }
+      `
+    });
+    const beam = new THREE.CylinderGeometry(0.23, 0.035, 1.66, 16, 1, true);
+    const beamCore = new THREE.CylinderGeometry(0.055, 0.01, 1.68, 12, 1, true);
+    for (const direction of [-1, 1]) {
+      const polePulse = direction > 0 ? northPulseUniform : southPulseUniform;
+      const jetMaterial = beamMaterial.clone();
+      const beamCoreMaterial = coreMaterial.clone();
+      jetMaterial.uniforms.uPulse = polePulse;
+      beamCoreMaterial.uniforms.uPulse = polePulse;
+      const jet = new THREE.Mesh(beam, jetMaterial);
+      const core = new THREE.Mesh(beamCore, beamCoreMaterial);
+      jet.position.y = direction * (STAR_RADIUS + 0.83);
+      core.position.y = direction * (STAR_RADIUS + 0.84);
+      if (direction < 0) {
+        jet.rotation.x = Math.PI;
+        core.rotation.x = Math.PI;
+      }
+      magneticAxis.add(jet, core);
+    }
+
+    const localBeamDirection = new THREE.Vector3(0, 1, 0);
+    const beamWorldQuaternion = new THREE.Quaternion();
+    const beamDirection = new THREE.Vector3();
+    const cameraDirection = new THREE.Vector3();
+    camera.getWorldDirection(cameraDirection).multiplyScalar(-1);
+
+    let rotationX = 0;
+    let rotationY = 0;
     let dragging = false;
-    let lastX = 0, lastY = 0;
-    let velX = 0, velY = 0;
+    let lastX = 0;
+    let lastY = 0;
+    let frame = 0;
+    const clock = new THREE.Clock();
 
-    stage.addEventListener('pointerdown', (e) => {
+    const beamGain = (alignment) => {
+      if (alignment <= 0) return 0;
+      const angle = Math.acos(Math.min(1, alignment));
+      return Math.exp(-0.5 * (angle / BEAM_WIDTH) ** 2);
+    };
+    const pose = (time) => {
+      system.rotation.set(rotationX, rotationY, 0);
+      const spin = SPIN_OFFSET + time * SPIN_RATE;
+      spinRoot.rotation.y = spin;
+      spinUniform.value = spin;
+      particleMaterial.uniforms.uTime.value = time;
+      magneticAxis.getWorldQuaternion(beamWorldQuaternion);
+      beamDirection.copy(localBeamDirection).applyQuaternion(beamWorldQuaternion);
+      const alignment = beamDirection.dot(cameraDirection);
+      const northPulse = beamGain(alignment);
+      const southPulse = beamGain(-alignment);
+      northPulseUniform.value = northPulse;
+      southPulseUniform.value = southPulse;
+      observedPulseUniform.value = Math.max(northPulse, southPulse);
+    };
+    const render = () => renderer.render(scene, camera);
+    const animate = () => {
+      pose(clock.getElapsedTime());
+      render();
+      frame = requestAnimationFrame(animate);
+    };
+    const updateMotion = () => {
+      if (frame) cancelAnimationFrame(frame);
+      frame = 0;
+      clock.stop();
+      if (motion.matches) {
+        pose(0);
+        render();
+        return;
+      }
+      clock.start();
+      frame = requestAnimationFrame(animate);
+    };
+
+    stage.addEventListener('pointerdown', (event) => {
       dragging = true;
-      lastX = e.clientX;
-      lastY = e.clientY;
-      velX = velY = 0;
-      stage.setPointerCapture(e.pointerId);
+      lastX = event.clientX;
+      lastY = event.clientY;
+      stage.setPointerCapture(event.pointerId);
     });
-    stage.addEventListener('pointermove', (e) => {
+    stage.addEventListener('pointermove', (event) => {
       if (!dragging) return;
-      const dx = (lastX - e.clientX) * 0.008;
-      const dy = (lastY - e.clientY) * 0.008;
-      blob.rotation.y += dx;
-      blob.rotation.x += dy;
-      velY = dx;
-      velX = dy;
-      lastX = e.clientX;
-      lastY = e.clientY;
+      rotationY += (lastX - event.clientX) * 0.008;
+      rotationX += (lastY - event.clientY) * 0.008;
+      lastX = event.clientX;
+      lastY = event.clientY;
+      if (motion.matches) {
+        pose(0);
+        render();
+      }
     }, { passive: true });
     const release = () => { dragging = false; };
     stage.addEventListener('pointerup', release);
     stage.addEventListener('pointercancel', release);
 
     const resize = () => {
-      const size = Math.max(1, Math.round(stage.getBoundingClientRect().width));
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      renderer.setSize(size, size, false);
+      const bounds = stage.getBoundingClientRect();
+      const width = Math.max(1, Math.round(bounds.width));
+      const height = Math.max(1, Math.round(bounds.height));
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+      renderer.setPixelRatio(pixelRatio);
+      particleMaterial.uniforms.uPixelRatio.value = pixelRatio;
+      renderer.setSize(width, height, false);
+      render();
     };
     window.addEventListener('resize', resize, { passive: true });
+    motion.addEventListener('change', updateMotion);
+    pose(0);
     resize();
-
-    const clock = new THREE.Clock();
-    const tick = () => {
-      const t = clock.getElapsedTime();
-      blob.scale.setScalar(Math.min(0.01 + t * 1.6, 1));
-
-      const v = positions.array;
-      for (let i = 0; i < v.length; i += 3) {
-        const x = rest[i], y = rest[i + 1], z = rest[i + 2];
-        const r = Math.sqrt(x * x + y * y + z * z);
-        const d =
-          noise(x * 0.5, y * 0.5, z * 0.5, t * 0.5) * 0.30 +
-          noise(x * 1.2, y * 1.2, z * 1.2, t * 0.8) * 0.15 +
-          noise(x * 2.0, y * 2.0, z * 2.0, t * 1.2) * 0.08;
-        const s = 1 + d / r;
-        v[i]     = x * s;
-        v[i + 1] = y * s;
-        v[i + 2] = z * s;
-      }
-      positions.needsUpdate = true;
-      geometry.computeVertexNormals();
-
-      if (dragging) {
-        velX *= 0.9;
-        velY *= 0.9;
-      } else {
-        blob.rotation.y += 0.005 + velY;
-        blob.rotation.x += 0.002 + velX;
-        velX *= 0.92;
-        velY *= 0.92;
-      }
-
-      material.roughness       = 0.01 + Math.sin(t * 0.4) * 0.005;
-      material.metalness       = 0.98 + Math.cos(t * 0.3) * 0.02;
-      material.envMapIntensity = 2.00 + Math.sin(t * 0.5) * 0.5;
-      material.reflectivity    = 0.95 + Math.cos(t * 0.2) * 0.05;
-
-      renderer.render(scene, camera);
-      requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
+    updateMotion();
   </script>
 </body>
 </html>
