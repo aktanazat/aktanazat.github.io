@@ -29,33 +29,87 @@
     p  { margin: 0.6em 0; }
     ul li { margin-top: 4px; }
 
-    /* Galaxy — floated right where a photo would sit. */
-    .galaxy {
+    /* Black hole — floated right where a photo would sit. The poster image
+       carries the artwork until WebGL2 takes over. */
+    .black-hole {
       float: right;
-      width: 150px;
-      height: 150px;
-      margin: 4px 0 10px 20px;
-      cursor: grab;
-      touch-action: none;
+      width: 264px;
+      margin: 2px 0 12px 22px;
     }
-    .galaxy:active { cursor: grabbing; }
-    .galaxy canvas {
+    .black-hole-frame {
+      position: relative;
+      aspect-ratio: 1.3;
+    }
+    .black-hole-frame img,
+    .black-hole-frame canvas {
+      position: absolute;
+      inset: 0;
+      display: block;
       width: 100%;
       height: 100%;
-      display: block;
+    }
+    .black-hole-frame canvas {
+      visibility: hidden;
+      touch-action: none;
       contain: strict;
+    }
+    .black-hole[data-live] canvas {
+      visibility: visible;
+      cursor: grab;
+    }
+    .black-hole[data-live] canvas:active { cursor: grabbing; }
+    .black-hole canvas:focus-visible {
+      outline: 2px solid #0645ad;
+      outline-offset: 3px;
+    }
+
+    .black-hole-toggle:not([hidden]) {
+      display: flex;
+    }
+    .black-hole-toggle {
+      align-items: center;
+      justify-content: flex-end;
+      margin-left: auto;
+      min-width: 44px;
+      min-height: 44px;
+      padding: 0;
+      border: 0;
+      background: none;
+      font: inherit;
+      font-size: 0.72em;
+      letter-spacing: 0.03em;
+      color: #555;
+      cursor: pointer;
+    }
+    .black-hole-toggle:hover { color: #000; }
+    .black-hole-toggle:focus-visible {
+      outline: 2px solid #0645ad;
+      outline-offset: 2px;
     }
 
     @media (max-width: 760px) {
       #contents { padding: 0 1em; }
-      .galaxy { width: 110px; height: 110px; }
+      .black-hole { width: 220px; margin-left: 16px; }
+    }
+
+    @media (max-width: 600px) {
+      .black-hole {
+        float: none;
+        width: min(84vw, 280px);
+        margin: 0 auto 16px;
+      }
     }
   </style>
 </head>
 <body>
   <div id="contents">
-    <div class="galaxy" id="galaxy" aria-hidden="true">
-      <canvas id="galaxyCanvas"></canvas>
+    <div class="black-hole" id="blackHole">
+      <div class="black-hole-frame">
+        <img src="assets/black-hole.webp" width="520" height="400" alt="" />
+        <canvas id="blackHoleCanvas" role="application"
+          aria-label="A black hole: light from its accretion disk bent into a ring around the shadow. Drag or press the arrow keys to orbit the view."></canvas>
+      </div>
+      <button type="button" id="blackHoleToggle" class="black-hole-toggle" hidden>Pause</button>
     </div>
 
     <h2>Aktan Azat</h2>
@@ -95,302 +149,6 @@
     </p>
   </div>
 
-  <script type="importmap">
-    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js" } }
-  </script>
-  <script type="module">
-    import * as THREE from 'three';
-
-    const stage = document.getElementById('galaxy');
-    const canvas = document.getElementById('galaxyCanvas');
-    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 30);
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-
-    camera.position.set(0, 2.8, 7.4);
-    camera.lookAt(0, 0, 0);
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.setClearColor(0x000000, 0);
-
-    const POINT_COUNT = 12000;
-    const positions = new Float32Array(POINT_COUNT * 3);
-    const colors = new Float32Array(POINT_COUNT * 3);
-    const sizes = new Float32Array(POINT_COUNT);
-    const opacities = new Float32Array(POINT_COUNT);
-    const radialSequence = 0.7548776662466927;
-    const angularSequence = 0.5698402909980532;
-    const heightSequence = 0.4385790211123723;
-    const detailSequence = 0.3281734586496826;
-    const sparkleSequence = 0.2718281828459045;
-    const fract = (value) => value - Math.floor(value);
-
-    for (let index = 0; index < POINT_COUNT; index += 1) {
-      const offset = index * 3;
-      const radial = fract((index + 1) * radialSequence);
-      const angular = fract((index + 1) * angularSequence);
-      const height = fract((index + 1) * heightSequence);
-      const detail = fract((index + 1) * detailSequence);
-      const sparkle = fract((index + 1) * sparkleSequence);
-      let x;
-      let y;
-      let z;
-      let red;
-      let green;
-      let blue;
-      let size;
-      let opacity;
-
-      if (index < 8800) {
-        const radius = 0.12 + Math.pow(radial, 0.74) * 2.13;
-        const arm = Math.floor(detail * 4);
-        const armDetail = fract(detail * 4);
-        const scatterSeed = (angular + height + sparkle - 1.5) / 1.5;
-        const feather = armDetail > 0.78 ? 1.65 : 1;
-        const scatter = scatterSeed * (0.21 + radius * 0.17) * feather;
-        const angle = arm * Math.PI / 2 + radius * 2.40 + scatter;
-        x = Math.cos(angle) * radius;
-        z = Math.sin(angle) * radius;
-        y = (height + sparkle - 1) * (0.035 + radius * 0.022);
-
-        const warmth = 1 - Math.min(radius / 2.25, 1);
-        const copperMix = 0.28 + warmth * 0.45;
-        red = 0.21 + copperMix * 0.54;
-        green = 0.18 + copperMix * 0.25;
-        blue = 0.16 + copperMix * 0.09;
-        const coreHeat = Math.pow(warmth, 4);
-        red += coreHeat * 0.19;
-        green += coreHeat * 0.29;
-        blue += coreHeat * 0.27;
-        size = 1.0 + sparkle * 1.25;
-        opacity = 0.09 + angular * 0.18 + coreHeat * 0.10;
-        if (sparkle > 0.992) {
-          size *= 2.25;
-          opacity = 0.68;
-        }
-      } else if (index < 10800) {
-        const radius = 0.05 + Math.pow(radial, 2.15) * 0.76;
-        const cosine = angular * 2 - 1;
-        const sine = Math.sqrt(Math.max(0, 1 - cosine * cosine));
-        const angle = height * Math.PI * 2;
-        x = radius * sine * Math.cos(angle);
-        y = radius * cosine * 0.72;
-        z = radius * sine * Math.sin(angle);
-        const glow = 1 - radius / 0.81;
-        red = 0.70 + glow * 0.30;
-        green = 0.34 + glow * 0.46;
-        blue = 0.13 + glow * 0.38;
-        size = 1.3 + sparkle * 2.5;
-        opacity = 0.18 + angular * 0.30;
-      } else {
-        const radius = 0.58 + Math.sqrt(radial) * 1.82;
-        const angle = angular * Math.PI * 2;
-        x = Math.cos(angle) * radius;
-        z = Math.sin(angle) * radius;
-        y = (height * 2 - 1) * (0.24 + radius * 0.11);
-        red = 0.20 + detail * 0.20;
-        green = 0.19 + detail * 0.10;
-        blue = 0.18 + detail * 0.05;
-        size = 0.9 + sparkle * 1.4;
-        opacity = 0.035 + angular * 0.075;
-      }
-
-      positions[offset] = x;
-      positions[offset + 1] = y;
-      positions[offset + 2] = z;
-      colors[offset] = red;
-      colors[offset + 1] = green;
-      colors[offset + 2] = blue;
-      sizes[index] = size;
-      opacities[index] = opacity;
-    }
-
-    const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute('aColor', new THREE.BufferAttribute(colors, 3));
-    geometry.setAttribute('aSize', new THREE.BufferAttribute(sizes, 1));
-    geometry.setAttribute('aOpacity', new THREE.BufferAttribute(opacities, 1));
-
-    const pointUniforms = {
-      uTime: { value: 0 },
-      uPixelRatio: { value: 1 },
-      uPulse: { value: 1 },
-    };
-    const pointMaterial = new THREE.ShaderMaterial({
-      uniforms: pointUniforms,
-      transparent: true,
-      depthTest: false,
-      depthWrite: false,
-      vertexShader: `
-        uniform float uTime;
-        uniform float uPixelRatio;
-        attribute vec3 aColor;
-        attribute float aSize;
-        attribute float aOpacity;
-        varying vec3 vColor;
-        varying float vOpacity;
-
-        void main() {
-          float radius = length(position.xz);
-          float differential = sin(uTime * 0.38 + radius * 2.2) * 0.045 / (0.7 + radius);
-          float angle = uTime * 0.13 + differential;
-          float sine = sin(angle);
-          float cosine = cos(angle);
-          vec3 transformed = position;
-          transformed.xz = mat2(cosine, -sine, sine, cosine) * transformed.xz;
-          vec4 viewPosition = modelViewMatrix * vec4(transformed, 1.0);
-          gl_Position = projectionMatrix * viewPosition;
-          gl_PointSize = max(1.0, aSize * uPixelRatio * 11.5 / -viewPosition.z);
-          vColor = aColor;
-          vOpacity = aOpacity * (0.94 + 0.06
-            * sin(uTime * 0.72 + position.x * 3.7 + position.z * 2.9));
-        }
-      `,
-      fragmentShader: `
-        precision highp float;
-
-        uniform float uPulse;
-        varying vec3 vColor;
-        varying float vOpacity;
-
-        void main() {
-          vec2 point = gl_PointCoord - 0.5;
-          float radiusSquared = dot(point, point);
-          if (radiusSquared > 0.25) discard;
-          float gaussian = exp(-radiusSquared * 10.0);
-          float edge = 1.0 - smoothstep(0.16, 0.25, radiusSquared);
-          float opacity = gaussian * edge * vOpacity * uPulse;
-          vec3 color = mix(vColor, vec3(1.0, 0.86, 0.62), gaussian * 0.13);
-          gl_FragColor = vec4(color, opacity);
-        }
-      `,
-    });
-
-    const coreCanvas = document.createElement('canvas');
-    coreCanvas.width = 128;
-    coreCanvas.height = 128;
-    const context = coreCanvas.getContext('2d');
-    const coreGradient = context.createRadialGradient(64, 64, 1, 64, 64, 64);
-    coreGradient.addColorStop(0, 'rgba(255, 239, 197, 0.96)');
-    coreGradient.addColorStop(0.07, 'rgba(224, 151, 84, 0.82)');
-    coreGradient.addColorStop(0.24, 'rgba(166, 67, 36, 0.30)');
-    coreGradient.addColorStop(0.58, 'rgba(76, 43, 31, 0.08)');
-    coreGradient.addColorStop(1, 'rgba(38, 31, 27, 0)');
-    context.fillStyle = coreGradient;
-    context.fillRect(0, 0, 128, 128);
-    const coreTexture = new THREE.CanvasTexture(coreCanvas);
-    coreTexture.colorSpace = THREE.SRGBColorSpace;
-    const coreMaterial = new THREE.SpriteMaterial({
-      map: coreTexture,
-      transparent: true,
-      depthTest: false,
-      depthWrite: false,
-      opacity: 0.78,
-    });
-
-    const galaxy = new THREE.Group();
-    const stars = new THREE.Points(geometry, pointMaterial);
-    const core = new THREE.Sprite(coreMaterial);
-    core.scale.set(1.25, 1.25, 1);
-    core.renderOrder = 0;
-    stars.renderOrder = 1;
-    galaxy.add(core, stars);
-    galaxy.rotation.set(0.12, -0.20, -0.13);
-    scene.add(galaxy);
-
-    let targetPitch = 0.12;
-    let targetYaw = -0.20;
-    let pitch = targetPitch;
-    let yaw = targetYaw;
-    let pitchVelocity = 0;
-    let yawVelocity = 0;
-    let dragging = false;
-    let lastX = 0;
-    let lastY = 0;
-    let elapsed = 0;
-    let lastFrame = performance.now();
-
-    const render = () => renderer.render(scene, camera);
-    const animate = (now) => {
-      const delta = Math.min((now - lastFrame) / 1000, 1 / 30);
-      lastFrame = now;
-
-      if (motion.matches) {
-        const cycle = now * Math.PI * 2 / 5600;
-        const pulse = 0.68 + 0.32 * (0.5 + 0.5 * Math.cos(cycle));
-        pointUniforms.uPulse.value = pulse;
-        coreMaterial.opacity = pulse * 0.78;
-      } else {
-        elapsed += delta;
-        pointUniforms.uTime.value = elapsed;
-        pointUniforms.uPulse.value = 1;
-        coreMaterial.opacity = 0.78;
-        pitchVelocity += (targetPitch - pitch) * 44 * delta;
-        yawVelocity += (targetYaw - yaw) * 44 * delta;
-        const drag = Math.exp(-8.5 * delta);
-        pitchVelocity *= drag;
-        yawVelocity *= drag;
-        pitch += pitchVelocity * delta;
-        yaw += yawVelocity * delta;
-        galaxy.rotation.x = pitch;
-        galaxy.rotation.y = yaw;
-      }
-
-      render();
-      requestAnimationFrame(animate);
-    };
-
-    stage.addEventListener('pointerdown', (event) => {
-      if (motion.matches) return;
-      dragging = true;
-      lastX = event.clientX;
-      lastY = event.clientY;
-      stage.setPointerCapture(event.pointerId);
-    });
-    stage.addEventListener('pointermove', (event) => {
-      if (!dragging) return;
-      targetYaw = THREE.MathUtils.clamp(
-        targetYaw + (event.clientX - lastX) * 0.009,
-        -0.72,
-        0.72,
-      );
-      targetPitch = THREE.MathUtils.clamp(
-        targetPitch + (event.clientY - lastY) * 0.007,
-        -0.38,
-        0.52,
-      );
-      lastX = event.clientX;
-      lastY = event.clientY;
-    }, { passive: true });
-    const release = () => { dragging = false; };
-    stage.addEventListener('pointerup', release);
-    stage.addEventListener('pointercancel', release);
-
-    const resize = () => {
-      const bounds = stage.getBoundingClientRect();
-      const width = Math.max(1, Math.round(bounds.width));
-      const height = Math.max(1, Math.round(bounds.height));
-      const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
-      camera.aspect = width / height;
-      camera.updateProjectionMatrix();
-      renderer.setPixelRatio(pixelRatio);
-      renderer.setSize(width, height, false);
-      pointUniforms.uPixelRatio.value = pixelRatio;
-      render();
-    };
-    window.addEventListener('resize', resize, { passive: true });
-    const updateMotionPreference = () => {
-      dragging = false;
-      pitchVelocity = 0;
-      yawVelocity = 0;
-      stage.style.cursor = motion.matches ? 'default' : '';
-      lastFrame = performance.now();
-    };
-    motion.addEventListener('change', updateMotionPreference);
-    updateMotionPreference();
-
-    resize();
-    requestAnimationFrame(animate);
-  </script>
+  <script type="module" src="./black-hole.js"></script>
 </body>
 </html>
