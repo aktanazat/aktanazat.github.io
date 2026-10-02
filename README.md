@@ -1,1 +1,1 @@
-My website.
+my personal site at https://aktan.us. the homepage has no animated decoration.
