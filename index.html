@@ -23,9 +23,11 @@
 
     a { color: #0645ad; }
     a:hover { color: #0b0080; }
+    a:focus { outline: 2px solid #0645ad; outline-offset: 2px; }
 
-    h2 { margin: 0.3em 0; }
-    h3 { margin: 1.1em 0 0.3em; }
+    h1 { font-size: 1.5em; margin: 0.3em 0; }
+    h2 { font-size: 1.17em; margin: 1.1em 0 0.3em; }
+    h3 { font-size: 1em; margin: 1.1em 0 0.3em; }
     p  { margin: 0.6em 0; }
     ul li { margin-top: 4px; }
 
@@ -35,10 +37,10 @@
   </style>
 </head>
 <body>
-  <div id="contents">
-    <h2>Aktan Azat</h2>
+  <main id="contents">
+    <h1>Aktan Azat</h1>
 
-    <h3>Contact</h3>
+    <h2>Contact</h2>
     <ul>
       <li><a href="https://x.com/aktan_azat_">@aktan_azat_</a> on X</li>
       <li><a href="https://github.com/aktanazat">@aktanazat</a> on Github</li>
@@ -46,38 +48,48 @@
       <li><a href="https://www.linkedin.com/in/aktanazat/">aktanazat</a> on LinkedIn</li>
     </ul>
 
-    <h3>Work</h3>
+    <h2>Work</h2>
     <ul>
       <li><a href="https://github.com/aktanazat/safari-harness">safari-harness</a>: lets an agent use Safari</li>
       <li><a href="https://github.com/aktanazat/pdf-goat">pdf-goat</a>: native Rust and Swift PDF tools that edit, fill, sign and convert</li>
-      <li>Fixes merged into <a href="https://github.com/apple/pir-service-example/pull/179">Apple's pir-service-example</a>, <a href="https://github.com/mrdoob/three.js/pull/34448">three.js</a>, <a href="https://github.com/can1357/oh-my-pi/pull/10686">oh-my-pi</a>, <a href="https://github.com/cjpais/Handy/pull/2161">Handy</a>, <a href="https://github.com/ejbills/DockDoor/pull/1622">DockDoor</a>, <a href="https://github.com/developer0hye/office2pdf/pull/1504">office2pdf</a> and <a href="https://github.com/baphuongna/pi-crew/pull/53">pi-crew</a></li>
+      <li><a href="https://github.com/aktanazat/macos-harness">macos-harness</a>: lets agents inspect and control Mac apps</li>
+      <li><a href="https://github.com/aktanazat/sona">sona</a>: local dictation and meeting notes for Mac and iPhone, built on Handy</li>
     </ul>
 
-    <h3>Interests</h3>
+    <h3>Open-source contributions</h3>
+    <ul>
+      <li><a href="https://github.com/apple/pir-service-example/pull/179">Apple's pir-service-example</a>: stopped the same token being spent twice by concurrent requests</li>
+      <li><a href="https://github.com/mrdoob/three.js/pull/34448">three.js</a>: kept WebGL animation running after a frame error</li>
+      <li><a href="https://github.com/can1357/oh-my-pi/pull/17129">oh-my-pi</a>: combined messages when several extensions ask an agent to continue</li>
+      <li><a href="https://github.com/Homebrew/brew/pull/24345">Homebrew</a>: made brew list report an uninstalled app clearly when its output is piped</li>
+      <li>Also contributed to <a href="https://github.com/cjpais/Handy/pull/2161">Handy</a>, <a href="https://github.com/ejbills/DockDoor/pull/1622">DockDoor</a>, <a href="https://github.com/developer0hye/office2pdf/pull/1504">office2pdf</a> and <a href="https://github.com/baphuongna/pi-crew/pull/53">pi-crew</a></li>
+    </ul>
+
+    <h2>Interests</h2>
     <p>
       I think about how people and models reason through problems. Precision and rhythm
       draw me to most of what I work on.
     </p>
 
-    <h3>Current Interests</h3>
+    <h2>Current Interests</h2>
     <ul>
       <li>Large language models</li>
       <li>Languages</li>
       <li>Pool</li>
     </ul>
 
-    <h3>Writing</h3>
+    <h2>Writing</h2>
     <ul>
       <li><a href="/blog/the-whole-widget.html">The Whole Widget: how Steve Jobs designed everything he touched</a></li>
       <li><a href="/blog/defense-deconsolidation.html">How fifty-one defense companies became five</a></li>
       <li><a href="/blog/davisdine.html">Building DavisDine</a></li>
     </ul>
 
-    <h3>A line I like</h3>
+    <h2>A line I like</h2>
     <p>
       <i>"The best way to find out if you can trust somebody is to trust them."</i>
       &mdash; Ernest Hemingway
     </p>
-  </div>
+  </main>
 </body>
 </html>
