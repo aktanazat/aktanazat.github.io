@@ -13,6 +13,8 @@
 <link rel="canonical" href="https://aktan.us/blog/the-whole-widget.html">
 <meta name="theme-color" content="#ffffff">
 <style>
+    html { scrollbar-gutter: stable; }
+
     body {
       padding: 0;
       margin: 0;
@@ -30,6 +32,7 @@
 
     a { color: #0645ad; }
     a:hover { color: #0b0080; }
+    a:focus { outline: 2px solid #0645ad; outline-offset: 2px; }
 
     .back { display: inline-block; margin: 0.4em 0 0.2em; }
     h1 { font-size: 1.5em; margin: 0.4em 0 0.1em; }
@@ -70,13 +73,13 @@
       border-left: 3px solid #d9d9d9;
     }
 
-    figure { margin: 1.4em auto; max-width: 620px; }
+    figure { margin: 1.4em 0; }
     figure img { width: 100%; height: auto; display: block; }
     figcaption { color: #444; font-style: italic; font-size: 0.9em; margin-top: 4px; }
-    figure.portrait { max-width: 300px; }
-    figure.inset { max-width: 330px; }
+    figure.portrait { max-width: 300px; margin: 1.4em auto; }
+    figure.inset { max-width: 330px; margin: 1.4em auto; }
 
-    .duo-wrap { margin: 1.4em auto; max-width: 620px; }
+    .duo-wrap { margin: 1.4em 0; }
     .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
     .duo figure { margin: 0; }
     @media (max-width: 619px) { .duo { grid-template-columns: 1fr; gap: 1.2em; } }

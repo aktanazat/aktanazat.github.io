@@ -6,6 +6,8 @@
   <title>Building DavisDine | Aktan Azat</title>
   <meta name="description" content="DavisDine: a UC Davis dining app with allergen filtering and a macro meal planner. Short build notes with a live demo." />
   <style>
+    html { scrollbar-gutter: stable; }
+
     body {
       padding: 0;
       margin: 0;
@@ -23,9 +25,10 @@
 
     a { color: #0645ad; }
     a:hover { color: #0b0080; }
+    a:focus { outline: 2px solid #0645ad; outline-offset: 2px; }
 
     .back { display: inline-block; margin: 0.4em 0 0.2em; }
-    h2 { margin: 0.4em 0 0.1em; }
+    h1 { font-size: 1.5em; margin: 0.4em 0 0.1em; }
     .date { color: #444; font-style: italic; }
     h3 { margin: 1.4em 0 0.4em; }
     p { margin: 0.7em 0; }
@@ -103,7 +106,7 @@
   <div id="contents">
     <a href="/" class="back">&larr; Home</a>
 
-    <h2>Building DavisDine</h2>
+    <h1>Building DavisDine</h1>
     <p class="date">April 2026</p>
 
     <p>DavisDine shows UC Davis students what's in the dining commons today. You filter by allergen, then build a plate that adds up the calories and macros across every station you pulled a dish from. Before it existed, working out what I could eat meant a couple of minutes clicking through a slow campus menu portal at every meal, which got old fast. I wanted five seconds instead. It's <a href="https://apps.apple.com/us/app/davisdinebuddy/id6758647990" target="_blank" rel="noopener noreferrer">on the App Store</a>.</p>

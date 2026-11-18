@@ -6,6 +6,8 @@
   <title>We Will Stand By and Watch | Aktan Azat</title>
   <meta name="description" content="The 1993 Pentagon dinner that consolidated the US defense industry, what that base does under wartime stress, and an interactive calculator for drone-versus-interceptor economics." />
   <style>
+    html { scrollbar-gutter: stable; }
+
     body {
       padding: 0;
       margin: 0;
@@ -23,16 +25,17 @@
 
     a { color: #0645ad; }
     a:hover { color: #0b0080; }
+    a:focus { outline: 2px solid #0645ad; outline-offset: 2px; }
 
     .back { display: inline-block; margin: 0.4em 0 0.2em; }
-    h2 { margin: 0.4em 0 0.1em; }
+    h1 { font-size: 1.5em; margin: 0.4em 0 0.1em; }
     .date { color: #444; font-style: italic; }
     h3 { margin: 1.4em 0 0.4em; }
     p { margin: 0.7em 0; }
 
-    figure { margin: 1.4em auto; max-width: 620px; }
+    figure { margin: 1.4em 0; }
     figure img { width: 100%; height: auto; display: block; }
-    figure svg { max-width: 100%; height: auto; }
+    figure > svg { width: 100%; height: auto; display: block; }
     figcaption { color: #444; font-style: italic; font-size: 0.9em; margin-top: 4px; }
 
     /* ---- live demo, plain style ---- */
@@ -90,7 +93,7 @@
   <div id="contents">
     <a href="/" class="back">&larr; Home</a>
 
-    <h2>We Will Stand By and Watch</h2>
+    <h1>We Will Stand By and Watch</h1>
     <p class="date">August 2026</p>
 
     <p>In the fall of 1993, Secretary of Defense Les Aspin and his deputy William Perry invited the chief executives of the biggest American defense contractors to <a href="https://www.wbur.org/onpoint/2023/03/01/the-last-supper-how-a-1993-pentagon-dinner-reshaped-the-defense-industry" target="_blank" rel="noopener noreferrer">dinner at the Pentagon</a> and told them, over what the industry still calls the Last Supper, that the post&ndash;Cold War budget could not keep them all alive. Perry told them: "We expect defense companies to go out of business. We will stand by and watch." They did. Within a decade, fifty-one prime contractors merged down to five.</p>
