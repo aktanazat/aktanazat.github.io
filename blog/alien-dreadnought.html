@@ -33,7 +33,10 @@
     .date { color: #444; font-style: italic; }
     h3 { margin: 1.4em 0 0.4em; }
     p { margin: 0.7em 0; }
-    ul li { margin-top: 6px; }
+
+    figure { margin: 1.4em 0; }
+    figure > svg { width: 100%; max-width: 600px; height: auto; display: block; font-family: system-ui, sans-serif; }
+    figcaption { color: #444; font-style: italic; font-size: 0.9em; margin-top: 4px; }
 
     @media (max-width: 760px) { #contents { padding: 0 1em; } }
   </style>
@@ -45,70 +48,153 @@
     <h1>The Alien Dreadnought</h1>
     <p class="date">November 2026</p>
 
-    <p>In October 2016 Elon Musk told Tesla's investors what he was building. <a href="https://www.businessinsider.com/elon-musk-tesla-factory-alien-dreadnought-2016-10" target="_blank" rel="noopener noreferrer">"Our internal code name for the factory, the machine that builds the machine, is the alien dreadnought,"</a> he said, and he expected to reach "alien dreadnought version 1" by the summer of 2018. In April 2018, with Model 3 output at <a href="https://www.cnbc.com/2018/04/13/elon-musk-admits-humans-are-sometimes-superior-to-robots.html" target="_blank" rel="noopener noreferrer">2,020 cars a week against a goal of 2,500</a>, he wrote: <a href="https://x.com/elonmusk/status/984882630947753984" target="_blank" rel="noopener noreferrer">"Excessive automation at Tesla was a mistake. To be precise, my mistake. Humans are underrated."</a></p>
+    <p>In 2016 Elon Musk told investors that Tesla's code name for its factory, <a href="https://www.businessinsider.com/elon-musk-tesla-factory-alien-dreadnought-2016-10" target="_blank" rel="noopener noreferrer">"the machine that builds the machine," was the alien dreadnought</a>. By April 2018, with Model 3 output <a href="https://www.cnbc.com/2018/04/13/elon-musk-admits-humans-are-sometimes-superior-to-robots.html" target="_blank" rel="noopener noreferrer">short of its goal</a>, he took it back: <a href="https://x.com/elonmusk/status/984882630947753984" target="_blank" rel="noopener noreferrer">"Excessive automation at Tesla was a mistake. To be precise, my mistake. Humans are underrated."</a></p>
 
-    <p>Eight years later, Tesla has started <a href="https://www.humanoidsdaily.com/news/tesla-q3-2026-optimus-production-fremont-2027-deliveries" target="_blank" rel="noopener noreferrer">early production of its Optimus robot</a> in Fremont. Musk was early. The factory he described is getting closer, and the United States holds more of it than the robot counts suggest.</p>
+    <p>This year Tesla started <a href="https://www.humanoidsdaily.com/news/tesla-q3-2026-optimus-production-fremont-2027-deliveries" target="_blank" rel="noopener noreferrer">early production of its Optimus robot</a> in Fremont. Musk was early. The lights-out factory, a plant that can run in the dark because no one needs to see, is getting closer, and America holds more of it than the robot counts suggest.</p>
 
-    <p>The industrial robot is an American invention. Unimation, a company in Danbury, Connecticut, put the first Unimate to work at a General Motors plant in 1961. The arm business later moved abroad. Westinghouse bought Unimation in 1983 and <a href="https://www.upi.com/Archives/1988/12/07/Westinghouse-Electric-Corp-is-selling-its-Unimation-division-to/8923597474000/" target="_blank" rel="noopener noreferrer">sold it to Switzerland's St&auml;ubli in 1988</a>, and Adept Technology, the largest American maker of robot arms in the 2000s, was <a href="https://www.omron.com/global/en/news/2015/10/c1024.html" target="_blank" rel="noopener noreferrer">bought by Japan's Omron in 2015</a>. Today no large American company builds industrial robot arms, and the robotics industry's own federation says <a href="https://ifr.org/downloads/press_docs/EN-2026-SEP-24-IFR_Press_Release_WR-USA.pdf" target="_blank" rel="noopener noreferrer">most robots installed in the United States are imported from Japan and Europe</a>.</p>
+    <p>America invented the industrial robot: the first Unimate went to work at a General Motors plant in 1961. The arm business later went abroad, to <a href="https://www.upi.com/Archives/1988/12/07/Westinghouse-Electric-Corp-is-selling-its-Unimation-division-to/8923597474000/" target="_blank" rel="noopener noreferrer">Switzerland's St&auml;ubli</a> and <a href="https://www.omron.com/global/en/news/2015/10/c1024.html" target="_blank" rel="noopener noreferrer">Japan's Omron</a>, and today <a href="https://ifr.org/downloads/press_docs/EN-2026-SEP-24-IFR_Press_Release_WR-USA.pdf" target="_blank" rel="noopener noreferrer">most robots installed in the United States come from Japan and Europe</a>. But a robot is now more than an arm, and the layer that tells it what to do is where America leads.</p>
 
-    <p>A lights-out factory is a plant that can run with the lights off because no one needs to see. It changes where things get made: when labor stops being the main cost, the advantage goes to whoever owns the machines, the parts that go into them, and the people who keep them running. A new layer now sits on top of all three, the software and AI that tell the machines what to do. That layer is where America leads.</p>
+    <figure id="fig-halves">
+      <svg viewBox="0 0 480 280" role="img" aria-label="The lights-out factory as five layers. America holds the top two, AI models and software, and chip design. The bottom three, robot arms, precision gearboxes and machine tools, come mostly from Japan, Europe and China.">
+        <rect x="10" y="20" width="310" height="40" fill="#0645ad"/>
+        <rect x="10" y="66" width="310" height="40" fill="#0645ad"/>
+        <rect x="10" y="126" width="310" height="40" fill="#eee" stroke="#6b6b6b"/>
+        <rect x="10" y="172" width="310" height="40" fill="#eee" stroke="#6b6b6b"/>
+        <rect x="10" y="218" width="310" height="40" fill="#eee" stroke="#6b6b6b"/>
+        <g font-size="15" fill="#fff">
+          <text x="22" y="45">AI models and software</text>
+          <text x="22" y="91">Chips</text>
+        </g>
+        <g font-size="13" fill="#fff" text-anchor="end">
+          <text x="308" y="45">United States</text>
+          <text x="308" y="91">United States designs the leaders</text>
+        </g>
+        <g font-size="15" fill="#222">
+          <text x="22" y="151">Robot arms</text>
+          <text x="22" y="197">Precision gearboxes</text>
+          <text x="22" y="243">Machine tools</text>
+        </g>
+        <g font-size="13" fill="#444" text-anchor="end">
+          <text x="308" y="151">Japan, Europe</text>
+          <text x="308" y="197">Japan</text>
+          <text x="308" y="243">China 36%, U.S. 8%</text>
+        </g>
+        <path d="M330 20 h8 v86 h-8" fill="none" stroke="#0645ad" stroke-width="2"/>
+        <path d="M330 126 h8 v132 h-8" fill="none" stroke="#6b6b6b" stroke-width="2"/>
+        <g font-size="15">
+          <text x="350" y="59" fill="#0645ad">The half</text>
+          <text x="350" y="78" fill="#0645ad">America holds</text>
+          <text x="350" y="188" fill="#444">The half</text>
+          <text x="350" y="207" fill="#444">left to build</text>
+        </g>
+      </svg>
+      <figcaption>What a lights-out factory runs on, and who makes each layer today.</figcaption>
+    </figure>
 
     <h3>Where America leads</h3>
 
-    <p>Amazon has deployed <a href="https://www.aboutamazon.com/news/operations/amazon-million-robots-ai-foundation-model" target="_blank" rel="noopener noreferrer">more than a million robots across more than 300 sites</a>, and factory-robot statistics mostly leave them out. Figure, a humanoid-robot startup, <a href="https://www.figure.ai/news/series-c" target="_blank" rel="noopener noreferrer">raised over $1 billion at a $39 billion valuation</a> in 2025. Nvidia released an <a href="https://nvidianews.nvidia.com/news/nvidia-isaac-gr00t-n1-open-humanoid-robot-foundation-model-simulation-frameworks" target="_blank" rel="noopener noreferrer">open AI model for humanoid robots</a> the same year.</p>
+    <p>Amazon runs <a href="https://www.aboutamazon.com/news/operations/amazon-million-robots-ai-foundation-model" target="_blank" rel="noopener noreferrer">more than a million robots across more than 300 sites</a>. Figure <a href="https://www.figure.ai/news/series-c" target="_blank" rel="noopener noreferrer">raised over $1 billion at a $39 billion valuation</a> in 2025, the year Nvidia released an <a href="https://nvidianews.nvidia.com/news/nvidia-isaac-gr00t-n1-open-humanoid-robot-foundation-model-simulation-frameworks" target="_blank" rel="noopener noreferrer">open AI model for humanoid robots</a>. America builds the models and the software and designs the leading chips, and investors are paying for that lead.</p>
 
-    <p>America builds the AI models and the software and designs the leading chips, and investors are paying for that lead.</p>
+    <h3>The payoff is proven</h3>
 
-    <h3>The payoff is already proven</h3>
+    <p>No plant is fully lights-out yet, and the partial ones already pay. Xiaomi's Beijing factory makes <a href="https://www.bernama.com/en/general/news.php?id=2506674" target="_blank" rel="noopener noreferrer">one phone every six seconds</a>, run by technicians from a control room. In Dongguan, Changying Precision <a href="http://en.people.cn/n/2015/0715/c90000-8920747.html" target="_blank" rel="noopener noreferrer">cut a process from 650 workers to 60</a>.</p>
 
-    <p>Almost no plant in the world runs lights-out from end to end yet. The cases that exist cover one hall, one line, or one shift, and each shows what the machines pay back.</p>
-    <ul>
-      <li>Fanuc, Japan. In 2003 the company said robots in one of its plants near Mount Fuji were <a href="https://web.archive.org/web/20091123102010/https://money.cnn.com/magazines/business2/business2_archive/2003/06/01/343371/index.htm" target="_blank" rel="noopener noreferrer">building about 50 robots per 24-hour shift and could run unsupervised for up to 30 days</a>. That figure is from 2003, and I found nothing newer from Fanuc.</li>
-      <li>Xiaomi, Beijing. The phone factory that opened in Changping in 2024 makes <a href="https://www.bernama.com/en/general/news.php?id=2506674" target="_blank" rel="noopener noreferrer">one phone every six seconds</a>, with capacity of up to 10 million a year. Xiaomi's own figure for its automation rate is 81 percent, and a team of technicians runs it from a control room.</li>
-      <li>Changying Precision, Dongguan. In 2015 a phone-parts plant <a href="http://en.people.cn/n/2015/0715/c90000-8920747.html" target="_blank" rel="noopener noreferrer">cut a process that needed 650 workers to 60</a>. Output per worker went from about 8,000 pieces a month to 21,000, and the defect rate fell from over 25 percent to under 5.</li>
-    </ul>
-    <p>None of these plants is fully lights-out, and the numbers already work.</p>
+    <figure id="fig-changying">
+      <svg viewBox="0 0 480 200" role="img" aria-label="Changying Precision, 2015. Before automation a process needed 650 workers, after it needed 60. Output per worker rose from about 8,000 to 21,000 pieces a month, and the defect rate fell from over 25 percent to under 5 percent.">
+        <defs>
+          <pattern id="before-dots" x="10" y="34" width="16" height="16" patternUnits="userSpaceOnUse">
+            <circle cx="6" cy="6" r="5.5" fill="#bbb"/>
+          </pattern>
+          <pattern id="after-dots" x="250" y="34" width="16" height="16" patternUnits="userSpaceOnUse">
+            <circle cx="6" cy="6" r="5.5" fill="#0645ad"/>
+          </pattern>
+        </defs>
+        <g font-size="15" fill="#222">
+          <text x="10" y="22">Before: 650 workers</text>
+          <text x="250" y="22">After: 60 workers</text>
+        </g>
+        <rect x="10" y="34" width="208" height="80" fill="url(#before-dots)"/>
+        <rect x="250" y="34" width="96" height="16" fill="url(#after-dots)"/>
+        <g font-size="14" fill="#444">
+          <text x="10" y="150">Output per worker, a month</text>
+          <text x="250" y="150">Defect rate</text>
+        </g>
+        <g font-size="16" fill="#222">
+          <text x="10" y="174">8,000 &#8594; 21,000 pieces</text>
+          <text x="250" y="174">over 25% &#8594; under 5%</text>
+        </g>
+      </svg>
+      <figcaption>Changying Precision, 2015. Each dot is ten workers.</figcaption>
+    </figure>
 
     <h3>Room to grow</h3>
 
-    <p>Measured per worker, American factories are among the most automated in the world: <a href="https://ifr.org/ifr-press-releases/news/robot-density-highest-in-south-korea-singapore-and-germany" target="_blank" rel="noopener noreferrer">323 robots per 10,000 manufacturing employees in 2025</a>, eighth in the world, against China's 193.</p>
+    <p>Per worker, American factories are among the most automated anywhere: <a href="https://ifr.org/ifr-press-releases/news/robot-density-highest-in-south-korea-singapore-and-germany" target="_blank" rel="noopener noreferrer">323 robots per 10,000 employees</a>, eighth in the world, against China's 193. China wins on volume, with <a href="https://ifr.org/downloads/press_docs/EN-2026-SEP-24-IFR_Press_Release_WR-USA.pdf" target="_blank" rel="noopener noreferrer">354,200 robots installed in 2025</a> to America's 38,400.</p>
 
-    <p>China leads on volume. In 2025 it installed 354,200 industrial robots, <a href="https://ifr.org/downloads/press_docs/EN-2026-SEP-24-IFR_Press_Release_WR-USA.pdf" target="_blank" rel="noopener noreferrer">59 percent of the world's total</a>, against America's 38,400, about nine to one. Since 2015 China's yearly installations <a href="https://ourworldindata.org/grapher/annual-industrial-robots-installed" target="_blank" rel="noopener noreferrer">grew about fivefold</a>, while America's have stayed between roughly 31,000 and 40,000 a year since 2016. China's total stock of working robots, about 2 million in 2024, was roughly five times America's; it ranks lower per worker only because its factory workforce is so large.</p>
+    <p>The bigger opening is at home. In 2022 only <a href="https://www.census.gov/library/publications/2025/econ/2022-ec-robotic-equipment.html" target="_blank" rel="noopener noreferrer">6.4 percent of American plants</a> had any robot at all. Owners name <a href="https://www2.census.gov/ces/wp/2022/CES-WP-22-12R.pdf" target="_blank" rel="noopener noreferrer">poor fit and the cost of setup</a> as the barriers, which is what general-purpose robot AI is built to remove.</p>
 
-    <p>The biggest opening is inside the United States. In 2022 only <a href="https://www.census.gov/library/publications/2025/econ/2022-ec-robotic-equipment.html" target="_blank" rel="noopener noreferrer">6.4 percent of American manufacturing plants</a> had any robots at all. Among plants with five or fewer employees the share was 1.6 percent; among plants with 1,000 or more it was 40.9 percent. Firms name <a href="https://www2.census.gov/ces/wp/2022/CES-WP-22-12R.pdf" target="_blank" rel="noopener noreferrer">poor fit with their work and the cost of integration</a> as the main barriers. Those are the barriers general-purpose robot AI, the field American companies lead, is aimed at.</p>
+    <figure id="fig-headroom">
+      <svg viewBox="0 0 480 150" role="img" aria-label="Share of American manufacturing plants using any robot in 2022: 1.6 percent of plants with five or fewer workers, 6.4 percent of all plants, and 40.9 percent of plants with 1,000 or more workers.">
+        <g fill="#eee">
+          <rect x="150" y="16" width="290" height="26"/>
+          <rect x="150" y="62" width="290" height="26"/>
+          <rect x="150" y="108" width="290" height="26"/>
+        </g>
+        <g fill="#0645ad">
+          <rect x="150" y="16" width="4.6" height="26"/>
+          <rect x="150" y="62" width="18.6" height="26"/>
+          <rect x="150" y="108" width="118.6" height="26"/>
+        </g>
+        <g font-size="14" fill="#222" text-anchor="end">
+          <text x="140" y="34">5 or fewer workers</text>
+          <text x="140" y="80">All plants</text>
+          <text x="140" y="126">1,000 or more</text>
+        </g>
+        <g font-size="14" fill="#0645ad">
+          <text x="163" y="34">1.6%</text>
+          <text x="177" y="80">6.4%</text>
+          <text x="277" y="126">40.9%</text>
+        </g>
+        <text x="444" y="80" font-size="13" fill="#444">100%</text>
+      </svg>
+      <figcaption>Share of American manufacturing plants using any robot, 2022. The gray is the market still open.</figcaption>
+    </figure>
 
     <h3>The parts left to build</h3>
 
-    <p>A lights-out factory also needs robot arms, machine tools to cut metal, and the precision parts inside both. Today the United States buys all three.</p>
-    <ul>
-      <li>Robot arms. The <a href="https://www.statista.com/chart/32239/global-market-share-of-industrial-robotics-companies/" target="_blank" rel="noopener noreferrer">biggest makers by revenue</a> are ABB, Epson, Fanuc, Kawasaki, Yaskawa and KUKA, all Japanese or European. KUKA has been owned by China's Midea since 2017. The closest thing to an American arm maker is Universal Robots, a Danish company <a href="https://www.sec.gov/Archives/edgar/data/97210/000119312515187931/d926039dex991.htm" target="_blank" rel="noopener noreferrer">owned by Teradyne</a>.</li>
-      <li>Machine tools. In 1981 the United States was <a href="https://itif.org/publications/2025/12/15/mapping-industrial-strength-us-machine-tool-production-and-consumption/" target="_blank" rel="noopener noreferrer">the world's largest producer</a>, with about 20 percent of the market. In 2025 China produced <a href="https://www.gardnerintelligence.com/report/world-machine-tool" target="_blank" rel="noopener noreferrer">$30.8 billion of machine tools</a>, 36 percent of the world's, and the United States produced $7.0 billion, about 8 percent. America is now the world's largest importer of machine tools.</li>
-      <li>Gearboxes. Two Japanese companies, by their own estimates, make most of the precision gearboxes inside robot joints: <a href="https://www.nabtesco.com/en/products/robot/" target="_blank" rel="noopener noreferrer">Nabtesco</a> about 60 percent of the large ones, <a href="https://www.cas.go.jp/jp/seisaku/nipponseichosenryaku/kaigi/dai9/shiryou12.pdf" target="_blank" rel="noopener noreferrer">Harmonic Drive Systems</a> over half of the small ones. I found no leading American maker.</li>
-    </ul>
+    <p>America buys its robot arms from <a href="https://www.statista.com/chart/32239/global-market-share-of-industrial-robotics-companies/" target="_blank" rel="noopener noreferrer">Japan and Europe</a>. It made <a href="https://www.gardnerintelligence.com/report/world-machine-tool" target="_blank" rel="noopener noreferrer">8 percent of the world's machine tools in 2025</a>, against China's 36, and gets most precision gearboxes from two Japanese firms, <a href="https://www.nabtesco.com/en/products/robot/" target="_blank" rel="noopener noreferrer">Nabtesco</a> and <a href="https://www.cas.go.jp/jp/seisaku/nipponseichosenryaku/kaigi/dai9/shiryou12.pdf" target="_blank" rel="noopener noreferrer">Harmonic Drive Systems</a>.</p>
 
-    <p>A gap like this can close within a decade. China set out to fix the same dependency. Made in China 2025 targeted 70 percent domestic share of China's robot market by 2025. It <a href="https://www.uscc.gov/research/made-china-2025-evaluating-chinas-performance" target="_blank" rel="noopener noreferrer">reached 52 percent</a>, up from 18 percent in 2015, nearly triple in ten years. According to the industry tracker MIR Databank, a Chinese company, Estun, sold more robots in China in 2025 than any other brand, the first time a Chinese brand has led.</p>
+    <p>China shows how fast that can change. Its own makers went from <a href="https://www.uscc.gov/research/made-china-2025-evaluating-chinas-performance" target="_blank" rel="noopener noreferrer">18 to 52 percent of its home robot market</a> in ten years, and in 2025, by the tracker MIR Databank's count, Estun became the first Chinese brand to outsell every rival there.</p>
+
+    <figure id="fig-china">
+      <svg viewBox="0 0 480 200" role="img" aria-label="Chinese makers' share of China's robot market: 18 percent in 2015, 52 percent in 2025, against a 2025 target of 70 percent.">
+        <line x1="30" y1="170" x2="450" y2="170" stroke="#6b6b6b"/>
+        <line x1="30" y1="44" x2="450" y2="44" stroke="#6b6b6b" stroke-dasharray="5 5"/>
+        <text x="450" y="36" font-size="13" fill="#444" text-anchor="end">2025 target: 70%</text>
+        <line x1="70" y1="137.6" x2="410" y2="76.4" stroke="#9a2b2b" stroke-width="3"/>
+        <circle cx="70" cy="137.6" r="6" fill="#9a2b2b"/>
+        <circle cx="410" cy="76.4" r="6" fill="#9a2b2b"/>
+        <g font-size="16" fill="#9a2b2b">
+          <text x="70" y="120" text-anchor="middle">18%</text>
+          <text x="410" y="102" text-anchor="middle">52%</text>
+        </g>
+        <g font-size="14" fill="#444" text-anchor="middle">
+          <text x="70" y="190">2015</text>
+          <text x="410" y="190">2025</text>
+        </g>
+      </svg>
+      <figcaption>Chinese makers' share of China's robot market. Two points, ten years apart.</figcaption>
+    </figure>
 
     <h3>What it takes</h3>
 
-    <p>Three things decide how fast America gets there.</p>
+    <p>Suppliers, people and patience. Plants cluster: <a href="https://www.pulitzer.org/winners/staff-74" target="_blank" rel="noopener noreferrer">"You need a thousand rubber gaskets? That's the factory next door,"</a> a former Apple executive told the New York Times, so each plant that comes back makes the next one easier. Robots need people too: Amazon's newest warehouse needs <a href="https://www.aboutamazon.com/news/operations/amazon-million-robots-ai-foundation-model" target="_blank" rel="noopener noreferrer">30 percent more maintenance and engineering staff</a>, and American manufacturing <a href="https://nam.org/study-manufacturing-in-u-s-could-need-up-to-3-8-million-workers/" target="_blank" rel="noopener noreferrer">could need 3.8 million workers</a> by 2033. And automation pays back over years, which rewards the firms willing to wait while <a href="https://www.nber.org/papers/w10550" target="_blank" rel="noopener noreferrer">most executives chase smooth quarters</a>.</p>
 
-    <p>The first is the supplier network. Gary Pisano and Willy Shih of Harvard Business School <a href="https://hbr.org/2009/07/restoring-american-competitiveness" target="_blank" rel="noopener noreferrer">argued in 2009</a> that when manufacturing moves offshore, the "industrial commons" goes with it: the engineers, toolmakers and suppliers that new products depend on. A former Apple executive described the difference to the <a href="https://www.pulitzer.org/winners/staff-74" target="_blank" rel="noopener noreferrer">New York Times in 2012</a>: "You need a thousand rubber gaskets? That's the factory next door." The same logic runs in reverse: each plant that comes back gives the next one a neighbor to buy from.</p>
-
-    <p>The second is people. Automation does not remove the need for workers so much as change which workers are needed. Amazon says its newest robotic warehouse needs <a href="https://www.aboutamazon.com/news/operations/amazon-million-robots-ai-foundation-model" target="_blank" rel="noopener noreferrer">30 percent more people in maintenance and engineering roles</a>. Deloitte and the Manufacturing Institute estimate American manufacturing <a href="https://nam.org/study-manufacturing-in-u-s-could-need-up-to-3-8-million-workers/" target="_blank" rel="noopener noreferrer">could need 3.8 million workers</a> between 2024 and 2033, and that more than 1.9 million of those jobs could go unfilled. Those are jobs waiting for people trained to do them.</p>
-
-    <p>The third is patience. Automation pays back over years, which favors the firms willing to wait. Few are: in a <a href="https://www.nber.org/papers/w10550" target="_blank" rel="noopener noreferrer">survey of 401 American executives</a>, 78 percent said they would give up economic value to keep earnings smooth, and most said they would pass on a profitable project to hit a short-term target.</p>
-
-    <p>Big promises are no substitute for any of the three. In Wisconsin, Foxconn <a href="https://www.cnn.com/2021/04/22/tech/foxconn-wisconsin-factory-scaled-down/" target="_blank" rel="noopener noreferrer">promised up to $10 billion and 13,000 jobs</a> in 2017. By the end of 2024 the state counted <a href="https://wedc.org/wedc-foxconn-announce-additional-569-million-investment-in-racine-county/" target="_blank" rel="noopener noreferrer">$717 million invested and 1,242 jobs</a>.</p>
-
-    <h3>Policy</h3>
-
-    <p>China has a plan and money behind it. A 2023 plan from its industry ministry set out to <a href="https://merics.org/en/merics-briefs/robotics-sector-complete-industrial-chain-industrial-internet" target="_blank" rel="noopener noreferrer">double robot density from 2020 levels by 2025</a>, and a state venture fund launched in 2025 is expected to draw <a href="https://ifr.org/ifr-press-releases/news/china-to-invest-1-trillion-yuan-in-robotics-and-high-tech-industries" target="_blank" rel="noopener noreferrer">nearly 1 trillion yuan, about $138 billion</a>, over 20 years into robotics, AI and other advanced technology.</p>
-
-    <p>The United States has no national robotics strategy yet. Federal base funding for its network of manufacturing research institutes, which includes a robotics institute, was <a href="https://www.manufacturingusa.com/reports/2025-manufacturing-usa-report-congress" target="_blank" rel="noopener noreferrer">about $160 million in 2023</a>. In October 2026 a <a href="https://www.whitehouse.gov/presidential-actions/2026/10/adjusting-imports-of-robotics-industrial-machinery-and-their-parts-and-components-into-the-united-states/" target="_blank" rel="noopener noreferrer">national-security review of robot imports</a> found that they threaten national security, imposed no tariffs, and ordered negotiations, with a report due in April 2027. That report is a chance to pick a direction. Since most robots used in American factories are imported, a tariff on them would raise the cost of the very equipment a lights-out factory needs. The stronger move is to help American plants buy robots now while American suppliers are built.</p>
+    <p>China is putting <a href="https://ifr.org/ifr-press-releases/news/china-to-invest-1-trillion-yuan-in-robotics-and-high-tech-industries" target="_blank" rel="noopener noreferrer">about $138 billion</a> over 20 years into robotics and AI. America has no robotics strategy yet, but an <a href="https://www.whitehouse.gov/presidential-actions/2026/10/adjusting-imports-of-robotics-industrial-machinery-and-their-parts-and-components-into-the-united-states/" target="_blank" rel="noopener noreferrer">October 2026 review of robot imports</a> ordered a report by April 2027. A tariff would tax the machines American plants need. The better move is to help them buy robots now while American suppliers grow.</p>
 
     <h3>The machine that builds the machine</h3>
 
-    <p>A lights-out factory needs two halves. America builds the AI models and the software and designs the leading chips. It imports most of the robot arms, the gearboxes and the machine tools. The half America already holds is the newer one, and China has shown that the other half can be built in ten years. The country that invented the industrial robot is in position to build the alien dreadnought.</p>
+    <p>America already holds the newer half of the alien dreadnought, and China has shown the other half can be built in ten years. The country that invented the industrial robot is in position to build the machine that builds the machine.</p>
   </div>
 </body>
 </html>
